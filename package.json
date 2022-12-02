@@ -1,0 +1,35 @@
+{
+  "name": "whitebird",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install",
+    "prerelease": "turbo run build lint test",
+    "release": "changeset version && changeset publish"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.2.0",
+    "@commitlint/config-conventional": "^17.2.0",
+    "@whitebird/eslint-config": "latest",
+    "@whitebird/tsconfig": "latest",
+    "husky": "^8.0.0",
+    "turbo": "latest",
+    "typescript": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "packageManager": "pnpm@7.15.0",
+  "dependencies": {
+    "@changesets/cli": "^2.25.2"
+  }
+}
