@@ -40,6 +40,21 @@ importers:
       npm-run-all: 4.1.5
       rimraf: 3.0.2
 
+  packages/transformer-react:
+    specifiers:
+      '@types/lodash': ^4.14.191
+      '@types/node': ^18.11.9
+      '@whitebird/kazam-transformer-base': workspace:*
+      lodash: ^4.17.21
+      zod: ^3.19.1
+    dependencies:
+      '@types/lodash': 4.14.191
+      '@whitebird/kazam-transformer-base': link:../transformer-base
+      lodash: 4.17.21
+      zod: 3.19.1
+    devDependencies:
+      '@types/node': 18.11.10
+
 packages:
 
   /@antfu/eslint-config-basic/0.33.1_wjoapw4ombgwg6z6z7v33vve4e:
@@ -699,6 +714,10 @@ packages:
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
+    dev: false
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -2846,7 +2865,6 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-    dev: true
 
   /lru-cache/4.1.5:
     resolution: {integrity: sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==}
