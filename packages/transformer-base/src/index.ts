@@ -5,3 +5,4 @@ export type ITransformerInput = IComponent[]
 export const validateTransformerInput = (input: unknown): ITransformerInput => Component.array().parse(input)
 
 export * from './schemas'
+export * from './transformer-base'
