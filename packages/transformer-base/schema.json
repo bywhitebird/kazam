@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string"
+      },
+      "props": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "defaultValueExpression": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "hasChildren": {
+        "type": "boolean"
+      },
+      "statements": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "getterExpression": {
+                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                }
+              },
+              "required": [
+                "name",
+                "getterExpression"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string"
+                },
+                "initialValueExpression": {
+                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                }
+              },
+              "required": [
+                "name",
+                "initialValueExpression"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "stateName": {
+                  "type": "string"
+                },
+                "callbackExpression": {
+                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                }
+              },
+              "required": [
+                "stateName",
+                "callbackExpression"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "template": {
+        "type": "array",
+        "items": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "expression": {
+                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                }
+              },
+              "required": [
+                "expression"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "allOf": [
+                {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "component": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "component"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "tag": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "tag"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "attributes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "value"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "callbackExpression": {
+                            "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "callbackExpression"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "content": {
+                      "$ref": "#/items/properties/template"
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "required": [
+      "name",
+      "template"
+    ],
+    "additionalProperties": false
+  }
+}
