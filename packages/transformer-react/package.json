@@ -6,7 +6,9 @@
   "scripts": {
     "build": "rimraf dist && tsc",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@types/lodash": "^4.14.191",
@@ -15,6 +17,8 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9"
+    "@types/node": "^18.11.9",
+    "@vitest/coverage-c8": "^0.25.3",
+    "vitest": "^0.25.3"
   }
 }
