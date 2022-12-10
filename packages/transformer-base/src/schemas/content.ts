@@ -25,6 +25,21 @@ export const Content: z.ZodType<IContent> = z.lazy(() =>
             content: Content.optional(),
           }),
         ),
+      z.object({
+        loop: z.object({
+          iterableExpression: Expression,
+          itemIdentifier: z.string(),
+          indexIdentifier: z.string().optional(),
+          content: Content,
+        }),
+      }),
+      z.object({
+        conditional: z.object({
+          conditionExpression: Expression,
+          trueContent: Content,
+          falseContent: Content.optional(),
+        }),
+      }),
     ]),
   ),
 )
@@ -48,4 +63,19 @@ export type IContent = (
     events?: IEvent[] | undefined
     content?: IContent | undefined
   })
+  | {
+    loop: {
+      iterableExpression: IExpression
+      itemIdentifier: string
+      indexIdentifier?: string | undefined
+      content: IContent
+    }
+  }
+  | {
+    conditional: {
+      conditionExpression: IExpression
+      trueContent: IContent
+      falseContent?: IContent | undefined
+    }
+  }
 )[]
