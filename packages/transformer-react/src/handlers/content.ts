@@ -4,6 +4,28 @@ import type { IHandler } from '../transformer-react'
 
 export const handleContent: IHandler<typeof Content> = async (content, { handle, addImport, component }) => {
   return (await Promise.all(content.map(async (item) => {
+    if ('conditional' in item) {
+      const { conditionExpression, trueContent, falseContent } = item.conditional
+
+      return `{
+        ${await handle(conditionExpression, component)} ? (
+          ${await handle(trueContent, component)}
+        ) : (
+          ${falseContent ? await handle(falseContent, component) : 'null'}
+        )
+      }`
+    }
+
+    if ('loop' in item) {
+      const { iterableExpression, itemIdentifier, indexIdentifier, content } = item.loop
+
+      return `{
+        ${await handle(iterableExpression, component)}.map((${itemIdentifier}, ${indexIdentifier ?? '_'}) => (
+          ${await handle(content, component)}
+        ))
+      }`
+    }
+
     if ('text' in item)
       return item.text
 

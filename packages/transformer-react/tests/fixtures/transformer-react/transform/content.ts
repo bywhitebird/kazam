@@ -151,4 +151,108 @@ export const contentSpecFixtures = [
       `,
     },
   },
+  {
+    name: 'When I pass content with a loop, component is generated',
+    input: TransformerInputFactory.create({
+      template: [
+        {
+          tag: 'div',
+          content: [
+            {
+              loop: {
+                iterableExpression: 'people',
+                itemIdentifier: 'person',
+                indexIdentifier: 'index',
+                content: [
+                  {
+                    tag: 'p',
+                    content: [
+                      { expression: 'index' },
+                      { text: '. Hello ' },
+                      { expression: 'person.name' },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+      props: {
+        people: {},
+      },
+    }),
+    expectedOutput: {
+      'components/Test.tsx': `
+        import React from 'react'
+
+        export const Test = ({ people }: { people: any }) => {
+          return (
+            <>
+              <div>
+                {people.map((person, index) => (
+                    <p>{index}. Hello {person.name}</p>
+                ))}
+              </div>
+            </>
+          )
+        }
+      `,
+    },
+  },
+  {
+    name: 'When I pass content with a conditional, component is generated',
+    input: TransformerInputFactory.create({
+      template: [
+        {
+          tag: 'div',
+          content: [
+            {
+              conditional: {
+                conditionExpression: 'hello',
+                trueContent: [
+                  {
+                    tag: 'p',
+                    content: [
+                      { text: 'Hello world' },
+                    ],
+                  },
+                ],
+                falseContent: [
+                  {
+                    tag: 'p',
+                    content: [
+                      { text: 'Goodbye world' },
+                    ],
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      ],
+      props: {
+        hello: { type: 'boolean' },
+      },
+    }),
+    expectedOutput: {
+      'components/Test.tsx': `
+        import React from 'react'
+
+        export const Test = ({ hello }: { hello: boolean }) => {
+          return (
+            <>
+              <div>
+                {hello ? (
+                  <p>Hello world</p>
+                ) : (
+                  <p>Goodbye world</p>
+                )}
+              </div>
+            </>
+          )
+        }
+      `,
+    },
+  },
 ]
