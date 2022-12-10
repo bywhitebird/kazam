@@ -192,6 +192,66 @@
                   "additionalProperties": false
                 }
               ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "loop": {
+                  "type": "object",
+                  "properties": {
+                    "iterableExpression": {
+                      "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
+                    },
+                    "itemIdentifier": {
+                      "type": "string"
+                    },
+                    "indexIdentifier": {
+                      "type": "string"
+                    },
+                    "content": {
+                      "$ref": "#/items/properties/template"
+                    }
+                  },
+                  "required": [
+                    "iterableExpression",
+                    "itemIdentifier",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "loop"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "conditional": {
+                  "type": "object",
+                  "properties": {
+                    "conditionExpression": {
+                      "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
+                    },
+                    "trueContent": {
+                      "$ref": "#/items/properties/template"
+                    },
+                    "falseContent": {
+                      "$ref": "#/items/properties/template"
+                    }
+                  },
+                  "required": [
+                    "conditionExpression",
+                    "trueContent"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "conditional"
+              ],
+              "additionalProperties": false
             }
           ]
         }
