@@ -8,21 +8,18 @@
         "type": "string"
       },
       "props": {
-        "type": "array",
-        "items": {
+        "type": "object",
+        "additionalProperties": {
           "type": "object",
-          "additionalProperties": {
-            "type": "object",
-            "properties": {
-              "type": {
-                "type": "string"
-              },
-              "defaultValueExpression": {
-                "type": "string"
-              }
+          "properties": {
+            "type": {
+              "type": "string"
             },
-            "additionalProperties": false
-          }
+            "defaultValueExpression": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
         }
       },
       "hasChildren": {
@@ -39,7 +36,7 @@
                   "type": "string"
                 },
                 "getterExpression": {
-                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                  "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                 }
               },
               "required": [
@@ -58,7 +55,7 @@
                   "type": "string"
                 },
                 "initialValueExpression": {
-                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                  "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                 }
               },
               "required": [
@@ -74,7 +71,7 @@
                   "type": "string"
                 },
                 "callbackExpression": {
-                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                  "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                 }
               },
               "required": [
@@ -106,7 +103,7 @@
               "type": "object",
               "properties": {
                 "expression": {
-                  "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                  "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                 }
               },
               "required": [
@@ -155,13 +152,13 @@
                           "name": {
                             "type": "string"
                           },
-                          "value": {
-                            "type": "string"
+                          "valueExpression": {
+                            "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                           }
                         },
                         "required": [
                           "name",
-                          "value"
+                          "valueExpression"
                         ],
                         "additionalProperties": false
                       }
@@ -175,7 +172,7 @@
                             "type": "string"
                           },
                           "callbackExpression": {
-                            "$ref": "#/items/properties/props/items/additionalProperties/properties/defaultValueExpression"
+                            "$ref": "#/items/properties/props/additionalProperties/properties/defaultValueExpression"
                           }
                         },
                         "required": [

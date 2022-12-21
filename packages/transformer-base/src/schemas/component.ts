@@ -6,7 +6,7 @@ import { Statement } from './statement'
 
 export const Component = z.object({
   name: z.string(),
-  props: Props.array().optional(),
+  props: Props.optional(),
   hasChildren: z.boolean().optional(),
   statements: Statement.array().optional(),
   template: Content,

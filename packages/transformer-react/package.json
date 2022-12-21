@@ -1,0 +1,24 @@
+{
+  "name": "@whitebird/kazam-transformer-react",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.191",
+    "@whitebird/kazam-transformer-base": "workspace:*",
+    "lodash": "^4.17.21",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@vitest/coverage-c8": "^0.25.3",
+    "vitest": "^0.25.3"
+  }
+}
