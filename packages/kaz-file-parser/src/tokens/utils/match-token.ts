@@ -4,6 +4,28 @@ import * as Tokens from '..'
 import type { Context } from '../../types/Context'
 
 const orderedTokens = [
+  Tokens.StartInstructionToken,
+  Tokens.EndInstructionToken,
+
+  Tokens.ImportInstructionToken,
+  Tokens.FromKeywordImportToken,
+  Tokens.AliasKeywordNamedImportToken,
+  Tokens.WildcardCharacterImportToken,
+
+  Tokens.LeftCurlyBracketToken,
+  Tokens.RightCurlyBracketToken,
+
+  Tokens.SingleQuoteToken,
+  Tokens.DoubleQuoteToken,
+
+  Tokens.SingleQuotedStringToken,
+  Tokens.DoubleQuotedStringToken,
+
+  Tokens.CommaToken,
+  Tokens.IdentifierToken,
+
+  Tokens.WhitespaceToken,
+  Tokens.TextToken,
 ]
 
 if (new Set(orderedTokens.map(token => token.$name)).size !== orderedTokens.length)
