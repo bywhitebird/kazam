@@ -1,3 +1,4 @@
+import type { Token } from '../../../src/classes/Token'
 import { isIdentifierToken } from '../../../src/tokens/IdentifierToken'
 import { isEndInstructionToken } from '../../../src/tokens/instructions/EndInstructionToken'
 import { isAliasKeywordNamedImportToken } from '../../../src/tokens/instructions/imports/AliasKeywordNamedImportToken'
@@ -10,7 +11,6 @@ import { isLeftCurlyBracketToken } from '../../../src/tokens/punctuations/curly-
 import { isRightCurlyBracketToken } from '../../../src/tokens/punctuations/curly-brackets/RightCurlyBracketToken'
 import { isSingleQuoteToken } from '../../../src/tokens/punctuations/quotes/SingleQuoteToken'
 import { isSingleQuotedStringToken } from '../../../src/tokens/string-literals/SingleQuotedStringToken'
-import type { Token } from '../../../src/types/Token'
 
 export const importInstructionsFixtures: ({
   name: string

@@ -1,7 +1,5 @@
-import { klona } from 'klona'
-
 import * as Tokens from '..'
-import type { Context } from '../../types/Context'
+import type { Context } from '../../classes/Context'
 
 const orderedTokens = [
   Tokens.StartInstructionToken,
@@ -50,5 +48,5 @@ export const matchToken = (word: string, contexts: Context[][]) => {
     return token.inContexts.some(context => lastContext.some(openedContext => openedContext.$name === context.$name))
   })
 
-  return klona(tokenFound)
+  return tokenFound
 }

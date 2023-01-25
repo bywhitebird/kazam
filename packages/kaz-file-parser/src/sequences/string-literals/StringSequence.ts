@@ -1,4 +1,4 @@
-import { createSequence as s } from '../utils/create-sequence'
+import { s } from '../../classes/Sequence'
 import { DoubleQuotedStringSequence } from './DoubleQuotedStringSequence'
 import { SingleQuotedStringSequence } from './SingleQuotedStringSequence'
 

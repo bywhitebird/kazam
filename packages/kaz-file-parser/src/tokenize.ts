@@ -1,6 +1,6 @@
+import type { Context } from './classes/Context'
+import type { Token } from './classes/Token'
 import { matchToken } from './tokens/utils/match-token'
-import type { Context } from './types/Context'
-import type { Token } from './types/Token'
 import { InputStream } from './utils/input-stream'
 
 export const tokenize = (input: string): Promise<Token[]> => {
@@ -11,12 +11,10 @@ export const tokenize = (input: string): Promise<Token[]> => {
     word: '',
     openedContexts: <Context[][]>[],
     get token() {
-      const tokenMatched = matchToken(this.word, this.openedContexts)
-
-      if (tokenMatched) {
-        tokenMatched.$rawValue = this.word
-        tokenMatched.$index = this.index - tokenMatched.$rawValue.length
-      }
+      const tokenMatched = matchToken(this.word, this.openedContexts)?.create({
+        $rawValue: this.word,
+        $index: this.index - this.word.length,
+      })
 
       return tokenMatched
     },

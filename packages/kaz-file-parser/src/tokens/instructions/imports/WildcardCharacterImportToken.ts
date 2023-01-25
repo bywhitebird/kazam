@@ -1,11 +1,8 @@
+import { type Token, createToken } from '../../../classes/Token'
 import { ImportInstructionContext } from '../../../contexts/instructions/imports/ImportInstructionContext'
-import type { Token } from '../../../types/Token'
-import { createToken } from '../../utils/create-token'
 
 export const WildcardCharacterImportToken = createToken({
   $name: 'WildcardCharacterImportToken',
-  $rawValue: '',
-  $index: 0,
   pattern: /^\*$/,
   inContexts: [ImportInstructionContext],
 })

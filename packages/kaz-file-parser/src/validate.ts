@@ -1,4 +1,4 @@
-import type { Token } from './types/Token'
+import type { Token } from './classes/Token'
 import * as validators from './validators'
 
 const allValidators = Object.values(validators)

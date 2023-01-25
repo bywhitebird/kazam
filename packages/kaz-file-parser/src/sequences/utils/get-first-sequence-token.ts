@@ -1,8 +1,8 @@
-import type { Sequence } from '../../types/Sequence'
-import type { Token } from '../../types/Token'
+import { Sequence } from '../../classes/Sequence'
+import type { Token } from '../../classes/Token'
 
 export const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | undefined => {
-  if ('sequence' in sequence) {
+  if (sequence instanceof Sequence) {
     const firstToken = sequence.sequence[0]
 
     if (firstToken === undefined)

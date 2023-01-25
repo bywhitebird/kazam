@@ -1,4 +1,4 @@
-import { createContext } from '../utils/create-context'
+import { createContext } from '../../classes/Context'
 
 export const InstructionContext = createContext({
   $name: 'InstructionContext',

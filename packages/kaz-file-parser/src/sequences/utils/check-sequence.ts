@@ -1,20 +1,14 @@
-import { klona } from 'klona'
-
-import type { Sequence } from '../../types/Sequence'
-import type { Token } from '../../types/Token'
+import { type Sequence, createSequence } from '../../classes/Sequence'
+import { Token } from '../../classes/Token'
 import { ExpectedTokenError, UnexpectedTokenError } from '../../utils/errors'
-import { createSequence } from './create-sequence'
 import { getFirstSequenceToken } from './get-first-sequence-token'
 
 type CheckerReturnType = UnexpectedTokenError | ExpectedTokenError | void
 
 class TokensConsumer {
-  private tokens: Token[]
   private consumedTokens: Token[] = []
 
-  constructor(tokens: Token[]) {
-    this.tokens = klona(tokens)
-  }
+  constructor(private tokens: Token[]) {}
 
   public consumeToken(): Token | undefined {
     const token = this.tokens.shift()
@@ -79,7 +73,7 @@ export const checkSequence = (tokens: Token[] | TokensConsumer, expectedSequence
   for (const expectedSequenceOrToken of expectedSequence.sequence) {
     let result: CheckerReturnType
 
-    if ('pattern' in expectedSequenceOrToken) {
+    if (expectedSequenceOrToken instanceof Token) {
       result = checkToken(tokensConsumer.consumeToken(), expectedSequenceOrToken)
 
       if (result !== undefined)
@@ -165,12 +159,11 @@ function checkSequenceUnion(tokensConsumer: TokensConsumer, expectedSequence: Se
   if (!('union' in expectedSequence.modifiers))
     throw new Error('Expected sequence to have a union modifier.')
 
-  const clonedSequence = klona(expectedSequence.sequence)
-  const unionSequences = [createSequence(...clonedSequence), ...expectedSequence.modifiers.union]
+  const unionSequences = [createSequence(...expectedSequence.sequence), ...expectedSequence.modifiers.union]
 
   let result: CheckerReturnType
   for (const sequence of unionSequences) {
-    if ('pattern' in sequence) {
+    if (sequence instanceof Token) {
       result = checkToken(tokensConsumer.consumeToken(), sequence)
 
       if (result !== undefined)

@@ -1,10 +1,7 @@
-import type { Token } from '../types/Token'
-import { createToken } from './utils/create-token'
+import { type Token, createToken } from '../classes/Token'
 
 export const TextToken = createToken({
   $name: 'TextToken',
-  $rawValue: '',
-  $index: 0,
   pattern: /.+/,
 })
 

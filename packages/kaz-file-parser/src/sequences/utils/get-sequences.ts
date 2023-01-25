@@ -1,4 +1,4 @@
-import type { Token } from '../../types/Token'
+import type { Token } from '../../classes/Token'
 
 export const getSequences = (tokens: Token[], startToken: Token | Token[], endToken: Token | Token[]) => {
   const startTokens = Array.isArray(startToken) ? startToken : [startToken]

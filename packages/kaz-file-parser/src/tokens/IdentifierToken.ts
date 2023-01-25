@@ -1,10 +1,7 @@
-import type { Token } from '../types/Token'
-import { createToken } from './utils/create-token'
+import { type Token, createToken } from '../classes/Token'
 
 export const IdentifierToken = createToken({
   $name: 'IdentifierToken',
-  $rawValue: '',
-  $index: 0,
   pattern: /^[a-zA-Z_$][a-zA-Z_$0-9]*$/,
 })
 
