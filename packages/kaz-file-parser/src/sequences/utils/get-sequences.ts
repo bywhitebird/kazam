@@ -5,7 +5,7 @@ export const getSequences = (tokens: Token[], startToken: Token | Token[], endTo
   const endTokens = Array.isArray(endToken) ? endToken : [endToken]
 
   return tokens.reduce<(Token[] | undefined)[]>((acc, token, i, arr) => {
-    const lastToken = acc[acc.length - 1]
+    const lastToken = acc.at(-1)
 
     if (arr.slice(i, i + endTokens.length).every((t, j) => t.$name === endTokens[j]?.$name)) {
       if (!lastToken)

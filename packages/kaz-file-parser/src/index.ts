@@ -1,2 +1,2 @@
 export { tokenize } from './tokenize'
-export { validate } from './validate'
+export { parse } from './parse'

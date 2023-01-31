@@ -1,12 +1,17 @@
+import { g } from '../../../../classes/groups/Group'
+import { gp } from '../../../../classes/groups/GroupParent'
 import { s } from '../../../../classes/Sequence'
 import * as Tokens from '../../../../tokens'
 
-const NamedImportIdentifierSequence = s(
-  Tokens.IdentifierToken,
+const NamedImportIdentifierSequence = gp(
+  'NamedImport',
   s(
-    Tokens.AliasKeywordNamedImportToken,
-    Tokens.IdentifierToken,
-    { optional: true },
+    g('name', Tokens.IdentifierToken),
+    s(
+      Tokens.AliasKeywordNamedImportToken,
+      g('alias', Tokens.IdentifierToken),
+      { optional: true },
+    ),
   ),
 )
 

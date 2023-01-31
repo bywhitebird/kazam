@@ -1,8 +1,11 @@
+import type { Group } from './groups/Group'
+import type { GroupParent } from './groups/GroupParent'
+import type { GroupValue } from './groups/GroupValue'
 import type { Token } from './Token'
 
 export class Sequence {
   constructor(
-    public sequence: Readonly<(Token | Sequence)[]>,
+    public sequence: Readonly<(Token | Sequence | Group | GroupParent | GroupValue)[]>,
     public modifiers: (
       | Record<string, never>
       | { optional: true }
@@ -14,7 +17,7 @@ export class Sequence {
 }
 
 export function createSequence(...sequence: [...Sequence['sequence'], Sequence['modifiers']] | Sequence['sequence']): Sequence {
-  const lastArg = sequence[sequence.length - 1]
+  const lastArg = sequence.at(-1)
   const hasModifiers = lastArg
     && ('optional' in lastArg
       || 'min' in lastArg

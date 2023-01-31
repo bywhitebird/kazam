@@ -4,6 +4,7 @@ import { SingleQuotedStringContext } from '../../contexts/StringContext'
 export const SingleQuotedStringToken = createToken({
   $name: 'SingleQuotedStringToken',
   pattern: /^((?:\\')|[^'\n])*/,
+  getValue: rawValue => rawValue,
   inContexts: [SingleQuotedStringContext],
   endContexts: [SingleQuotedStringContext],
 })

@@ -4,6 +4,7 @@ import { DoubleQuotedStringContext } from '../../contexts/StringContext'
 export const DoubleQuotedStringToken = createToken({
   $name: 'DoubleQuotedStringToken',
   pattern: /^((?:\\")|[^"\n])*/,
+  getValue: rawValue => rawValue,
   inContexts: [DoubleQuotedStringContext],
   endContexts: [DoubleQuotedStringContext],
 })

@@ -36,7 +36,7 @@ export const tokenize = (input: string): Promise<Token[]> => {
 
     if (token.endContexts) {
       let endContexts = token.endContexts.map(context => context.$name)
-      let lastContext = current.openedContexts[current.openedContexts.length - 1]
+      let lastContext = current.openedContexts.at(-1)
 
       while (lastContext && lastContext.some(context => endContexts.includes(context.$name)) && endContexts.length > 0) {
         const indexToRemove = lastContext.findIndex(context => endContexts.includes(context.$name))
@@ -50,7 +50,7 @@ export const tokenize = (input: string): Promise<Token[]> => {
         if (lastContext.length === 0)
           current.openedContexts.pop()
 
-        lastContext = current.openedContexts[current.openedContexts.length - 1]
+        lastContext = current.openedContexts.at(-1)
       }
     }
 
@@ -62,7 +62,7 @@ export const tokenize = (input: string): Promise<Token[]> => {
   }
 
   const getBreakingPatterns = () => {
-    const lastContext = current.openedContexts[current.openedContexts.length - 1]
+    const lastContext = current.openedContexts.at(-1)
     const breakingPatterns = lastContext?.reduce((patterns, context) => {
       if (context.breakingPatterns)
         patterns.push(...context.breakingPatterns)

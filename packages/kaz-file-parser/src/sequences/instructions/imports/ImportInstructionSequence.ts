@@ -1,3 +1,5 @@
+import { g } from '../../../classes/groups/Group'
+import { gp } from '../../../classes/groups/GroupParent'
 import { type Sequence, s } from '../../../classes/Sequence'
 import * as Tokens from '../../../tokens'
 import { generatePermutations } from '../../../utils/generate-permutations'
@@ -27,18 +29,25 @@ const generateImportSpecifierSequence = (sequence: [Sequence, ...Sequence[]]): S
 const ImportSpecifierSequence = generatePermutations([DefaultImportSpecifierSequence, NamedImportSpecifierSequence, NamespaceImportSpecifierSequence])
   .map(permutation => generateImportSpecifierSequence(permutation as [Sequence, ...Sequence[]]))
 
-export const ImportInstructionSequence = s(
-  Tokens.StartInstructionToken,
-  Tokens.ImportInstructionToken,
-  s.union(
-    [
-      StringSequence,
-      s(
-        s.union(ImportSpecifierSequence as [Sequence, ...Sequence[]]),
-        Tokens.FromKeywordImportToken,
-        StringSequence,
-      ),
-    ],
+export const ImportInstructionSequence = gp(
+  'ImportInstruction',
+  s(
+    Tokens.StartInstructionToken,
+    Tokens.ImportInstructionToken,
+    s.union(
+      [
+        g('from', StringSequence),
+        s(
+          g(
+            'imports',
+            s.union(ImportSpecifierSequence as [Sequence, ...Sequence[]]),
+            { forceMultiple: true },
+          ),
+          Tokens.FromKeywordImportToken,
+          g('from', StringSequence),
+        ),
+      ],
+    ),
+    Tokens.EndInstructionToken,
   ),
-  Tokens.EndInstructionToken,
 )

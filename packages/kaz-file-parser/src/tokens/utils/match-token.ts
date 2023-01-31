@@ -34,7 +34,7 @@ export const matchToken = (word: string, contexts: Context[][]) => {
     if (!token.pattern.test(word))
       return false
 
-    const lastContext = contexts[contexts.length - 1]
+    const lastContext = contexts.at(-1)
 
     if (lastContext?.some(context => context.forbiddenTokens?.find(forbiddenToken => forbiddenToken.$name === token.$name)))
       return false
