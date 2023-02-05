@@ -10,6 +10,11 @@ const orderedTokens = [
   Tokens.AliasKeywordNamedImportToken,
   Tokens.WildcardCharacterImportToken,
 
+  Tokens.PropInstructionToken,
+
+  Tokens.DeclarationTypeColonToken,
+  Tokens.DeclarationValueEqualToken,
+
   Tokens.LeftCurlyBracketToken,
   Tokens.RightCurlyBracketToken,
 
@@ -21,6 +26,9 @@ const orderedTokens = [
 
   Tokens.CommaToken,
   Tokens.IdentifierToken,
+
+  Tokens.TypeToken,
+  Tokens.ExpressionToken,
 
   Tokens.WhitespaceToken,
   Tokens.TextToken,
