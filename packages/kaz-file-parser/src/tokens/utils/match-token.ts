@@ -36,7 +36,10 @@ export const matchToken = (word: string, contexts: Context[][]) => {
 
     const lastContext = contexts.at(-1)
 
-    if (lastContext?.some(context => context.forbiddenTokens?.find(forbiddenToken => forbiddenToken.$name === token.$name)))
+    if (lastContext?.some(context => context.forbiddenTokens?.find(forbiddenToken => (typeof forbiddenToken === 'function' ? forbiddenToken().$name : forbiddenToken.$name) === token.$name)))
+      return false
+
+    if (lastContext?.flatMap(context => context.availableTokens).some(availableToken => availableToken !== undefined && (typeof availableToken === 'function' ? availableToken().$name : availableToken.$name) !== token.$name))
       return false
 
     if (!token.inContexts || token.inContexts.length === 0)
