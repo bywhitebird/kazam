@@ -2,7 +2,7 @@ import { type Token, createToken } from '../classes/Token'
 
 export const WhitespaceToken = createToken({
   $name: 'WhitespaceToken',
-  pattern: /^\s+$/,
+  validator: /^\s+$/,
   ignore: true,
 })
 

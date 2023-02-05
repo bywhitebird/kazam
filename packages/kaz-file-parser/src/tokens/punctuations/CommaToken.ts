@@ -2,7 +2,7 @@ import { type Token, createToken } from '../../classes/Token'
 
 export const CommaToken = createToken({
   $name: 'CommaToken',
-  pattern: /^,$/,
+  validator: /^,$/,
   singleCharacter: true,
 })
 

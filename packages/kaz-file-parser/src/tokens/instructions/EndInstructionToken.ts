@@ -5,7 +5,7 @@ const instructionContexts = Object.values(Contexts).filter(context => context.$n
 
 export const EndInstructionToken: Token<'EndInstructionToken'> = createToken({
   $name: 'EndInstructionToken',
-  pattern: /^\n\s*$/,
+  validator: /^\n\s*$/,
   inContexts: instructionContexts,
   endContexts: instructionContexts,
 })

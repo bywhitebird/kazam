@@ -3,7 +3,7 @@ import { InstructionContext } from '../../contexts'
 
 export const StartInstructionToken = createToken({
   $name: 'StartInstructionToken',
-  pattern: /^-$/,
+  validator: /^-$/,
   startContexts: [InstructionContext],
 })
 

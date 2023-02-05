@@ -31,7 +31,7 @@ if (new Set(orderedTokens.map(token => token.$name)).size !== orderedTokens.leng
 
 export const matchToken = (word: string, contexts: Context[][]) => {
   const tokenFound = orderedTokens.find((token) => {
-    if (!token.pattern.test(word))
+    if (!token.test(word))
       return false
 
     const lastContext = contexts.at(-1)

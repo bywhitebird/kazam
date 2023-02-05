@@ -4,7 +4,7 @@ import { ImportInstructionContext } from '../../../contexts/instructions/imports
 
 export const ImportInstructionToken = createToken({
   $name: 'ImportInstructionToken',
-  pattern: /^import$/,
+  validator: /^import$/,
   startContexts: [ImportInstructionContext],
   inContexts: [InstructionContext],
 })

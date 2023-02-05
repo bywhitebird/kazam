@@ -3,7 +3,7 @@ import { ImportInstructionContext } from '../../../contexts/instructions/imports
 
 export const AliasKeywordNamedImportToken = createToken({
   $name: 'AliasKeywordNamedImportToken',
-  pattern: /^as$/,
+  validator: /^as$/,
   inContexts: [ImportInstructionContext],
 })
 

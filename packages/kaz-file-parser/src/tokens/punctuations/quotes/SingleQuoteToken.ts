@@ -3,7 +3,7 @@ import { SingleQuotedStringContext } from '../../../contexts/StringContext'
 
 export const SingleQuoteToken = createToken({
   $name: 'SingleQuoteToken',
-  pattern: /^'$/,
+  validator: /^'$/,
   singleCharacter: true,
   startContexts: [SingleQuotedStringContext],
   endContexts: [SingleQuotedStringContext],

@@ -3,7 +3,7 @@ import { DoubleQuotedStringContext } from '../../contexts/StringContext'
 
 export const DoubleQuotedStringToken = createToken({
   $name: 'DoubleQuotedStringToken',
-  pattern: /^((?:\\")|[^"\n])*/,
+  validator: /^((?:\\")|[^"\n])*/,
   getValue: rawValue => rawValue,
   inContexts: [DoubleQuotedStringContext],
   endContexts: [DoubleQuotedStringContext],

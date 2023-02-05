@@ -3,7 +3,7 @@ import { ImportInstructionContext } from '../../../contexts/instructions/imports
 
 export const WildcardCharacterImportToken = createToken({
   $name: 'WildcardCharacterImportToken',
-  pattern: /^\*$/,
+  validator: /^\*$/,
   inContexts: [ImportInstructionContext],
 })
 

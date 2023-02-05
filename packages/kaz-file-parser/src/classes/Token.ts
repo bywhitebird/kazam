@@ -8,7 +8,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
 
   constructor(
     public $name: Name,
-    public pattern: RegExp,
+    public validator: RegExp | ((rawValue: string) => boolean),
     getValue?: (rawValue: string) => Value,
     public singleCharacter?: boolean,
     public ignore?: boolean,
@@ -20,10 +20,14 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
   }
 
   create({ $rawValue, $index }: { $rawValue: string; $index: number }): Token<Name, Value> {
-    const token = new Token(this.$name, this.pattern, this.getValue, this.singleCharacter, this.ignore, this.startContexts, this.endContexts, this.inContexts)
+    const token = new Token(this.$name, this.validator, this.getValue, this.singleCharacter, this.ignore, this.startContexts, this.endContexts, this.inContexts)
     token._$rawValue = $rawValue
     token._$index = $index
     return token
+  }
+
+  test(rawValue: string): boolean {
+    return typeof this.validator === 'function' ? this.validator(rawValue) : this.validator.test(rawValue)
   }
 
   get $rawValue() {
@@ -41,11 +45,11 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
 
 export const createToken = <Name extends string = string, Value extends JsonPrimitive = never>(args: {
   $name: Name
-  pattern: RegExp
+  validator: RegExp | ((rawValue: string) => boolean)
   getValue?: (rawValue: string) => Value
   singleCharacter?: boolean
   ignore?: boolean
   startContexts?: Context[]
   endContexts?: Context[]
   inContexts?: Context[]
-}): Token<Name, Value> => new Token(args.$name, args.pattern, args.getValue, args.singleCharacter, args.ignore, args.startContexts, args.endContexts, args.inContexts)
+}): Token<Name, Value> => new Token(args.$name, args.validator, args.getValue, args.singleCharacter, args.ignore, args.startContexts, args.endContexts, args.inContexts)

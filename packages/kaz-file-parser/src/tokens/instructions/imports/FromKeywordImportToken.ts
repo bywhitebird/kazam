@@ -3,7 +3,7 @@ import { ImportInstructionContext } from '../../../contexts/instructions/imports
 
 export const FromKeywordImportToken = createToken({
   $name: 'FromKeywordImportToken',
-  pattern: /^from$/,
+  validator: /^from$/,
   inContexts: [ImportInstructionContext],
 })
 
