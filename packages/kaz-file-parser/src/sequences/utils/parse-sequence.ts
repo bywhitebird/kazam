@@ -104,7 +104,11 @@ class TokensConsumer {
   }
 
   public unconsumeTokens(count: number): Token[] {
-    return this.consumedTokens.splice(-count, count)
+    const tokens = this.consumedTokens.splice(-count, count)
+
+    this.tokens.unshift(...tokens)
+
+    return tokens
   }
 
   get length(): number {
@@ -293,9 +297,13 @@ export const parseSequence = (tokens: Token[], expectedSequence: Sequence | Grou
 
     let result: ParserReturnType
     for (const sequence of unionSequences) {
+      const beforeParseRemainingTokensNumber = tokensConsumer.length
       result = parse(tokensConsumer, sequence)
+      const afterParseRemainingTokensNumber = tokensConsumer.length
 
-      if (!(result instanceof Error))
+      if (result instanceof Error)
+        tokensConsumer.unconsumeTokens(beforeParseRemainingTokensNumber - afterParseRemainingTokensNumber)
+      else
         return result
     }
 
