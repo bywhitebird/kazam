@@ -2,6 +2,7 @@ export { InstructionContext } from './instructions/InstructionContext'
 export { ImportInstructionContext } from './instructions/ImportInstructionContext'
 export { PropInstructionContext } from './instructions/PropInstructionContext'
 export { StateInstructionContext } from './instructions/StateInstructionContext'
+export { ComputedInstructionContext } from './instructions/ComputedInstructionContext'
 
 export { SingleQuotedStringContext, DoubleQuotedStringContext } from './StringContext'
 

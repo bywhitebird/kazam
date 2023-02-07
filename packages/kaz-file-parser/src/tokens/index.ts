@@ -23,6 +23,9 @@ export { PropInstructionToken } from './instructions/prop/PropInstructionToken'
 // State instruction tokens
 export { StateInstructionToken } from './instructions/state/StateInstructionToken'
 
+// Computed instruction tokens
+export { ComputedInstructionToken } from './instructions/computed/ComputedInstructionToken'
+
 // Curly brackets tokens
 export { LeftCurlyBracketToken } from './punctuations/curly-brackets/LeftCurlyBracketToken'
 export { RightCurlyBracketToken } from './punctuations/curly-brackets/RightCurlyBracketToken'

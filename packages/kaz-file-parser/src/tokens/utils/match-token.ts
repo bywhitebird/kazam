@@ -14,6 +14,8 @@ const orderedTokens = [
 
   Tokens.StateInstructionToken,
 
+  Tokens.ComputedInstructionToken,
+
   Tokens.DeclarationTypeColonToken,
   Tokens.DeclarationValueEqualToken,
 
