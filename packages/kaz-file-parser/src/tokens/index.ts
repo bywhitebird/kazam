@@ -20,6 +20,9 @@ export { WildcardCharacterImportToken } from './instructions/import/WildcardChar
 // Prop instruction tokens
 export { PropInstructionToken } from './instructions/prop/PropInstructionToken'
 
+// State instruction tokens
+export { StateInstructionToken } from './instructions/state/StateInstructionToken'
+
 // Curly brackets tokens
 export { LeftCurlyBracketToken } from './punctuations/curly-brackets/LeftCurlyBracketToken'
 export { RightCurlyBracketToken } from './punctuations/curly-brackets/RightCurlyBracketToken'
