@@ -1,5 +1,5 @@
 import { type Token, createToken } from '../../../classes/Token'
-import { ImportInstructionContext } from '../../../contexts/instructions/imports/ImportInstructionContext'
+import { ImportInstructionContext } from '../../../contexts/instructions/ImportInstructionContext'
 
 export const FromKeywordImportToken = createToken({
   $name: 'FromKeywordImportToken',

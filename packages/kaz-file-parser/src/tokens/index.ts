@@ -12,10 +12,10 @@ export { EndInstructionToken } from './instructions/EndInstructionToken'
 export { StartInstructionToken } from './instructions/StartInstructionToken'
 
 // Import instruction tokens
-export { ImportInstructionToken } from './instructions/imports/ImportInstructionToken'
-export { FromKeywordImportToken } from './instructions/imports/FromKeywordImportToken'
-export { AliasKeywordNamedImportToken } from './instructions/imports/AliasKeywordNamedImportToken'
-export { WildcardCharacterImportToken } from './instructions/imports/WildcardCharacterImportToken'
+export { ImportInstructionToken } from './instructions/import/ImportInstructionToken'
+export { FromKeywordImportToken } from './instructions/import/FromKeywordImportToken'
+export { AliasKeywordNamedImportToken } from './instructions/import/AliasKeywordNamedImportToken'
+export { WildcardCharacterImportToken } from './instructions/import/WildcardCharacterImportToken'
 
 // Prop instruction tokens
 export { PropInstructionToken } from './instructions/prop/PropInstructionToken'

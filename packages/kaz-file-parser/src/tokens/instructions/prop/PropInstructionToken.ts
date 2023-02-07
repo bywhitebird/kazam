@@ -1,6 +1,6 @@
 import { type Token, createToken } from '../../../classes/Token'
 import { InstructionContext } from '../../../contexts'
-import { PropInstructionContext } from '../../../contexts/instructions/prop/PropInstructionContext'
+import { PropInstructionContext } from '../../../contexts/instructions/PropInstructionContext'
 
 export const PropInstructionToken = createToken({
   $name: 'PropInstructionToken',
