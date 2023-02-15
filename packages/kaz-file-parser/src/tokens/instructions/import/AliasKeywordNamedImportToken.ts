@@ -1,5 +1,5 @@
-import { type Token, createToken } from '../../../classes/Token'
 import { ImportInstructionContext } from '../../../contexts/instructions/ImportInstructionContext'
+import { type Token, createToken } from '../../../lib/voltair'
 
 export const AliasKeywordNamedImportToken = createToken({
   $name: 'AliasKeywordNamedImportToken',

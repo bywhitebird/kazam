@@ -1,4 +1,4 @@
-import type { Token } from '../../../src/classes/Token'
+import type { Token } from '../../../src/lib/voltair'
 import { isIdentifierToken } from '../../../src/tokens/IdentifierToken'
 import { isEndInstructionToken } from '../../../src/tokens/instructions/EndInstructionToken'
 import { isAliasKeywordNamedImportToken } from '../../../src/tokens/instructions/import/AliasKeywordNamedImportToken'

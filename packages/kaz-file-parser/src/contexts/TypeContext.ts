@@ -1,4 +1,4 @@
-import { type Context, createContext } from '../classes/Context'
+import { type Context, createContext } from '../lib/voltair'
 import { TypeToken } from '../tokens'
 
 export const TypeContext: Context<'TypeContext'> = createContext({

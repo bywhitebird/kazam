@@ -1,5 +1,5 @@
-import { type Token, createToken } from '../../classes/Token'
 import * as Contexts from '../../contexts'
+import { type Token, createToken } from '../../lib/voltair'
 
 const instructionContexts = Object.values(Contexts).filter(context => context.$name.includes('Instruction'))
 

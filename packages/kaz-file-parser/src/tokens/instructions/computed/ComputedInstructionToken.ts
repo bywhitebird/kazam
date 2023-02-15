@@ -1,6 +1,6 @@
-import { type Token, createToken } from '../../../classes/Token'
 import { InstructionContext } from '../../../contexts'
 import { ComputedInstructionContext } from '../../../contexts/instructions/ComputedInstructionContext'
+import { type Token, createToken } from '../../../lib/voltair'
 
 export const ComputedInstructionToken = createToken({
   $name: 'ComputedInstructionToken',

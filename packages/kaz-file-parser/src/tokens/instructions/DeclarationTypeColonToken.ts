@@ -1,5 +1,5 @@
-import { type Token, createToken } from '../../classes/Token'
 import { TypeContext } from '../../contexts/TypeContext'
+import { type Token, createToken } from '../../lib/voltair'
 
 export const DeclarationTypeColonToken = createToken({
   $name: 'TypeDeclarationColonToken',

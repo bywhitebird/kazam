@@ -1,4 +1,4 @@
-import type { Token } from '../../../src/classes/Token'
+import type { Token } from '../../../src/lib/voltair'
 import { isExpressionToken } from '../../../src/tokens/ExpressionToken'
 import { isIdentifierToken } from '../../../src/tokens/IdentifierToken'
 import { isDeclarationTypeColonToken } from '../../../src/tokens/instructions/DeclarationTypeColonToken'

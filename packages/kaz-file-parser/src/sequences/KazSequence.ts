@@ -1,6 +1,4 @@
-import { g } from '../classes/groups/Group'
-import { gp } from '../classes/groups/GroupParent'
-import { s } from '../classes/Sequence'
+import { g, gp, s } from '../lib/voltair'
 
 import { InstructionsSequence } from '.'
 

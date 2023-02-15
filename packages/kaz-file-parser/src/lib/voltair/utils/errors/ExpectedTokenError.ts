@@ -1,4 +1,4 @@
-import type { Token } from '../../classes/Token'
+import type { Token } from '../../Token'
 
 export class ExpectedTokenError extends Error {
   public expectedToken: Token

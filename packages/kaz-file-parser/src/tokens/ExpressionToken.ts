@@ -1,7 +1,7 @@
 import { parse } from '@typescript-eslint/parser'
 
-import { type Token, createToken } from '../classes/Token'
 import { ExpressionContext } from '../contexts/ExpressionContext'
+import { type Token, createToken } from '../lib/voltair'
 
 const getExpression = (rawValue: string) => {
   const parsed = parse(`const _ = ${rawValue}`)

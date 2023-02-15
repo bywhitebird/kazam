@@ -1,4 +1,4 @@
-import { createContext } from '../../classes/Context'
+import { createContext } from '../../lib/voltair'
 import { TextToken } from '../../tokens'
 import { InstructionContext } from './InstructionContext'
 

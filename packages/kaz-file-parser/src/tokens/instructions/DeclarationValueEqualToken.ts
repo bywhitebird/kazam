@@ -1,5 +1,5 @@
-import { type Token, createToken } from '../../classes/Token'
 import { ExpressionContext } from '../../contexts/ExpressionContext'
+import { type Token, createToken } from '../../lib/voltair'
 
 export const DeclarationValueEqualToken = createToken({
   $name: 'DeclarationValueEqualToken',

@@ -1,13 +1,12 @@
 import { klona } from 'klona'
 
-import { Group } from '../../classes/groups/Group'
-import { GroupParent } from '../../classes/groups/GroupParent'
-import { GroupValue } from '../../classes/groups/GroupValue'
-import { type Sequence, createSequence } from '../../classes/Sequence'
-import { Token } from '../../classes/Token'
-import type { JsonArray, JsonObject, JsonValue } from '../../types/JsonValue'
-import { ExpectedTokenError, UnexpectedTokenError } from '../../utils/errors'
-import { getFirstSequenceToken } from './get-first-sequence-token'
+import { Group } from './groups/Group'
+import { GroupParent } from './groups/GroupParent'
+import { GroupValue } from './groups/GroupValue'
+import type { JsonArray, JsonObject, JsonValue } from './types/JsonValue'
+import { ExpectedTokenError, UnexpectedTokenError } from './utils/errors'
+
+import { Sequence, Token, createSequence } from '.'
 
 type ParserError = ExpectedTokenError | UnexpectedTokenError
 type ParserReturnType = ParserError | TreeValue | void
@@ -124,7 +123,29 @@ const createTokensConsumer = (tokens: Token[]) => {
   return new TokensConsumer(tokens)
 }
 
-export const parseSequence = (tokens: Token[], expectedSequence: Sequence | GroupParent): ParserError | JsonValue | undefined => {
+const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | undefined => {
+  if (sequence instanceof Sequence) {
+    const firstToken = sequence.sequence[0]
+
+    if (firstToken === undefined)
+      return undefined
+
+    return getFirstSequenceToken(firstToken)
+  }
+
+  if (sequence instanceof Group)
+    return getFirstSequenceToken(sequence.child)
+
+  if (sequence instanceof GroupParent)
+    return getFirstSequenceToken(sequence.child)
+
+  if (sequence instanceof GroupValue)
+    return getFirstSequenceToken(sequence.child)
+
+  return sequence
+}
+
+export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent): ParserError | JsonValue | undefined => {
   const parse = (tokensConsumer: TokensConsumer, expected: Sequence | Token | Group | GroupParent | GroupValue): ParserReturnType => {
     if (expected instanceof GroupParent)
       return parseGroupParent(tokensConsumer, expected)

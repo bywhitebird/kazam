@@ -1,7 +1,5 @@
 import { StringSequence } from '../..'
-import { g } from '../../../classes/groups/Group'
-import { gp } from '../../../classes/groups/GroupParent'
-import { type Sequence, s } from '../../../classes/Sequence'
+import { type Sequence, g, gp, s } from '../../../lib/voltair'
 import * as Tokens from '../../../tokens'
 import { generatePermutations } from '../../../utils/generate-permutations'
 import { DefaultImportSpecifierSequence } from './specifiers/DefaultImportSpecifierSequence'

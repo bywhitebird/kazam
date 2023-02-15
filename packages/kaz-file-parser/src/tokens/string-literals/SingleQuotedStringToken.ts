@@ -1,5 +1,5 @@
-import { type Token, createToken } from '../../classes/Token'
 import { SingleQuotedStringContext } from '../../contexts/StringContext'
+import { type Token, createToken } from '../../lib/voltair'
 
 export const SingleQuotedStringToken = createToken({
   $name: 'SingleQuotedStringToken',

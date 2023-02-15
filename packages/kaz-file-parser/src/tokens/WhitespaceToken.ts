@@ -1,4 +1,4 @@
-import { type Token, createToken } from '../classes/Token'
+import { type Token, createToken } from '../lib/voltair'
 
 export const WhitespaceToken = createToken({
   $name: 'WhitespaceToken',

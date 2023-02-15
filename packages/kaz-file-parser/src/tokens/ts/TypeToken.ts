@@ -1,7 +1,7 @@
 import { parse } from '@typescript-eslint/parser'
 
-import { type Token, createToken } from '../../classes/Token'
 import { TypeContext } from '../../contexts/TypeContext'
+import { type Token, createToken } from '../../lib/voltair'
 
 const getTypeAnnotation = (rawValue: string) => {
   const parsed = parse(`type T = ${rawValue}`)

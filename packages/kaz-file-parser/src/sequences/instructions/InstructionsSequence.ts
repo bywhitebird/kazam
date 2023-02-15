@@ -1,5 +1,5 @@
 import { ImportInstructionSequence, PropInstructionSequence, StateInstructionSequence } from '..'
-import { s } from '../../classes/Sequence'
+import { s } from '../../lib/voltair'
 import { ComputedInstructionSequence } from './computed/ComputedInstructionSequence'
 
 export const InstructionsSequence = s(
