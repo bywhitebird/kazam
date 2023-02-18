@@ -4,7 +4,8 @@ import { EndInstructionToken, StartInstructionToken } from './features/instructi
 import { KazSequence } from './features/kaz'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
-import { ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, RightCurlyBracketToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
+import { ArrowFunctionBodyToken, WatchInstructionToken } from './features/watch-instruction'
+import { ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
 
 export default {
   entry: KazSequence,
@@ -36,6 +37,11 @@ export default {
         ComputedInstructionToken,
       ],
 
+      [
+        // Watch instruction
+        WatchInstructionToken,
+      ],
+
       EndInstructionToken,
     ],
 
@@ -43,6 +49,11 @@ export default {
       // Colons
       ColonTypeAnnotationToken,
       ColonToken,
+    ],
+
+    [
+      // Arrow
+      ArrowToken,
     ],
 
     [
@@ -55,6 +66,12 @@ export default {
       // Curly brackets
       LeftCurlyBracketToken,
       RightCurlyBracketToken,
+    ],
+
+    [
+      // Parentheses
+      LeftParenthesisToken,
+      RightParenthesisToken,
     ],
 
     [
@@ -75,6 +92,7 @@ export default {
     IdentifierToken,
     TypeToken,
     ExpressionToken,
+    ArrowFunctionBodyToken,
     WhitespaceToken,
     TextToken,
   ].flat(Infinity as 9999),

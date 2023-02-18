@@ -4,6 +4,7 @@ import { ComputedInstructionSequence } from '../../computed-instruction'
 import { ImportInstructionSequence } from '../../import-instruction'
 import { PropInstructionSequence } from '../../prop-instruction'
 import { StateInstructionSequence } from '../../state-instruction'
+import { WatchInstructionSequence } from '../../watch-instruction'
 
 export const InstructionsSequence = s(
   () => StartInstructionToken,
@@ -12,6 +13,7 @@ export const InstructionsSequence = s(
     PropInstructionSequence,
     StateInstructionSequence,
     ComputedInstructionSequence,
+    WatchInstructionSequence,
   ]),
   () => EndInstructionToken,
   { min: 0 },
