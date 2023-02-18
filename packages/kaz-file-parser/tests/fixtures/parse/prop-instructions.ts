@@ -1,4 +1,4 @@
-import type { JsonValue } from '../../../src/types/JsonValue'
+import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
 
 export const propInstructionsFixtures: (
   {

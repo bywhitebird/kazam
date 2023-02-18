@@ -1,8 +1,9 @@
 import type { Context } from './Context'
 import type { Token } from './Token'
 import { InputStream } from './utils/input-stream'
+import { resolveValue } from './utils/resolve-value'
 
-export const tokenize = (input: string, orderedTokens: Token[]): Promise<Token[]> => {
+export const tokenize = (input: string, tokens: Token[]): Promise<Token[]> => {
   const inputStream = new InputStream(input)
   const tokensFound = <Token[]>[]
 
@@ -10,7 +11,7 @@ export const tokenize = (input: string, orderedTokens: Token[]): Promise<Token[]
     word: '',
     openedContexts: <Context[][]>[],
     get token() {
-      const tokenMatched = orderedTokens
+      const tokenMatched = tokens
         .find(token => token.test(this.word, this.openedContexts.at(-1)))
         ?.create({ $rawValue: this.word, $index: this.index - this.word.length })
 
@@ -33,7 +34,7 @@ export const tokenize = (input: string, orderedTokens: Token[]): Promise<Token[]
     current.word = ''
 
     if (token.endContexts) {
-      let endContexts = token.endContexts.map(context => context.$name)
+      let endContexts = token.endContexts.map(context => resolveValue(context).$name)
       let lastContext = current.openedContexts.at(-1)
 
       while (lastContext && lastContext.some(context => endContexts.includes(context.$name)) && endContexts.length > 0) {
@@ -53,9 +54,12 @@ export const tokenize = (input: string, orderedTokens: Token[]): Promise<Token[]
     }
 
     if (token.startContexts) {
-      const tokensToAdd = token.startContexts.filter(context => !contextsEnded.find(c => c.$name === context.$name))
-      if (tokensToAdd.length > 0)
-        current.openedContexts.push(tokensToAdd)
+      const contextsToAdd = token.startContexts.flatMap((context) => {
+        const resolvedContext = resolveValue(context)
+        return contextsEnded.find(c => c.$name === resolvedContext.$name) ? [] : [resolvedContext]
+      })
+      if (contextsToAdd.length > 0)
+        current.openedContexts.push(contextsToAdd.map(context => resolveValue(context)))
     }
   }
 

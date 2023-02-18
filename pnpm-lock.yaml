@@ -29,13 +29,11 @@ importers:
       '@typescript-eslint/parser': ^5.50.0
       '@vitest/coverage-c8': ^0.25.3
       eslint: ^8.33.0
-      klona: ^2.0.6
       typescript: ^4.8.4
       vitest: ^0.25.3
     dependencies:
       '@typescript-eslint/parser': 5.50.0_zmyfsul77535b2d7nzuoiqkehy
       eslint: 8.33.0
-      klona: 2.0.6
       typescript: 4.9.3
     devDependencies:
       '@types/node': 18.11.10
@@ -3180,11 +3178,6 @@ packages:
   /kleur/4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
-    dev: false
-
-  /klona/2.0.6:
-    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
-    engines: {node: '>= 8'}
     dev: false
 
   /levn/0.4.1:

@@ -12,7 +12,7 @@ describe('tokenize', () => {
         expect(result).toHaveLength(fixture.expectedTokenCheckers.length)
 
         fixture.expectedTokenCheckers.forEach((checker, index) => {
-          expect(result[index]).satisfy(checker.checker)
+          expect(result[index].$name).toBe(checker.checker.$name)
 
           const expectedRawValue = checker.rawValue
           if (expectedRawValue)

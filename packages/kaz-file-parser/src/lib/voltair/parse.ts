@@ -1,12 +1,11 @@
-import { klona } from 'klona'
-
 import { Group } from './groups/Group'
 import { GroupParent } from './groups/GroupParent'
 import { GroupValue } from './groups/GroupValue'
 import type { JsonArray, JsonObject, JsonValue } from './types/JsonValue'
 import { ExpectedTokenError, UnexpectedTokenError } from './utils/errors'
+import { resolveValue } from './utils/resolve-value'
 
-import { Sequence, Token, createSequence } from '.'
+import { Sequence, Token } from '.'
 
 type ParserError = ExpectedTokenError | UnexpectedTokenError
 type ParserReturnType = ParserError | TreeValue | void
@@ -73,7 +72,7 @@ class TokensConsumer {
   private tokens: Token[]
 
   constructor(tokens: Token[]) {
-    this.tokens = klona(tokens)
+    this.tokens = tokens
   }
 
   public consumeToken(): Token | undefined {
@@ -124,6 +123,8 @@ const createTokensConsumer = (tokens: Token[]) => {
 }
 
 const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | undefined => {
+  sequence = resolveValue(sequence)
+
   if (sequence instanceof Sequence) {
     const firstToken = sequence.sequence[0]
 
@@ -179,7 +180,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
 
     const results: ParserReturnType[] = []
     for (const expectedSequenceOrToken of expected.sequence) {
-      const result = parse(tokensConsumer, expectedSequenceOrToken)
+      const result = parse(tokensConsumer, resolveValue(expectedSequenceOrToken))
 
       if (result instanceof Error)
         return result
@@ -203,7 +204,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
   }
 
   function parseGroupParent(tokensConsumer: TokensConsumer, expectedGroupParent: GroupParent): ParserReturnType {
-    const result = parse(tokensConsumer, expectedGroupParent.child)
+    const result = parse(tokensConsumer, resolveValue(expectedGroupParent.child))
 
     if (result instanceof Error)
       return result
@@ -217,7 +218,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
   }
 
   function parseGroup(tokensConsumer: TokensConsumer, expectedGroup: Group): ParserReturnType {
-    const result = parse(tokensConsumer, expectedGroup.child)
+    const result = parse(tokensConsumer, resolveValue(expectedGroup.child))
 
     if (result instanceof Error)
       return result
@@ -228,7 +229,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
   }
 
   function parseGroupValue(tokensConsumer: TokensConsumer, expectedGroupValue: GroupValue): ParserReturnType {
-    const result = parse(tokensConsumer, expectedGroupValue.child)
+    const result = parse(tokensConsumer, resolveValue(expectedGroupValue.child))
 
     if (result instanceof Error)
       return result
@@ -314,12 +315,12 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
     if (!('union' in expectedSequence.modifiers))
       throw new Error('Expected sequence to have a union modifier.')
 
-    const unionSequences = [createSequence(...expectedSequence.sequence), ...expectedSequence.modifiers.union]
+    const unionSequences = [new Sequence(expectedSequence.sequence), ...expectedSequence.modifiers.union]
 
     let result: ParserReturnType
     for (const sequence of unionSequences) {
       const beforeParseRemainingTokensNumber = tokensConsumer.length
-      result = parse(tokensConsumer, sequence)
+      result = parse(tokensConsumer, resolveValue(sequence))
       const afterParseRemainingTokensNumber = tokensConsumer.length
 
       if (result instanceof Error)

@@ -1,29 +1,58 @@
 import type { Context } from './Context'
 import type { JsonPrimitive } from './types/JsonValue'
+import { resolveValue } from './utils/resolve-value'
 
 export class Token<Name extends string = string, Value extends JsonPrimitive = JsonPrimitive> {
+  public $name: Name
+  public validator: RegExp | ((rawValue: string) => boolean)
+  public singleCharacter: boolean | undefined
+  public ignore: boolean | undefined
+  public startContexts: (Context | (() => Context))[] | undefined
+  public endContexts: (Context | (() => Context))[] | undefined
+  public inContexts: (Context | (() => Context))[] | undefined
+
   protected _$rawValue = ''
   protected _$index = 0
-  private getValue?: ((rawValue: string) => Value) | undefined
+
+  private getValue: ((rawValue: string) => Value) | undefined
 
   constructor(
-    public $name: Name,
-    public validator: RegExp | ((rawValue: string) => boolean),
-    getValue?: (rawValue: string) => Value,
-    public singleCharacter?: boolean,
-    public ignore?: boolean,
-    public startContexts?: Context[],
-    public endContexts?: Context[],
-    public inContexts?: Context[],
+    { $name, validator, getValue, singleCharacter, ignore, startContexts, endContexts, inContexts }: {
+      $name: Token<Name, Value>['$name']
+      validator: Token<Name, Value>['validator']
+      getValue?: Token<Name, Value>['getValue']
+      singleCharacter?: Token<Name, Value>['singleCharacter']
+      ignore?: Token<Name, Value>['ignore']
+      startContexts?: Token<Name, Value>['startContexts']
+      endContexts?: Token<Name, Value>['endContexts']
+      inContexts?: Token<Name, Value>['inContexts']
+    },
   ) {
+    this.$name = $name
+    this.validator = validator
     this.getValue = getValue
+    this.singleCharacter = singleCharacter
+    this.ignore = ignore
+    this.startContexts = startContexts
+    this.endContexts = endContexts
+    this.inContexts = inContexts
   }
 
   create({ $rawValue, $index }: { $rawValue: string; $index: number }): Token<Name, Value> {
-    const token = new Token(this.$name, this.validator, this.getValue, this.singleCharacter, this.ignore, this.startContexts, this.endContexts, this.inContexts)
+    const token = this.clone()
     token._$rawValue = $rawValue
     token._$index = $index
     return token
+  }
+
+  extends<NewName extends string = Name, NewValue extends JsonPrimitive = Value>(
+    newToken: Partial<ConstructorParameters<typeof Token<NewName, NewValue>>[0]>,
+  ): Token<NewName, NewValue> {
+    return new Token<NewName, NewValue>({
+      ...this,
+      ...newToken,
+      getValue: newToken.getValue ?? this.getValue,
+    })
   }
 
   test(rawValue: string, context: Context[] = []): boolean {
@@ -39,7 +68,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
     if (!this.inContexts || this.inContexts.length === 0)
       return true
 
-    return this.inContexts.some(inContext => context.some(openedContext => openedContext.$name === inContext.$name))
+    return this.inContexts.some(inContext => context.some(openedContext => openedContext.$name === resolveValue(inContext).$name))
   }
 
   get $rawValue() {
@@ -53,15 +82,8 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
   get $value() {
     return this.getValue ? this.getValue(this.$rawValue) : undefined
   }
-}
 
-export const createToken = <Name extends string = string, Value extends JsonPrimitive = never>(args: {
-  $name: Name
-  validator: RegExp | ((rawValue: string) => boolean)
-  getValue?: (rawValue: string) => Value
-  singleCharacter?: boolean
-  ignore?: boolean
-  startContexts?: Context[]
-  endContexts?: Context[]
-  inContexts?: Context[]
-}): Token<Name, Value> => new Token(args.$name, args.validator, args.getValue, args.singleCharacter, args.ignore, args.startContexts, args.endContexts, args.inContexts)
+  public clone() {
+    return new Token<Name, Value>({ ...this, getValue: this.getValue })
+  }
+}

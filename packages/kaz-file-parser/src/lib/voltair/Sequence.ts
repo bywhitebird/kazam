@@ -3,9 +3,11 @@ import type { GroupParent } from './groups/GroupParent'
 import type { GroupValue } from './groups/GroupValue'
 import type { Token } from './Token'
 
+type SequenceItem = Token | Sequence | Group | GroupParent | GroupValue
+
 export class Sequence {
   constructor(
-    public sequence: Readonly<(Token | Sequence | Group | GroupParent | GroupValue)[]>,
+    public sequence: Readonly<(SequenceItem | (() => SequenceItem))[]>,
     public modifiers: (
       | Record<string, never>
       | { optional: true }
@@ -16,7 +18,7 @@ export class Sequence {
   ) {}
 }
 
-export function createSequence(...sequence: [...Sequence['sequence'], Sequence['modifiers']] | Sequence['sequence']): Sequence {
+function s(...sequence: [...Sequence['sequence'], Sequence['modifiers']] | Sequence['sequence']): Sequence {
   const lastArg = sequence.at(-1)
   const hasModifiers = lastArg
     && ('optional' in lastArg
@@ -30,6 +32,6 @@ export function createSequence(...sequence: [...Sequence['sequence'], Sequence['
   return new Sequence(sequenceWithoutModifiers, modifiers)
 }
 
-createSequence.union = (sequences: [Sequence['sequence'][number], ...Sequence['sequence']]) => createSequence(sequences[0], { union: sequences.slice(1) })
+s.union = (sequences: [SequenceItem, ...SequenceItem[]]) => s(sequences[0], { union: sequences.slice(1) })
 
-export const s = createSequence
+export { s }

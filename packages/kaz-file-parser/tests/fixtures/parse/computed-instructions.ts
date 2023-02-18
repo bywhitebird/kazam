@@ -1,4 +1,4 @@
-import type { JsonValue } from '../../../src/types/JsonValue'
+import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
 
 export const computedInstructionsFixtures: (
   {
@@ -51,7 +51,7 @@ export const computedInstructionsFixtures: (
         {
           $type: 'ComputedInstruction',
           name: 'foo',
-          defaultValue: {
+          computeValue: {
             expression: '\'bar\'',
           },
         },
@@ -70,7 +70,7 @@ export const computedInstructionsFixtures: (
           $type: 'ComputedInstruction',
           name: 'foo',
           type: '{ value: string }',
-          defaultValue: {
+          computeValue: {
             expression: '{ value: \'bar\' }',
           },
         },

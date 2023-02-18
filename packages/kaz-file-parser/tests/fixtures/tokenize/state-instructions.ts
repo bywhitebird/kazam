@@ -1,18 +1,13 @@
+import { EndInstructionToken, StartInstructionToken } from '../../../src/features/instruction'
+import { StateInstructionToken } from '../../../src/features/state-instruction'
 import type { Token } from '../../../src/lib/voltair'
-import { isExpressionToken } from '../../../src/tokens/ExpressionToken'
-import { isIdentifierToken } from '../../../src/tokens/IdentifierToken'
-import { isDeclarationTypeColonToken } from '../../../src/tokens/instructions/DeclarationTypeColonToken'
-import { isDeclarationValueEqualToken } from '../../../src/tokens/instructions/DeclarationValueEqualToken'
-import { isEndInstructionToken } from '../../../src/tokens/instructions/EndInstructionToken'
-import { isStartInstructionToken } from '../../../src/tokens/instructions/StartInstructionToken'
-import { isStateInstructionToken } from '../../../src/tokens/instructions/state/StateInstructionToken'
-import { isTypeToken } from '../../../src/tokens/ts/TypeToken'
+import { ColonTypeAnnotationToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, TypeToken } from '../../../src/shared'
 
 export const stateInstructionsFixtures: ({
   name: string
   input: string
   expectedTokenCheckers: {
-    checker: (token: Token) => boolean
+    checker: Token
     rawValue?: string
     value?: unknown
   }[]
@@ -23,10 +18,10 @@ export const stateInstructionsFixtures: ({
     - state foo
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isStateInstructionToken, rawValue: 'state' },
-      { checker: isIdentifierToken, rawValue: 'foo' },
-      { checker: isEndInstructionToken, rawValue: '' },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: StateInstructionToken, rawValue: 'state' },
+      { checker: IdentifierToken, rawValue: 'foo' },
+      { checker: EndInstructionToken, rawValue: '' },
     ],
   },
   {
@@ -35,12 +30,12 @@ export const stateInstructionsFixtures: ({
     - state foo: string
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isStateInstructionToken, rawValue: 'state' },
-      { checker: isIdentifierToken, rawValue: 'foo' },
-      { checker: isDeclarationTypeColonToken, rawValue: ':' },
-      { checker: isTypeToken, value: 'string' },
-      { checker: isEndInstructionToken, rawValue: '' },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: StateInstructionToken, rawValue: 'state' },
+      { checker: IdentifierToken, rawValue: 'foo' },
+      { checker: ColonTypeAnnotationToken, rawValue: ':' },
+      { checker: TypeToken, value: 'string' },
+      { checker: EndInstructionToken, rawValue: '' },
     ],
   },
   {
@@ -49,12 +44,12 @@ export const stateInstructionsFixtures: ({
     - state foo = 'bar'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isStateInstructionToken, rawValue: 'state' },
-      { checker: isIdentifierToken, rawValue: 'foo' },
-      { checker: isDeclarationValueEqualToken, rawValue: '=' },
-      { checker: isExpressionToken, value: '\'bar\'' },
-      { checker: isEndInstructionToken, rawValue: '' },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: StateInstructionToken, rawValue: 'state' },
+      { checker: IdentifierToken, rawValue: 'foo' },
+      { checker: EqualVariableDeclarationToken, rawValue: '=' },
+      { checker: ExpressionToken, value: '\'bar\'' },
+      { checker: EndInstructionToken, rawValue: '' },
     ],
   },
   {
@@ -63,14 +58,14 @@ export const stateInstructionsFixtures: ({
     - state foo: string = 'bar'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isStateInstructionToken, rawValue: 'state' },
-      { checker: isIdentifierToken, rawValue: 'foo' },
-      { checker: isDeclarationTypeColonToken, rawValue: ':' },
-      { checker: isTypeToken, value: 'string' },
-      { checker: isDeclarationValueEqualToken, rawValue: '=' },
-      { checker: isExpressionToken, value: '\'bar\'' },
-      { checker: isEndInstructionToken, rawValue: '' },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: StateInstructionToken, rawValue: 'state' },
+      { checker: IdentifierToken, rawValue: 'foo' },
+      { checker: ColonTypeAnnotationToken, rawValue: ':' },
+      { checker: TypeToken, value: 'string' },
+      { checker: EqualVariableDeclarationToken, rawValue: '=' },
+      { checker: ExpressionToken, value: '\'bar\'' },
+      { checker: EndInstructionToken, rawValue: '' },
     ],
   },
 ]

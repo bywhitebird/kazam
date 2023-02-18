@@ -1,22 +1,13 @@
+import { AliasKeywordToken, FromKeywordToken, ImportInstructionToken, WildcardCharacterToken } from '../../../src/features/import-instruction'
+import { EndInstructionToken, StartInstructionToken } from '../../../src/features/instruction'
 import type { Token } from '../../../src/lib/voltair'
-import { isIdentifierToken } from '../../../src/tokens/IdentifierToken'
-import { isEndInstructionToken } from '../../../src/tokens/instructions/EndInstructionToken'
-import { isAliasKeywordNamedImportToken } from '../../../src/tokens/instructions/import/AliasKeywordNamedImportToken'
-import { isFromKeywordImportToken } from '../../../src/tokens/instructions/import/FromKeywordImportToken'
-import { isImportInstructionToken } from '../../../src/tokens/instructions/import/ImportInstructionToken'
-import { isWildcardCharacterImportToken } from '../../../src/tokens/instructions/import/WildcardCharacterImportToken'
-import { isStartInstructionToken } from '../../../src/tokens/instructions/StartInstructionToken'
-import { isCommaToken } from '../../../src/tokens/punctuations/CommaToken'
-import { isLeftCurlyBracketToken } from '../../../src/tokens/punctuations/curly-brackets/LeftCurlyBracketToken'
-import { isRightCurlyBracketToken } from '../../../src/tokens/punctuations/curly-brackets/RightCurlyBracketToken'
-import { isSingleQuoteToken } from '../../../src/tokens/punctuations/quotes/SingleQuoteToken'
-import { isSingleQuotedStringToken } from '../../../src/tokens/string-literals/SingleQuotedStringToken'
+import { CommaToken, IdentifierToken, LeftCurlyBracketToken, RightCurlyBracketToken, SingleQuoteToken, SingleQuotedStringToken } from '../../../src/shared'
 
 export const importInstructionsFixtures: ({
   name: string
   input: string
   expectedTokenCheckers: {
-    checker: (token: Token) => boolean
+    checker: Token
     rawValue?: string
     value?: unknown
   }[]
@@ -27,16 +18,16 @@ export const importInstructionsFixtures: ({
     - import { Foo } from './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isLeftCurlyBracketToken, rawValue: '{' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isRightCurlyBracketToken, rawValue: '}' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -45,18 +36,18 @@ export const importInstructionsFixtures: ({
     - import { Foo, Bar } from './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isLeftCurlyBracketToken, rawValue: '{' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isCommaToken, rawValue: ',' },
-      { checker: isIdentifierToken, rawValue: 'Bar' },
-      { checker: isRightCurlyBracketToken, rawValue: '}' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: CommaToken, rawValue: ',' },
+      { checker: IdentifierToken, rawValue: 'Bar' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -65,18 +56,18 @@ export const importInstructionsFixtures: ({
     - import { Foo as Bar } from './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isLeftCurlyBracketToken, rawValue: '{' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isAliasKeywordNamedImportToken, rawValue: 'as' },
-      { checker: isIdentifierToken, rawValue: 'Bar' },
-      { checker: isRightCurlyBracketToken, rawValue: '}' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: AliasKeywordToken, rawValue: 'as' },
+      { checker: IdentifierToken, rawValue: 'Bar' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -85,16 +76,16 @@ export const importInstructionsFixtures: ({
     - import * as Foo from './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isWildcardCharacterImportToken, rawValue: '*' },
-      { checker: isAliasKeywordNamedImportToken, rawValue: 'as' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: WildcardCharacterToken, rawValue: '*' },
+      { checker: AliasKeywordToken, rawValue: 'as' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -103,14 +94,14 @@ export const importInstructionsFixtures: ({
     - import Foo from './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -119,12 +110,12 @@ export const importInstructionsFixtures: ({
     - import './Foo'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -134,22 +125,22 @@ export const importInstructionsFixtures: ({
     - import Bar from './Bar'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isIdentifierToken, rawValue: 'Bar' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Bar' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: IdentifierToken, rawValue: 'Bar' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Bar' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -158,18 +149,18 @@ export const importInstructionsFixtures: ({
     - import Foo, { Bar } from './FooBar'
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isCommaToken, rawValue: ',' },
-      { checker: isLeftCurlyBracketToken, rawValue: '{' },
-      { checker: isIdentifierToken, rawValue: 'Bar' },
-      { checker: isRightCurlyBracketToken, rawValue: '}' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './FooBar' },
-      { checker: isSingleQuoteToken },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: CommaToken, rawValue: ',' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: IdentifierToken, rawValue: 'Bar' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './FooBar' },
+      { checker: SingleQuoteToken },
+      { checker: EndInstructionToken },
     ],
   },
   {
@@ -178,13 +169,13 @@ export const importInstructionsFixtures: ({
     - import Foo from './Foo
     `,
     expectedTokenCheckers: [
-      { checker: isStartInstructionToken, rawValue: '-' },
-      { checker: isImportInstructionToken, rawValue: 'import' },
-      { checker: isIdentifierToken, rawValue: 'Foo' },
-      { checker: isFromKeywordImportToken, rawValue: 'from' },
-      { checker: isSingleQuoteToken },
-      { checker: isSingleQuotedStringToken, rawValue: './Foo' },
-      { checker: isEndInstructionToken },
+      { checker: StartInstructionToken, rawValue: '-' },
+      { checker: ImportInstructionToken, rawValue: 'import' },
+      { checker: IdentifierToken, rawValue: 'Foo' },
+      { checker: FromKeywordToken, rawValue: 'from' },
+      { checker: SingleQuoteToken },
+      { checker: SingleQuotedStringToken, rawValue: './Foo' },
+      { checker: EndInstructionToken },
     ],
   },
 ]

@@ -1,13 +1,15 @@
 import type { Sequence } from '../Sequence'
 import type { Token } from '../Token'
 
+type GroupValueItem = Token | Sequence
+
 export class GroupValue {
   constructor(
-    public readonly child: Token | Sequence,
+    public readonly child: GroupValueItem | (() => GroupValueItem),
   ) {
   }
 }
 
 export const gv = (
-  child: Token | Sequence,
+  child: GroupValue['child'],
 ): GroupValue => new GroupValue(child)
