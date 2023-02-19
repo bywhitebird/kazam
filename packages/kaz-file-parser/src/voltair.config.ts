@@ -1,11 +1,12 @@
 import { ComputedInstructionToken } from './features/computed-instruction'
+import { EventInstructionToken } from './features/event-instruction'
 import { AliasKeywordToken, FromKeywordToken, ImportInstructionToken, WildcardCharacterToken } from './features/import-instruction'
 import { EndInstructionToken, StartInstructionToken } from './features/instruction'
 import { KazSequence } from './features/kaz'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
-import { ArrowFunctionBodyToken, WatchInstructionToken } from './features/watch-instruction'
-import { ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
+import { WatchInstructionToken } from './features/watch-instruction'
+import { ArrowFunctionBodyToken, ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
 
 export default {
   entry: KazSequence,
@@ -40,6 +41,11 @@ export default {
       [
         // Watch instruction
         WatchInstructionToken,
+      ],
+
+      [
+        // Event instruction
+        EventInstructionToken,
       ],
 
       EndInstructionToken,

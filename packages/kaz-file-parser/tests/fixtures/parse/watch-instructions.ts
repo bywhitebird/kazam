@@ -22,7 +22,7 @@ export const watchInstructionsFixtures: (
       instructions: [
         {
           $type: 'WatchInstruction',
-          watchedVariable: 'foo',
+          watchedVariables: [{ name: 'foo' }],
           callbackExpression: 'console.log(\'Foo changed\')\n        console.log(foo)',
         },
       ],
@@ -38,8 +38,46 @@ export const watchInstructionsFixtures: (
       instructions: [
         {
           $type: 'WatchInstruction',
-          watchedVariable: 'foo',
+          watchedVariables: [{ name: 'foo' }],
           callbackExpression: 'console.log(foo)',
+        },
+      ],
+    },
+  },
+  {
+    name: 'When I use a watch instruction with a function with multiple dependencies, watch is validated',
+    input: `
+    - watch (foo, bar) => {
+        console.log('Foo or bar changed')
+        console.log(foo, bar)
+      }
+    `,
+    expectedTree: {
+      $type: 'Kaz',
+      instructions: [
+        {
+          $type: 'WatchInstruction',
+          watchedVariables: [{ name: 'foo' }, { name: 'bar' }],
+          callbackExpression: 'console.log(\'Foo or bar changed\')\n        console.log(foo, bar)',
+        },
+      ],
+    },
+  },
+  {
+    name: 'When I use a watch instruction with a function with typed dependencies, watch is validated',
+    input: `
+    - watch (foo: string, bar: number) => {
+        console.log('Foo or bar changed')
+        console.log(foo, bar)
+      }
+    `,
+    expectedTree: {
+      $type: 'Kaz',
+      instructions: [
+        {
+          $type: 'WatchInstruction',
+          watchedVariables: [{ name: 'foo', type: 'string' }, { name: 'bar', type: 'number' }],
+          callbackExpression: 'console.log(\'Foo or bar changed\')\n        console.log(foo, bar)',
         },
       ],
     },

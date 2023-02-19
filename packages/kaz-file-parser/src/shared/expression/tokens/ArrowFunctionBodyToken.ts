@@ -1,6 +1,6 @@
 import { parse } from '@typescript-eslint/parser'
 
-import { ExpressionToken } from '../../../shared'
+import { ExpressionToken } from '../'
 
 const getExpression = (rawValue: string) => {
   const parsed = parse(`() => ${rawValue}`)

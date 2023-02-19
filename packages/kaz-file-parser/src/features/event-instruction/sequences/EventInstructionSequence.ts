@@ -1,14 +1,14 @@
-import { WatchInstructionToken } from '..'
+import { EventInstructionToken } from '..'
 import { g, gp, s } from '../../../lib/voltair'
 import { ArrowFunctionBodyToken, ArrowToken, FunctionParametersSequence, LeftParenthesisToken, RightParenthesisToken } from '../../../shared'
 
-export const WatchInstructionSequence = gp(
-  'WatchInstruction',
+export const EventInstructionSequence = gp(
+  'EventInstruction',
   s(
-    WatchInstructionToken,
+    g('eventName', EventInstructionToken),
     LeftParenthesisToken,
     g(
-      'watchedVariables',
+      'parameters',
       FunctionParametersSequence,
       { forceMultiple: true },
     ),
