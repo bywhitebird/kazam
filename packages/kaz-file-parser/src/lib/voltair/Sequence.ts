@@ -32,6 +32,6 @@ function s(...sequence: [...Sequence['sequence'], Sequence['modifiers']] | Seque
   return new Sequence(sequenceWithoutModifiers, modifiers)
 }
 
-s.union = (sequences: [SequenceItem, ...SequenceItem[]]) => s(sequences[0], { union: sequences.slice(1) })
+s.union = (sequences: [(SequenceItem | (() => SequenceItem)), ...Readonly<(SequenceItem | (() => SequenceItem))[]>]) => s(sequences[0], { union: sequences.slice(1) })
 
 export { s }
