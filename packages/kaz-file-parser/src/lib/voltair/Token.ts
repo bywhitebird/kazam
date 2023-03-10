@@ -59,10 +59,11 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
     if (!(typeof this.validator === 'function' ? this.validator(rawValue) : this.validator.test(rawValue)))
       return false
 
-    if (context?.some(context => context.forbiddenTokens?.find(forbiddenToken => (typeof forbiddenToken === 'function' ? forbiddenToken().$name : forbiddenToken.$name) === this.$name)))
+    if (context?.some(context => context.forbiddenTokens?.find(forbiddenToken => resolveValue(forbiddenToken).$name === this.$name)))
       return false
 
-    if (context?.flatMap(context => context.availableTokens).some(availableToken => availableToken !== undefined && (typeof availableToken === 'function' ? availableToken().$name : availableToken.$name) !== this.$name))
+    const availableTokens = context?.flatMap(context => context.availableTokens)
+    if (availableTokens.length > 0 && availableTokens.every(availableToken => availableToken !== undefined && resolveValue(availableToken).$name !== this.$name))
       return false
 
     if (!this.inContexts || this.inContexts.length === 0)
