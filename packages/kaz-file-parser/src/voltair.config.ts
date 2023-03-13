@@ -1,6 +1,7 @@
 import { ComputedInstructionToken } from './features/computed-instruction'
 import { EventInstructionToken } from './features/event-instruction'
 import { ForLeftParenthesisToken, ForLogicalToken, ForParametersToken, ForRightParenthesisToken } from './features/for-logical'
+import { IfConditionToken, IfLeftParenthesisToken, IfLogicalToken, IfRightParenthesisToken } from './features/if-logical'
 import { AliasKeywordToken, FromKeywordToken, ImportInstructionToken, WildcardCharacterToken } from './features/import-instruction'
 import { EndInstructionToken, StartInstructionToken } from './features/instruction'
 import { KazSequence } from './features/kaz'
@@ -64,6 +65,22 @@ export default {
           // For parenthesis
           ForLeftParenthesisToken,
           ForRightParenthesisToken,
+        ],
+      ],
+    ],
+
+    [
+      // If logical
+      IfLogicalToken,
+
+      [
+        // If parameters
+        IfConditionToken,
+
+        [
+          // If parenthesis
+          IfLeftParenthesisToken,
+          IfRightParenthesisToken,
         ],
       ],
     ],
