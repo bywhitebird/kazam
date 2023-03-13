@@ -1,8 +1,8 @@
-import { IfConditionContext, IfLogicalContext } from '..'
+import { ConditionContext, ConditionLogicalContext } from '..'
 import { LeftParenthesisToken } from '../../../shared'
 
 export const IfLeftParenthesisToken = LeftParenthesisToken.extends({
   $name: 'IfLeftParenthesis',
-  startContexts: [() => IfConditionContext],
-  inContexts: [() => IfLogicalContext],
+  startContexts: [() => ConditionContext],
+  inContexts: [() => ConditionLogicalContext],
 })

@@ -1,8 +1,8 @@
 import { Context } from '../../../lib/voltair'
 import { TextToken } from '../../../shared'
 
-export const IfLogicalContext = new Context({
-  $name: 'IfLogicalContext',
+export const ConditionLogicalContext = new Context({
+  $name: 'ConditionLogicalContext',
   breakingPatterns: [/\s+/, /^\($/, /^\)$/, /^\{$/, /^\}$/],
   forbiddenTokens: [() => TextToken],
 })

@@ -11,7 +11,7 @@ export const ForLogicalSequence = gp(
     g('parameters', ForParametersToken),
     ForRightParenthesisToken,
     LeftCurlyBracketToken,
-    g('children', TemplateSequence, { forceMultiple: true }),
+    g('children', () => TemplateSequence, { forceMultiple: true }),
     RightCurlyBracketToken,
   ),
 )

@@ -1,11 +1,11 @@
 import { s } from '../../../lib/voltair'
+import { ConditionLogicalSequence } from '../../condition-logical'
 import { ForLogicalSequence } from '../../for-logical'
-import { IfLogicalSequence } from '../../if-logical'
 
 export const TemplateSequence = s(
   s.union([
     () => ForLogicalSequence,
-    () => IfLogicalSequence,
+    () => ConditionLogicalSequence,
   ]),
   { min: 0 },
 )
