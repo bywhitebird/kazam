@@ -1,7 +1,8 @@
 import type { Sequence } from '../Sequence'
 import type { Token } from '../Token'
+import type { JsonValue } from '../types/JsonValue'
 
-type GroupValueItem = Token | Sequence
+type GroupValueItem = Token | Sequence | JsonValue
 
 export class GroupValue {
   constructor(

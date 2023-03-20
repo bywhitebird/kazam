@@ -123,10 +123,10 @@ const createTokensConsumer = (tokens: Token[]) => {
 }
 
 const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | undefined => {
-  sequence = resolveValue(sequence)
+  const resolvedSequence = resolveValue(sequence)
 
-  if (sequence instanceof Sequence) {
-    const firstToken = sequence.sequence[0]
+  if (resolvedSequence instanceof Sequence) {
+    const firstToken = resolvedSequence.sequence[0]
 
     if (firstToken === undefined)
       return undefined
@@ -134,16 +134,19 @@ const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | 
     return getFirstSequenceToken(firstToken)
   }
 
-  if (sequence instanceof Group)
-    return getFirstSequenceToken(sequence.child)
+  if (resolvedSequence instanceof Group)
+    return getFirstSequenceToken(resolvedSequence.child)
 
-  if (sequence instanceof GroupParent)
-    return getFirstSequenceToken(sequence.child)
+  if (resolvedSequence instanceof GroupParent)
+    return getFirstSequenceToken(resolvedSequence.child)
 
-  if (sequence instanceof GroupValue)
-    return getFirstSequenceToken(sequence.child)
+  if (resolvedSequence instanceof GroupValue && (resolvedSequence.child instanceof Sequence || resolvedSequence.child instanceof Token))
+    return getFirstSequenceToken(resolvedSequence.child)
 
-  return sequence
+  if (resolvedSequence instanceof Token)
+    return resolvedSequence
+
+  return undefined
 }
 
 export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent): ParserError | JsonValue | undefined => {
@@ -229,7 +232,12 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
   }
 
   function parseGroupValue(tokensConsumer: TokensConsumer, expectedGroupValue: GroupValue): ParserReturnType {
-    const result = parse(tokensConsumer, resolveValue(expectedGroupValue.child))
+    const resolvedChild = resolveValue(expectedGroupValue.child)
+
+    if (!(resolvedChild instanceof Sequence || resolvedChild instanceof Token))
+      return new TreeValue(resolvedChild)
+
+    const result = parse(tokensConsumer, resolvedChild)
 
     if (result instanceof Error)
       return result
