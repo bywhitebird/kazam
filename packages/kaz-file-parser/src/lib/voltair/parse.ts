@@ -226,7 +226,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
     if (result instanceof Error)
       return result
 
-    const value = result?.value(expectedGroup.options) ?? {}
+    const value = result?.value(expectedGroup.options) ?? (expectedGroup.options?.forceMultiple ? [] : {})
 
     return new TreeValue({ [expectedGroup.$name]: value })
   }
@@ -313,10 +313,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
     if (result instanceof Error)
       return result
 
-    const value = result?.value()
-
-    if (!(value instanceof Error) && value !== undefined)
-      return new TreeValue(value)
+    return result
   }
 
   function parseSequenceUnion(tokensConsumer: TokensConsumer, expectedSequence: Sequence): ParserReturnType {

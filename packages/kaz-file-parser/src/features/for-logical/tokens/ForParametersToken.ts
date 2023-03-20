@@ -1,7 +1,7 @@
 import { parse } from '@typescript-eslint/parser'
 
 import { ForParametersContext } from '..'
-import { ExpressionToken } from '../../../shared'
+import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
   const parsed = parse(`for (${rawValue}) {}`)
@@ -17,7 +17,7 @@ const getExpression = (rawValue: string) => {
   return rawValue
 }
 
-export const ForParametersToken = ExpressionToken.extends({
+export const ForParametersToken = new Token({
   $name: 'ForParameters',
   validator: (rawValue: string) => {
     try {

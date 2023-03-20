@@ -7,6 +7,7 @@ import { EndInstructionToken, StartInstructionToken } from './features/instructi
 import { KazSequence } from './features/kaz'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
+import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from './features/tag'
 import { WatchInstructionToken } from './features/watch-instruction'
 import { ArrowFunctionBodyToken, ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
 
@@ -88,6 +89,28 @@ export default {
     ],
 
     [
+      [
+        // Tag parenthesis
+        TagLeftParenthesisToken,
+        TagRightParenthesisToken,
+      ],
+
+      [
+        // Tag attributes
+        TagAttributeNameToken,
+        TagAttributeSeparatorToken,
+
+        TagAttributeEqualToken,
+
+        [
+          // Tag attribute value expression
+          TagAttributeLeftCurlyBracketToken,
+          TagAttributeRightCurlyBracketToken,
+        ],
+      ],
+    ],
+
+    [
       // Colons
       ColonTypeAnnotationToken,
       ColonToken,
@@ -131,6 +154,7 @@ export default {
 
     // Other tokens
     CommaToken,
+    TagNameOrTextToken,
     IdentifierToken,
     TypeToken,
     ExpressionToken,

@@ -1,8 +1,10 @@
 import { ForLogicalContext, ForParametersContext } from '..'
-import { LeftParenthesisToken } from '../../../shared'
+import { Token } from '../../../lib/voltair'
 
-export const ForLeftParenthesisToken = LeftParenthesisToken.extends({
+export const ForLeftParenthesisToken = new Token({
   $name: 'ForLeftParenthesis',
   startContexts: [() => ForParametersContext],
   inContexts: [() => ForLogicalContext],
+  validator: /^\($/,
+  singleCharacter: true,
 })

@@ -1,7 +1,9 @@
 import { ConditionLogicalContext } from '..'
-import { RightParenthesisToken } from '../../../shared'
+import { Token } from '../../../lib/voltair'
 
-export const IfRightParenthesisToken = RightParenthesisToken.extends({
+export const IfRightParenthesisToken = new Token({
   $name: 'IfRightParenthesis',
+  validator: /^\)$/,
+  singleCharacter: true,
   inContexts: [() => ConditionLogicalContext],
 })

@@ -1,7 +1,9 @@
 import { ForLogicalContext } from '..'
-import { RightParenthesisToken } from '../../../shared'
+import { Token } from '../../../lib/voltair'
 
-export const ForRightParenthesisToken = RightParenthesisToken.extends({
+export const ForRightParenthesisToken = new Token({
   $name: 'ForRightParenthesis',
   inContexts: [() => ForLogicalContext],
+  validator: /^\)$/,
+  singleCharacter: true,
 })

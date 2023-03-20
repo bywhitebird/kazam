@@ -1,7 +1,7 @@
 import { parse } from '@typescript-eslint/parser'
 
 import { ConditionContext } from '..'
-import { ExpressionToken } from '../../../shared'
+import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
   const parsed = parse(`if (${rawValue}) {}`)
@@ -15,7 +15,7 @@ const getExpression = (rawValue: string) => {
   return rawValue
 }
 
-export const IfConditionToken = ExpressionToken.extends({
+export const IfConditionToken = new Token({
   $name: 'IfCondition',
   validator: (rawValue: string) => {
     try {

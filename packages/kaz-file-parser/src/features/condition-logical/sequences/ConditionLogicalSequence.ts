@@ -45,7 +45,7 @@ export const ConditionLogicalSequence = gp(
   s(
     IfLogicalToken,
     IfLeftParenthesisToken,
-    g('condition', IfConditionToken),
+    g('condition', () => IfConditionToken),
     IfRightParenthesisToken,
     LeftCurlyBracketToken,
     g('children', () => TemplateSequence, { forceMultiple: true }),
