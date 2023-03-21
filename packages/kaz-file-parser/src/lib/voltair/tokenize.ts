@@ -3,7 +3,7 @@ import type { Token } from './Token'
 import { InputStream } from './utils/input-stream'
 import { resolveValue } from './utils/resolve-value'
 
-export const tokenize = (input: string, tokens: Token[]): Promise<Token[]> => {
+export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns: RegExp[]): Promise<Token[]> => {
   const inputStream = new InputStream(input)
   const tokensFound = <Token[]>[]
 
@@ -72,7 +72,7 @@ export const tokenize = (input: string, tokens: Token[]): Promise<Token[]> => {
       return patterns
     }, <RegExp[]>[])
 
-    return breakingPatterns || [/\s+/]
+    return breakingPatterns || defaultBreakingPatterns
   }
 
   const checkIsBreak = (char: string) => {

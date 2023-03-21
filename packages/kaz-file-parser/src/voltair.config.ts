@@ -14,6 +14,7 @@ import { ArrowFunctionBodyToken, ArrowToken, ColonToken, ColonTypeAnnotationToke
 
 export default {
   entry: KazSequence,
+  defaultBreakingPatterns: [/\s+/, /^\($/],
   tokens: [
     [
       // Instruction

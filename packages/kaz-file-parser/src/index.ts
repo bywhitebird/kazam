@@ -2,7 +2,7 @@ import { type Token, parse as _parse, tokenize as _tokenize } from './lib/voltai
 import config from './voltair.config'
 
 export const tokenize = (input: string) => {
-  return _tokenize(input, config.tokens)
+  return _tokenize(input, config.tokens, config.defaultBreakingPatterns)
 }
 
 export const parse = (tokens: Token[]) => {
