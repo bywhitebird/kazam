@@ -4,7 +4,7 @@ import { InputStream } from './utils/input-stream'
 import { resolveValue } from './utils/resolve-value'
 
 export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns: RegExp[]): Promise<Token[]> => {
-  const inputStream = new InputStream(input)
+  const inputStream = InputStream(input)
   const tokensFound = <Token[]>[]
 
   const current = {
@@ -102,13 +102,19 @@ export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns
       addCurrentToken()
   }
 
-  inputStream.on('data', dataHandler)
-
   return new Promise((resolve) => {
-    inputStream.on('end', () => {
-      inputStream.off('data', dataHandler)
-      addCurrentToken()
-      resolve(tokensFound)
-    })
+    const reader = inputStream.getReader()
+    const read = async () => {
+      const { done, value } = await reader.read()
+      if (done) {
+        addCurrentToken()
+        resolve(tokensFound)
+        return
+      }
+
+      dataHandler(value)
+      read()
+    }
+    read()
   })
 }
