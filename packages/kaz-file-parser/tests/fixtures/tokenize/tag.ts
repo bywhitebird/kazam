@@ -1,4 +1,5 @@
 import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from '../../../src/features/tag'
+import { TemplateExpressionEndToken, TemplateExpressionStartToken } from '../../../src/features/template'
 import type { Token } from '../../../src/lib/voltair'
 import { DoubleQuoteToken, DoubleQuotedStringToken, ExpressionToken, LeftCurlyBracketToken, RightCurlyBracketToken } from '../../../src/shared'
 
@@ -159,6 +160,25 @@ export const tagFixtures: ({
       { checker: TagNameOrTextToken, value: 'Hello' },
       { checker: TagNameOrTextToken, value: 'world' },
       { checker: RightCurlyBracketToken, rawValue: '}' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+    ],
+  },
+  {
+    name: 'When I use a tag with an expression as children, tag is correctly tokenized',
+    input: `
+    p () {
+      \${text}
+    }
+    `,
+    expectedTokenCheckers: [
+      { checker: TagNameOrTextToken, rawValue: 'p' },
+      { checker: TagLeftParenthesisToken, rawValue: '(' },
+      { checker: TagRightParenthesisToken, rawValue: ')' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: TemplateExpressionStartToken, rawValue: '$' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: ExpressionToken, value: 'text' },
+      { checker: TemplateExpressionEndToken, rawValue: '}' },
       { checker: RightCurlyBracketToken, rawValue: '}' },
     ],
   },

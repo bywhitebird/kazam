@@ -2,6 +2,7 @@ import { parse } from '@typescript-eslint/parser'
 
 import { ExpressionContext } from '..'
 import { TagAttributeValueExpressionContext } from '../../../features/tag'
+import { TemplateExpressionContext } from '../../../features/template'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
@@ -26,6 +27,6 @@ export const ExpressionToken = new Token({
     }
   },
   getValue: rawValue => rawValue.trim(),
-  inContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext],
+  inContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext, () => TemplateExpressionContext],
   endContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext],
 })

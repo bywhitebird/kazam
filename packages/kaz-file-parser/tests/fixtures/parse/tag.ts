@@ -208,4 +208,28 @@ export const tagFixtures: (
       ],
     },
   },
+  {
+    name: 'When I use a tag with an expression as children, tag is correctly tokenized',
+    input: `
+    p () {
+      \${anExpression}
+    }
+    `,
+    expectedTree: {
+      $type: 'Kaz',
+      template: [
+        {
+          $type: 'Tag',
+          tagName: 'p',
+          attributes: [],
+          children: [
+            {
+              $type: 'Expression',
+              expression: 'anExpression',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]
