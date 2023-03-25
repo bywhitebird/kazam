@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+import * as _TabsPrimitive from "@radix-ui/react-tabs"
+
+let TabsPrimitive = _TabsPrimitive
+if ('default' in TabsPrimitive)
+  TabsPrimitive = TabsPrimitive.default as typeof _TabsPrimitive
 
 import { cn } from "../../lib/utils"
 
