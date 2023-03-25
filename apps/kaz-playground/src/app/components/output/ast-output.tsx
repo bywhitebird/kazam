@@ -30,13 +30,28 @@ const runParseToAst = server$(async (code: string) => {
 export const AstOutput = ({ code }: { code: string }) => {
   const [output, setOutput] = useState<unknown>()
   const [loading, setLoading] = useState(false)
+  const [outputTimeout, setOutputTimeout] = useState<NodeJS.Timeout>()
 
   useEffect(() => {
     setLoading(true)
-    runParseToAst(code).then((output) => {
-      setOutput(output)
-      setLoading(false)
-    })
+    if (outputTimeout) {
+      clearTimeout(outputTimeout)
+    }
+
+    setOutputTimeout(setTimeout(async () => {
+      try {
+        const output = await runParseToAst(code)
+        setOutput(output)
+      } catch (error) {
+        if (error instanceof ServerError) {
+          setOutput(error.message)
+        } else {
+          setOutput(error)
+        }
+      } finally {
+        setLoading(false)
+      }
+    }, 500))
   }, [code])
 
   return <div className="overflow-auto bg-gray-1000 pb-2 h-[100%]">
