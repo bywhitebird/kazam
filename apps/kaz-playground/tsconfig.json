@@ -1,0 +1,11 @@
+{
+  // "extends": [
+  //   "astro/tsconfigs/strictest",
+  //   "@whitebird/tsconfig/base.json",
+  // ],
+  "extends": "astro/tsconfigs/strictest",
+  // "compilerOptions": {
+  //   "jsx": "react-jsx",
+  //   "jsxImportSource": "react"
+  // }
+}
