@@ -7,13 +7,15 @@ export const StateInstructionSequence = gp(
   s(
     StateInstructionToken,
     g('name', IdentifierToken),
-    g('type', s(TypeAnnotationSequence, { optional: true })),
-    g(
-      'defaultValue',
-      s(
-        g('expression', VariableDeclarationSequence),
-        { optional: true },
+    s(g('type', TypeAnnotationSequence), { optional: true }),
+    s(
+      g(
+        'defaultValue',
+        s(
+          g('expression', VariableDeclarationSequence),
+        ),
       ),
+      { optional: true },
     ),
   ),
 )

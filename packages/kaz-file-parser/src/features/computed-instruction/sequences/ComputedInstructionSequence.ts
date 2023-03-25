@@ -7,12 +7,11 @@ export const ComputedInstructionSequence = gp(
   s(
     () => ComputedInstructionToken,
     g('name', IdentifierToken),
-    g('type', s(TypeAnnotationSequence, { optional: true })),
+    s(g('type', TypeAnnotationSequence), { optional: true }),
     g(
       'computeValue',
       s(
         g('expression', VariableDeclarationSequence),
-        { optional: true },
       ),
     ),
   ),
