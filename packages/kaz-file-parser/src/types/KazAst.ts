@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import zod from 'zod'
 
 const kazTemplateTagAttributeSchema = zod.object({
@@ -7,7 +8,7 @@ const kazTemplateTagAttributeSchema = zod.object({
   expression: zod.string().optional(),
 })
 
-export type KazTemplateTag = {
+export interface KazTemplateTag {
   $type: 'Tag'
   tagName: string
   attributes: zod.infer<typeof kazTemplateTagAttributeSchema>[]
@@ -31,7 +32,7 @@ const kazTemplateExpressionSchema = zod.object({
   expression: zod.string(),
 })
 
-export type KazTemplateFor = {
+export interface KazTemplateFor {
   $type: 'ForLogical'
   parameters: string
   children: zod.infer<typeof kazTemplateSchema>[]
@@ -43,7 +44,7 @@ const kazTemplateForSchema: zod.ZodType<KazTemplateFor> = zod.object({
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
-export type KazTemplateElseIf = {
+export interface KazTemplateElseIf {
   $type: 'ElseLogical'
   if: {
     $type: 'ElseIfLogical'
@@ -66,7 +67,7 @@ const kazTemplateElseIfSchema: zod.ZodType<KazTemplateElseIf> = zod.object({
   }),
 })
 
-export type KazTemplateElse = {
+export interface KazTemplateElse {
   $type: 'ElseLogical'
   children: zod.infer<typeof kazTemplateSchema>[]
 }
@@ -76,7 +77,7 @@ const kazTemplateElseSchema: zod.ZodType<KazTemplateElse> = zod.object({
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
-export type KazTemplateIf = {
+export interface KazTemplateIf {
   $type: 'IfLogical'
   condition: string
   children: zod.infer<typeof kazTemplateSchema>[]

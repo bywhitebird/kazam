@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { tokenize } from '../src'
 import * as fixtures from './fixtures/tokenize'
+import { tokenize } from '../src'
 
 describe('tokenize', () => {
   describe('instructions', () => {

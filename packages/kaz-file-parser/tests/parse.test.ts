@@ -1,9 +1,9 @@
 import { describe, expect, test } from 'vitest'
 
-import { parse, tokenize } from '../src'
-import { kazAstSchema } from '../src/types/KazAst'
 import * as fixtures from './fixtures/parse'
 import { expectDeepContains } from './helpers/customExpects'
+import { parse, tokenize } from '../src'
+import { kazAstSchema } from '../src/types/KazAst'
 
 describe('parse', () => {
   describe('instructions', () => {

@@ -1,10 +1,10 @@
 import { describe, expect, test } from 'vitest'
 
-import { TransformerReact } from '../src'
 import { contentSpecFixtures } from './fixtures/transformer-react/transform/content'
 import { propsSpecFixtures } from './fixtures/transformer-react/transform/props'
 import { statementsSpecFixtures } from './fixtures/transformer-react/transform/statements'
 import { expectToEqualIgnoreWhitespace } from './helpers/customExpects'
+import { TransformerReact } from '../src'
 
 describe('transformer-react', () => {
   describe('transform', () => {

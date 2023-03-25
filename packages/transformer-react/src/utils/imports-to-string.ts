@@ -26,7 +26,7 @@ export const importsToString = (importInfos: ImportInfos[]) => {
     else {
       importString = [
         'defaultImport' in importInfo && generateImportName(importInfo.defaultImport),
-        'namedImports' in importInfo && importInfo.namedImports.length > 0
+        ('namedImports' in importInfo && importInfo.namedImports.length > 0)
           ? `{ ${importInfo.namedImports.map(namedImport => generateImportName(namedImport)).join(', ')} }`
           : undefined,
       ].filter(Boolean).join(', ')
