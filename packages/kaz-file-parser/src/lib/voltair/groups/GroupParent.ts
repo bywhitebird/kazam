@@ -1,5 +1,5 @@
-import type { Sequence } from '../Sequence'
 import type { Group } from './Group'
+import type { Sequence } from '../Sequence'
 
 type GroupParentItem = Sequence | Group
 

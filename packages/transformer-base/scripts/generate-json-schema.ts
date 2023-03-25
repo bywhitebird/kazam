@@ -1,7 +1,7 @@
 // @ts-expect-error - TS doesn't know about the `fs` module
-import fs from 'fs'
+import fs from 'node:fs'
 // @ts-expect-error - TS doesn't know about the `path` module
-import path from 'path'
+import path from 'node:path'
 
 import zodToJsonSchema from 'zod-to-json-schema'
 
