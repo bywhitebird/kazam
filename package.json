@@ -24,7 +24,7 @@
     "@whitebird/tsconfig": "latest",
     "husky": "^8.0.0",
     "turbo": "latest",
-    "typescript": "^4.8.4"
+    "typescript": "^5.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
