@@ -7,7 +7,7 @@ import { resolveValue } from './utils/resolve-value'
 
 import { Sequence, Token } from '.'
 
-type ParserError = ExpectedTokenError | UnexpectedTokenError
+export type ParserError = ExpectedTokenError | UnexpectedTokenError
 type ParserReturnType = ParserError | TreeValue | void
 
 class TreeValue {

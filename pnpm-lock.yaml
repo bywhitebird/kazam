@@ -31,10 +31,12 @@ importers:
       eslint: ^8.33.0
       typescript: ^4.8.4
       vitest: ^0.25.3
+      zod: ^3.19.1
     dependencies:
       '@typescript-eslint/parser': 5.50.0_zmyfsul77535b2d7nzuoiqkehy
       eslint: 8.33.0
       typescript: 4.9.3
+      zod: 3.19.1
     devDependencies:
       '@types/node': 18.11.10
       '@vitest/coverage-c8': 0.25.3
