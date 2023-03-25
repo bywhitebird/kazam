@@ -10,40 +10,9 @@ export const computedInstructionsFixtures: (
   )
 )[] = [
   {
-    name: 'When I use a computed instruction, computed is validated',
+    name: 'When I use a computed instruction with a compute value, computed is validated',
     input: `
-    - computed foo
-    `,
-    expectedTree: {
-      $type: 'Kaz',
-      instructions: [
-        {
-          $type: 'ComputedInstruction',
-          name: 'foo',
-        },
-      ],
-    },
-  },
-  {
-    name: 'When I use a computed instruction with a type, computed is validated',
-    input: `
-    - computed foo: { value: string }
-    `,
-    expectedTree: {
-      $type: 'Kaz',
-      instructions: [
-        {
-          $type: 'ComputedInstruction',
-          name: 'foo',
-          type: '{ value: string }',
-        },
-      ],
-    },
-  },
-  {
-    name: 'When I use a computed instruction with a default value, computed is validated',
-    input: `
-    - computed foo = 'bar'
+    - computed foo = n * 2
     `,
     expectedTree: {
       $type: 'Kaz',
@@ -52,16 +21,16 @@ export const computedInstructionsFixtures: (
           $type: 'ComputedInstruction',
           name: 'foo',
           computeValue: {
-            expression: '\'bar\'',
+            expression: 'n * 2',
           },
         },
       ],
     },
   },
   {
-    name: 'When I use a computed instruction with a type and a default value, computed is validated',
+    name: 'When I use a computed instruction with a type and a compute value, computed is validated',
     input: `
-    - computed foo: { value: string } = { value: 'bar' }
+    - computed foo: number = n * 2
     `,
     expectedTree: {
       $type: 'Kaz',
@@ -69,9 +38,9 @@ export const computedInstructionsFixtures: (
         {
           $type: 'ComputedInstruction',
           name: 'foo',
-          type: '{ value: string }',
+          type: 'number',
           computeValue: {
-            expression: '{ value: \'bar\' }',
+            expression: 'n * 2',
           },
         },
       ],
@@ -81,6 +50,20 @@ export const computedInstructionsFixtures: (
     name: 'When I use just the computed keyword, computed is not validated',
     input: `
     - computed
+    `,
+    expectError: true,
+  },
+  {
+    name: 'When I use a computed instruction but no compute value, computed is not validated',
+    input: `
+    - computed foo
+    `,
+    expectError: true,
+  },
+  {
+    name: 'When I use a computed instruction with a type but no compute value, computed is not validated',
+    input: `
+    - computed foo: { value: string }
     `,
     expectError: true,
   },
