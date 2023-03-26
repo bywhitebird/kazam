@@ -1,5 +1,5 @@
 import { parse as _parse, tokenize as _tokenize } from './lib/voltair'
-import type { ParserError, type Token } from './lib/voltair'
+import type { ParserError, Token } from './lib/voltair'
 import type { KazAst } from './types/KazAst'
 import config from './voltair.config'
 
