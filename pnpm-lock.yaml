@@ -104,6 +104,7 @@ importers:
       '@vitest/coverage-c8': ^0.25.3
       '@whitebird/kazam-transformer-base': workspace:*
       lodash: ^4.17.21
+      rimraf: ^3.0.2
       vitest: ^0.25.3
       zod: ^3.19.1
     dependencies:
@@ -114,6 +115,7 @@ importers:
     devDependencies:
       '@types/node': 18.11.10
       '@vitest/coverage-c8': 0.25.3
+      rimraf: 3.0.2
       vitest: 0.25.3
 
 packages:
