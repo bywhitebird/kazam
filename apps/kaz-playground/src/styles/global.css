@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: 'Space Grotesk';
+  --font-mono: 'Space Mono';
+
+  --color-gray-0: #ffffff;
+  --color-gray-100: #e6e6e6;
+  --color-gray-200: #cccccc;
+  --color-gray-300: #b3b3b3;
+  --color-gray-400: #999999;
+  --color-gray-500: #808080;
+  --color-gray-600: #666666;
+  --color-gray-700: #4d4d4d;
+  --color-gray-800: #333333;
+  --color-gray-900: #1a1a1a;
+  --color-gray-1000: #000000;
+}
+
+h1 {
+  @apply text-5xl font-bold mb-4;
+}
+
+h2 {
+  @apply text-4xl font-bold mb-4;
+}
+
+h3 {
+  @apply text-3xl font-bold mb-4;
+}
+
+h4 {
+  @apply text-2xl font-bold mb-4;
+}
+
+h5 {
+  @apply text-xl font-bold mb-4;
+}
+
+h6 {
+  @apply text-lg font-bold mb-4;
+}
+
+p {
+  @apply text-base mb-4;
+}
+
+a {
+  @apply text-base underline;
+}
+
+pre {
+  @apply mb-4;
+}
+

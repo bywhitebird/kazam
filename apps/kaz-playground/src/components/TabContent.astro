@@ -1,0 +1,62 @@
+---
+import { $tabs } from '../store/tabs'
+import { $tabGroups } from '../store/tabGroups'
+
+export interface Props {
+  tab: string
+  class?: string
+}
+
+const { tab, class: className = '' } = Astro.props
+
+const groupName = Object.entries($tabGroups.get()).find(([, tabs]) => tabs.has(tab))?.[0]
+const openTab = groupName && $tabs.get()[groupName]
+---
+
+<tab-content
+  data-tab-name={tab}
+  class:list={[
+    className,
+    openTab !== tab && 'hidden',
+    openTab === tab && 'block',
+  ]}
+>
+  <slot />
+</tab-content>
+
+<script>
+  import { $tabs } from '../store/tabs'
+  import { findParent } from '../utils/findParent'
+
+  class TabContent extends HTMLElement {
+    constructor() {
+      super()
+
+      const tabGroup = findParent(this, 'tab-group')
+
+      if (!tabGroup) {
+        throw new Error('TabContent must be a child of a TabGroup')
+      }
+
+      const hide = () => this.style.display = 'none'
+      const show = () => this.style.display = 'block'
+
+      const render = (openTab: string) => {
+        if (openTab === this.dataset.tabName) {
+          show()
+        } else {
+          hide()
+        }
+      }
+
+      $tabs.subscribe(tabs => {
+        const groupName = tabGroup.dataset.groupName
+        const openTab = groupName && tabs[groupName]
+
+        openTab && render(openTab)
+      })
+    }
+  }
+
+  customElements.define('tab-content', TabContent)
+</script>

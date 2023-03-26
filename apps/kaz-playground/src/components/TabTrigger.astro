@@ -1,0 +1,65 @@
+---
+import { $tabs } from '../store/tabs'
+import { $tabGroups } from '../store/tabGroups'
+
+export interface Props {
+  name: string
+}
+
+const { name } = Astro.props
+
+const groupName = Object.entries($tabGroups.get()).find(([, tabs]) => tabs.has(name))?.[0]
+const openTab = groupName && $tabs.get()[groupName]
+---
+
+<tab-trigger
+  class="inline-block w-fit text-white text-center cursor-pointer px-3 py-1.5 data-[active]:bg-gray-1000"
+  data-tab-name={name}
+  data-active={openTab === name}
+>
+  {name}
+</tab-trigger>
+
+<script>
+  import { $tabs, setTab } from '../store/tabs'
+  import { findParent } from '../utils/findParent'
+
+  class TabTrigger extends HTMLElement {
+    constructor() {
+      super()
+
+      const tabGroup = findParent(this, 'tab-group')
+
+      if (!tabGroup) {
+        throw new Error('TabTrigger must be a child of a TabGroup')
+      }
+
+      this.addEventListener('click', () => {
+        const tabName = this.dataset.tabName
+        const groupName = tabGroup.dataset.groupName
+
+        tabName && groupName && setTab(groupName, tabName)
+      })
+
+      const setActive = () => this.attributes.setNamedItem(document.createAttribute('data-active'))
+      const setInactive = () => this.attributes.getNamedItem('data-active') && this.attributes.removeNamedItem('data-active')
+
+      const render = (openTab: string) => {
+        if (openTab === this.dataset.tabName) {
+          setActive()
+        } else {
+          setInactive()
+        }
+      }
+
+      $tabs.subscribe(tabs => {
+        const groupName = tabGroup.dataset.groupName
+        const openTab = groupName && tabs[groupName]
+
+        openTab && render(openTab)
+      })
+    }
+  }
+
+  customElements.define('tab-trigger', TabTrigger)
+</script>

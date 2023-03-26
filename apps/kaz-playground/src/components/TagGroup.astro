@@ -1,0 +1,68 @@
+---
+import { setTab } from '../store/tabs'
+import { addTab } from '../store/tabGroups'
+import { Window } from 'happy-dom'
+
+export interface Props {
+  name: string
+  default?: string
+  class?: string
+}
+
+const { name, default: defaultTab, class: className = '' } = Astro.props
+
+if (defaultTab) {
+  setTab(name, defaultTab)
+}
+
+const renderedSlot = Astro.slots.default && await Astro.slots.render('default')
+
+if (renderedSlot) {
+  const window = new Window()
+  const document = window.document
+  const div = document.createElement('div')
+  div.innerHTML = renderedSlot
+  
+  const tabTriggers = div.querySelectorAll('tab-trigger')
+  tabTriggers.forEach((tabTrigger) => {
+    const tabName = tabTrigger.attributes.getNamedItem('data-tab-name').value
+    tabName && addTab(name, tabName)
+  })
+}
+---
+
+<tab-group
+  data-group-name={name}
+  data-default-tab={defaultTab}
+  class={className}
+>
+  <Fragment set:html={renderedSlot} />
+</tab-group>
+
+<script>
+  import { setTab } from '../store/tabs'
+
+  class TabGroup extends HTMLElement {
+    constructor() {
+      super()
+
+      const groupName = this.dataset.groupName
+      const defaultTab = this.dataset.defaultTab
+
+      if (defaultTab) {
+        groupName && setTab(groupName, defaultTab)
+      }
+
+      const allTabNames = [...document.querySelectorAll('tab-trigger')]
+        .map((tabTrigger) => tabTrigger.attributes.getNamedItem('data-tab-name')?.value)
+        .filter((tabName) => tabName)
+      const uniqueTabNames = [...new Set(allTabNames)]
+
+      if (uniqueTabNames.length !== allTabNames.length) {
+        throw new Error('Tab names must be unique')
+      }
+    }
+  }
+
+  customElements.define('tab-group', TabGroup)
+</script>
