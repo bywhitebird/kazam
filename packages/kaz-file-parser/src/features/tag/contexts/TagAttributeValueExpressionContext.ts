@@ -4,7 +4,7 @@ import { ExpressionToken, WhitespaceToken } from '../../../shared'
 
 export const TagAttributeValueExpressionContext: Context<'TagAttributeValueExpressionContext'> = new Context({
   $name: 'TagAttributeValueExpressionContext',
-  breakingPatterns: [/^\{/, /\}$/, /\s+/],
+  breakingPatterns: [/\}$/],
   availableTokens: [
     () => ExpressionToken,
     () => WhitespaceToken,

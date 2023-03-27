@@ -4,7 +4,7 @@ import { ExpressionToken, LeftCurlyBracketToken } from '../../../shared'
 
 export const TemplateExpressionContext: Context<'TemplateExpressionContext'> = new Context({
   $name: 'TemplateExpressionContext',
-  breakingPatterns: [/\}$/, /\s+/],
+  breakingPatterns: [/\}$/],
   availableTokens: [
     () => ExpressionToken,
     () => TemplateExpressionEndToken,
