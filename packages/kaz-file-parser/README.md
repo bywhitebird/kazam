@@ -172,9 +172,7 @@ A tag can also contain a list of children.
 
 ```kaz
 div() {
-    span() {
-        "Hello world"
-    }
+    div() {}
 }
 ```
 
@@ -249,7 +247,7 @@ The `@if` directive is used to conditionally render a template.
 
 @if (show) {
     div() {
-        "Hello world"
+        Hello world
     }
 }
 ```
@@ -262,15 +260,15 @@ The `@else if` and `@else` directives can be used to add more conditions.
 
 @if (show) {
     div() {
-        "Hello world"
+        Hello world
     }
 } @else if (count > 0) {
     div() {
-        "Count is greater than 0"
+        Count is greater than 0
     }
 } @else {
     div() {
-        "Count is 0"
+        Count is 0
     }
 }
 ```
