@@ -8,7 +8,7 @@ const defaultCode = `
 div() {
     button(
         type="submit",
-        onClick={callback}
+        on:click={callback}
     ) {
         \${buttonText}
     }

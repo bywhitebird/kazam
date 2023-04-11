@@ -1,9 +1,11 @@
 import { parse, tokenize } from '@whitebird/kaz-file-parser'
+import { TransformerReact } from '@whitebird/kazam-transformer-react'
+import prettier from 'prettier'
 import zod from 'zod'
 
 const getQuerySchema = zod.object({
   code: zod.string(),
-  type: zod.enum(['ast']),
+  type: zod.enum(['ast', 'react']),
 })
 
 export async function get({ request }: { request: Request }) {
@@ -19,24 +21,57 @@ export async function get({ request }: { request: Request }) {
 
   const { code, type } = params.data
 
-  switch (type) {
-    case 'ast':
-      // eslint-disable-next-line no-case-declarations
-      const tokens = await tokenize(code)
-      // eslint-disable-next-line no-case-declarations
-      const ast = parse(tokens)
-      // eslint-disable-next-line no-case-declarations
-      const result = ast instanceof Error ? ast.message : JSON.stringify(ast)
+  if (type === 'ast') {
+    const tokens = await tokenize(code)
+    const ast = parse(tokens)
+    const result = ast instanceof Error ? ast : JSON.stringify(ast)
 
-      return new Response(result, {
+    return new Response(result, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+  else if (type === 'react') {
+    const tokens = await tokenize(code)
+    const ast = parse(tokens)
+
+    if (ast instanceof Error) {
+      return new Response(ast, {
         headers: {
           'Content-Type': 'application/json',
         },
       })
-    default:
+    }
+
+    const componentName = 'YourComponent'
+    const transformer = new TransformerReact({ [componentName]: ast }, {})
+    const result = await transformer.transform()
+
+    if (!(`components/${componentName}.tsx` in result) || !(result[`components/${componentName}.tsx`] instanceof Blob)) {
       return new Response(null, {
-        status: 400,
-        statusText: 'Bad request',
+        status: 500,
+        statusText: 'Internal server error',
       })
+    }
+
+    const component = prettier.format(await result[`components/${componentName}.tsx`].text(), {
+      parser: 'typescript',
+      singleQuote: true,
+      trailingComma: 'all',
+    })
+    // const component = await result[`components/${componentName}.tsx`].text()
+
+    return new Response(component, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+  else {
+    return new Response(null, {
+      status: 400,
+      statusText: 'Bad request',
+    })
   }
 }

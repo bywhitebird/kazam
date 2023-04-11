@@ -5,6 +5,7 @@ import TabContent from "../components/TabContent.astro";
 import TabGroup from "../components/TagGroup.astro";
 import Editor from "../components/Editor";
 import AstOutput from "../components/AstOutput";
+import ReactOutput from "../components/ReactOutput";
 import Documentation from "../components/Documentation.astro";
 import whitebirdWhiteLogo from "../assets/whitebirdWhiteLogo.svg"
 ---
@@ -53,10 +54,14 @@ import whitebirdWhiteLogo from "../assets/whitebirdWhiteLogo.svg"
 					<header class="flex flex-row p-2 gap-2 bg-gray-900">
 						<span class="flex items-center">Output :</span>
 						<TabTrigger name="Ast" />
+						<TabTrigger name="React" />
 					</header>
 					<div class="flex-1 min-h-0">
 						<TabContent tab="Ast" class="h-full overflow-hidden">
 							<AstOutput client:load />
+						</TabContent>
+						<TabContent tab="React" class="h-full overflow-hidden">
+							<ReactOutput client:load />
 						</TabContent>
 					</div>
 				</TabGroup>
