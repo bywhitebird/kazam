@@ -132,21 +132,11 @@ Defines a watcher.
   }
 ```
 
-#### `on`
-
-Defines an event listener.
-
-```kaz
-- on:click {
-    console.log('clicked')
-  }
-```
-
 ### Template
 
 #### Tags
 
-Tags are defined by their name followed by a pair of parentheses. The parentheses can be empty or contain a list of attributes.
+Tags are defined by their name followed by a pair of parentheses. The parentheses can be empty or contain a list of attributes or events.
 
 ```kaz
 div()
@@ -159,12 +149,13 @@ div(
 )
 ```
 
-An attribute can either be a string or a valid JavaScript expression.
+An attribute can either be a string or a valid JavaScript expression. To add an event, use the `on:` prefix followed by the event name. An event **must** be a valid JavaScript expression.
 
 ```kaz
 div(
     id="my-div",
-    onClick={callback}
+    on:click={callback}
+    on:focus={() => console.log('Focused')},
 )
 ```
 
