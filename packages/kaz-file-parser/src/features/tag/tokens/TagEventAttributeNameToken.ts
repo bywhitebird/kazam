@@ -1,11 +1,10 @@
-import { EventInstructionContext } from '..'
+import { TagAttributesContext } from '..'
 import { Token } from '../../../lib/voltair'
-import { InstructionContext } from '../../instruction'
 
 const onRegex = /^on:([a-zA-Z_$][a-zA-Z_$0-9]+)$/
 
-export const EventInstructionToken = new Token({
-  $name: 'EventInstructionToken',
+export const TagEventAttributeNameToken = new Token({
+  $name: 'TagEventAttributeNameToken',
   validator: onRegex,
   getValue: (rawValue) => {
     const [, eventName] = rawValue.match(onRegex) || []
@@ -15,6 +14,5 @@ export const EventInstructionToken = new Token({
 
     return eventName
   },
-  startContexts: [() => EventInstructionContext],
-  inContexts: [() => InstructionContext],
+  inContexts: [() => TagAttributesContext],
 })

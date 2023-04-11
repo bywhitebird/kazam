@@ -11,6 +11,8 @@ export * from './tokens/TagRightParenthesisToken'
 export * from './tokens/TagAttributeEqualToken'
 export * from './tokens/TagAttributeLeftCurlyBracketToken'
 export * from './tokens/TagAttributeRightCurlyBracketToken'
+export * from './tokens/TagEventAttributeNameToken'
 
 export * from './sequences/TagAttributeSequence'
+export * from './sequences/TagEventAttributeSequence'
 export * from './sequences/TagSequence'

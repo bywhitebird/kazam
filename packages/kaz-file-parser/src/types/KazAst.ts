@@ -9,17 +9,23 @@ export const kazTemplateTagAttributeSchema = zod.object({
   zod.object({ expression: zod.string() }),
 ]))
 
+export const kazTemplateTagEventAttributeSchema = zod.object({
+  $type: zod.literal('TagEventAttribute'),
+  name: zod.string(),
+  expression: zod.string(),
+})
+
 export interface KazTemplateTag {
   $type: 'Tag'
   tagName: string
-  attributes: zod.infer<typeof kazTemplateTagAttributeSchema>[]
+  attributes: (zod.infer<typeof kazTemplateTagAttributeSchema> | zod.infer<typeof kazTemplateTagEventAttributeSchema>)[]
   children: zod.infer<typeof kazTemplateSchema>[]
 }
 
 export const kazTemplateTagSchema: zod.ZodType<KazTemplateTag> = zod.object({
   $type: zod.literal('Tag'),
   tagName: zod.string(),
-  attributes: zod.array(kazTemplateTagAttributeSchema),
+  attributes: zod.array(zod.union([kazTemplateTagAttributeSchema, kazTemplateTagEventAttributeSchema])),
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
@@ -148,18 +154,6 @@ export const kazComputedInstructionSchema = zod.object({
   }),
 })
 
-export const kazEventInstructionParameterSchema = zod.object({
-  name: zod.string(),
-  type: zod.string().optional(),
-})
-
-export const kazEventInstructionSchema = zod.object({
-  $type: zod.literal('EventInstruction'),
-  eventName: zod.string(),
-  parameters: zod.array(kazEventInstructionParameterSchema),
-  callbackExpression: zod.string(),
-})
-
 export const kazPropInstructionSchema = zod.object({
   $type: zod.literal('PropInstruction'),
   name: zod.string(),
@@ -185,7 +179,6 @@ export const kazAstSchema = zod.object({
       kazImportInstructionSchema,
       kazWatchInstructionSchema,
       kazComputedInstructionSchema,
-      kazEventInstructionSchema,
       kazPropInstructionSchema,
       kazStateInstructionSchema,
     ]),
