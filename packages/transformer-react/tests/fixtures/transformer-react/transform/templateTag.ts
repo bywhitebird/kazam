@@ -90,4 +90,36 @@ export const templateTagFixtures = [
       `,
     },
   },
+  {
+    name: 'When I pass content with tag and events, component is generated',
+    input: TransformerInputFactory.create({
+      template: [
+        {
+          $type: 'Tag',
+          tagName: 'div',
+          attributes: [
+            {
+              $type: 'TagEventAttribute',
+              name: 'click',
+              expression: 'handleClick',
+            },
+          ],
+          children: [],
+        },
+      ],
+    }),
+    expectedOutput: {
+      'components/Test.tsx': `
+        import React from 'react'
+
+        export const Test = () => {
+          return (
+            <>
+              <div onClick={handleClick}></div>
+            </>
+          )
+        }
+      `,
+    },
+  },
 ]

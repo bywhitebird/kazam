@@ -6,7 +6,6 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { handle, componentMeta, a
   const importInstructions = kaz.instructions.filter(instruction => instruction.$type === 'ImportInstruction')
   const watchInstructions = kaz.instructions.filter(instruction => instruction.$type === 'WatchInstruction')
   const computedInstructions = kaz.instructions.filter(instruction => instruction.$type === 'ComputedInstruction')
-  const eventInstructions = kaz.instructions.filter(instruction => instruction.$type === 'EventInstruction')
   const stateInstructions = kaz.instructions.filter(instruction => instruction.$type === 'StateInstruction')
   const propInstructions = kaz.instructions.filter(instruction => instruction.$type === 'PropInstruction')
 
@@ -21,7 +20,6 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { handle, componentMeta, a
       ${await Promise.all(stateInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
       ${await Promise.all(computedInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
       ${await Promise.all(watchInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
-      ${await Promise.all(eventInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
 
       return (<>
         ${await Promise.all(kaz.template.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}

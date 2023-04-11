@@ -34,7 +34,6 @@ export class TransformerReact extends TransformerBase {
   private handlers: ISchemaHandlers = {
     ast: handlers.handleKaz,
     computedInstruction: handlers.handleComputedInstruction,
-    eventInstruction: handlers.handleEventInstruction,
     importInstruction: handlers.handleImportInstruction,
     defaultImport: handlers.handleDefaultImport,
     namedImport: handlers.handleNamedImport,
@@ -43,6 +42,7 @@ export class TransformerReact extends TransformerBase {
     stateInstruction: handlers.handleStateInstruction,
     watchInstruction: handlers.handleWatchInstruction,
     templateTagAttribute: handlers.handleTemplateTagAttribute,
+    templateTagEventAttribute: handlers.handleTemplateTagEventAttribute,
     templateTag: handlers.handleTemplateTag,
     templateText: handlers.handleTemplateText,
     templateExpression: handlers.handleTemplateExpression,
