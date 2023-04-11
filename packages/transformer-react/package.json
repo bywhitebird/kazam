@@ -12,7 +12,9 @@
   },
   "dependencies": {
     "@types/lodash": "^4.14.191",
+    "@whitebird/kaz-file-parser": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
+    "deepmerge": "^4.3.1",
     "lodash": "^4.17.21",
     "zod": "^3.19.1"
   },
