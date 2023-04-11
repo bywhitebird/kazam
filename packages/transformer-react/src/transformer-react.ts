@@ -4,11 +4,11 @@ import type { z } from 'zod'
 
 import * as handlers from './handlers'
 import { type ImportInfos, importsToString, mergeImports } from './utils/imports-to-string'
+import { type TUppercaseFirst, upperFirst } from './utils/upperFirst'
 
 interface IComponentMeta { name: string }
 
 type TLowercaseFirst<T extends string> = T extends `${infer U}${infer V}` ? `${Lowercase<U>}${V}` : T
-type TUppercaseFirst<T extends string> = T extends `${infer U}${infer V}` ? `${Uppercase<U>}${V}` : T
 type TSchemaName<T extends string> = T extends `kaz${infer U}Schema` ? TLowercaseFirst<U> : never
 
 type THandlerReturnType = unknown
@@ -75,11 +75,10 @@ export class TransformerReact extends TransformerBase {
     if (input === undefined)
       return ''
 
-    const upperCaseFirst = <T extends string>(str: T): TUppercaseFirst<T> => ((str[0] ?? '').toUpperCase() + str.slice(1)) as TUppercaseFirst<T>
-
     for (const handlerName in this.handlers) {
       const handler = this.handlers[handlerName as keyof ISchemaHandlers]
-      const result = schemas[`kaz${upperCaseFirst(handlerName as keyof ISchemaHandlers)}Schema`].safeParse(input)
+      // eslint-disable-next-line import/namespace
+      const result = schemas[`kaz${upperFirst(handlerName as keyof ISchemaHandlers)}Schema`].safeParse(input)
       if (result.success) {
         return handler(result.data as never, {
           handle: input => this.handle(input, componentMeta),
