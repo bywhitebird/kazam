@@ -209,7 +209,7 @@ export const tagFixtures: (
     },
   },
   {
-    name: 'When I use a tag with an expression as children, tag is correctly tokenized',
+    name: 'When I use a tag with an expression as children, tag is validated',
     input: `
     p () {
       \${anExpression}
@@ -228,6 +228,29 @@ export const tagFixtures: (
               expression: 'anExpression',
             },
           ],
+        },
+      ],
+    },
+  },
+  {
+    name: 'When I use a tag with an event attribute, tag is validated',
+    input: `
+    p (on:click = {anExpression}) {}
+    `,
+    expectedTree: {
+      $type: 'Kaz',
+      template: [
+        {
+          $type: 'Tag',
+          tagName: 'p',
+          attributes: [
+            {
+              $type: 'TagEventAttribute',
+              name: 'click',
+              expression: 'anExpression',
+            },
+          ],
+          children: [],
         },
       ],
     },

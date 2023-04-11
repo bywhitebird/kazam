@@ -1,4 +1,4 @@
-import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from '../../../src/features/tag'
+import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagEventAttributeNameToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from '../../../src/features/tag'
 import { TemplateExpressionEndToken, TemplateExpressionStartToken } from '../../../src/features/template'
 import type { Token } from '../../../src/lib/voltair'
 import { DoubleQuoteToken, DoubleQuotedStringToken, ExpressionToken, LeftCurlyBracketToken, RightCurlyBracketToken } from '../../../src/shared'
@@ -179,6 +179,24 @@ export const tagFixtures: ({
       { checker: LeftCurlyBracketToken, rawValue: '{' },
       { checker: ExpressionToken, value: 'text' },
       { checker: TemplateExpressionEndToken, rawValue: '}' },
+      { checker: RightCurlyBracketToken, rawValue: '}' },
+    ],
+  },
+  {
+    name: 'When I use a tag with an event attribute, tag is correctly tokenized',
+    input: `
+    p (on:click = {() => {}}) {}
+    `,
+    expectedTokenCheckers: [
+      { checker: TagNameOrTextToken, rawValue: 'p' },
+      { checker: TagLeftParenthesisToken, rawValue: '(' },
+      { checker: TagEventAttributeNameToken, rawValue: 'on:click' },
+      { checker: TagAttributeEqualToken, rawValue: '=' },
+      { checker: TagAttributeLeftCurlyBracketToken, rawValue: '{' },
+      { checker: ExpressionToken, value: '() => {}' },
+      { checker: TagAttributeRightCurlyBracketToken, rawValue: '}' },
+      { checker: TagRightParenthesisToken, rawValue: ')' },
+      { checker: LeftCurlyBracketToken, rawValue: '{' },
       { checker: RightCurlyBracketToken, rawValue: '}' },
     ],
   },

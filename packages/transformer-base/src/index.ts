@@ -1,8 +1,12 @@
-import { Component, type IComponent } from './schemas'
+import { kazAstSchema } from '@whitebird/kaz-file-parser'
+import zod from 'zod'
 
-export type ITransformerInput = IComponent[]
+export const TransformerInput = zod.record(zod.string(), kazAstSchema)
 
-export const validateTransformerInput = (input: unknown): ITransformerInput => Component.array().parse(input)
+export function validateTransformerInput(input: unknown) {
+  return TransformerInput.parse(input)
+}
 
-export * from './schemas'
+export type ITransformerInput = zod.infer<typeof TransformerInput>
+
 export * from './transformer-base'

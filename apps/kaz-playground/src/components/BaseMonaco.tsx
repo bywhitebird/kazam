@@ -3,6 +3,7 @@ import type * as monaco from 'monaco-editor'
 
 import whitebirdVsCodeTheme from '../assets/whitebirdVsCodeTheme'
 import { transformVsCodeThemeToMonacoTheme } from '../utils/transformVsCodeThemeToMonacoTheme'
+
 const MonacoEditor = ('default' in _MonacoEditor ? _MonacoEditor.default : _MonacoEditor) as typeof _MonacoEditor
 
 export default function BaseMonaco(props: EditorProps) {
