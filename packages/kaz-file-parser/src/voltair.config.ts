@@ -1,13 +1,12 @@
 import { ComputedInstructionToken } from './features/computed-instruction'
 import { ElseIfLogicalToken, ElseLogicalToken, IfConditionToken, IfLeftParenthesisToken, IfLogicalToken, IfRightParenthesisToken } from './features/condition-logical'
-import { EventInstructionToken } from './features/event-instruction'
 import { ForLeftParenthesisToken, ForLogicalToken, ForParametersToken, ForRightParenthesisToken } from './features/for-logical'
 import { AliasKeywordToken, FromKeywordToken, ImportInstructionToken, WildcardCharacterToken } from './features/import-instruction'
 import { EndInstructionToken, StartInstructionToken } from './features/instruction'
 import { KazSequence } from './features/kaz'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
-import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from './features/tag'
+import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagEventAttributeNameToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from './features/tag'
 import { TemplateExpressionEndToken, TemplateExpressionStartToken } from './features/template'
 import { WatchInstructionToken } from './features/watch-instruction'
 import { ArrowFunctionBodyToken, ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
@@ -46,11 +45,6 @@ export default {
       [
         // Watch instruction
         WatchInstructionToken,
-      ],
-
-      [
-        // Event instruction
-        EventInstructionToken,
       ],
 
       EndInstructionToken,
@@ -105,6 +99,7 @@ export default {
 
       [
         // Tag attributes
+        TagEventAttributeNameToken,
         TagAttributeNameToken,
         TagAttributeSeparatorToken,
 

@@ -1,49 +1,57 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import zod from 'zod'
 
-const kazTemplateTagAttributeSchema = zod.object({
+export const kazTemplateTagAttributeSchema = zod.object({
   $type: zod.literal('TagAttribute'),
   name: zod.string(),
-  value: zod.union([zod.string(), zod.boolean()]).optional(),
-  expression: zod.string().optional(),
+}).and(zod.union([
+  zod.object({ value: zod.union([zod.string(), zod.boolean()]) }),
+  zod.object({ expression: zod.string() }),
+]))
+
+export const kazTemplateTagEventAttributeSchema = zod.object({
+  $type: zod.literal('TagEventAttribute'),
+  name: zod.string(),
+  expression: zod.string(),
 })
 
-export type KazTemplateTag = {
+export interface KazTemplateTag {
   $type: 'Tag'
   tagName: string
-  attributes: zod.infer<typeof kazTemplateTagAttributeSchema>[]
+  attributes: (zod.infer<typeof kazTemplateTagAttributeSchema> | zod.infer<typeof kazTemplateTagEventAttributeSchema>)[]
   children: zod.infer<typeof kazTemplateSchema>[]
 }
 
-const kazTemplateTagSchema: zod.ZodType<KazTemplateTag> = zod.object({
+export const kazTemplateTagSchema: zod.ZodType<KazTemplateTag> = zod.object({
   $type: zod.literal('Tag'),
   tagName: zod.string(),
-  attributes: zod.array(kazTemplateTagAttributeSchema),
+  attributes: zod.array(zod.union([kazTemplateTagAttributeSchema, kazTemplateTagEventAttributeSchema])),
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
-const kazTemplateTextSchema = zod.object({
+export const kazTemplateTextSchema = zod.object({
   $type: zod.literal('Text'),
   text: zod.string(),
 })
 
-const kazTemplateExpressionSchema = zod.object({
+export const kazTemplateExpressionSchema = zod.object({
   $type: zod.literal('Expression'),
   expression: zod.string(),
 })
 
-export type KazTemplateFor = {
+export interface KazTemplateFor {
   $type: 'ForLogical'
   parameters: string
   children: zod.infer<typeof kazTemplateSchema>[]
 }
 
-const kazTemplateForSchema: zod.ZodType<KazTemplateFor> = zod.object({
+export const kazTemplateForSchema: zod.ZodType<KazTemplateFor> = zod.object({
   $type: zod.literal('ForLogical'),
   parameters: zod.string(),
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
-export type KazTemplateElseIf = {
+export interface KazTemplateElseIf {
   $type: 'ElseLogical'
   if: {
     $type: 'ElseIfLogical'
@@ -53,7 +61,7 @@ export type KazTemplateElseIf = {
   }
 }
 
-const kazTemplateElseIfSchema: zod.ZodType<KazTemplateElseIf> = zod.object({
+export const kazTemplateElseIfSchema: zod.ZodType<KazTemplateElseIf> = zod.object({
   $type: zod.literal('ElseLogical'),
   if: zod.object({
     $type: zod.literal('ElseIfLogical'),
@@ -66,31 +74,31 @@ const kazTemplateElseIfSchema: zod.ZodType<KazTemplateElseIf> = zod.object({
   }),
 })
 
-export type KazTemplateElse = {
+export interface KazTemplateElse {
   $type: 'ElseLogical'
   children: zod.infer<typeof kazTemplateSchema>[]
 }
 
-const kazTemplateElseSchema: zod.ZodType<KazTemplateElse> = zod.object({
+export const kazTemplateElseSchema: zod.ZodType<KazTemplateElse> = zod.object({
   $type: zod.literal('ElseLogical'),
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
 })
 
-export type KazTemplateIf = {
+export interface KazTemplateIf {
   $type: 'IfLogical'
   condition: string
   children: zod.infer<typeof kazTemplateSchema>[]
   else?: KazTemplateElse | KazTemplateElseIf | undefined
 }
 
-const kazTemplateIfSchema: zod.ZodType<KazTemplateIf> = zod.object({
+export const kazTemplateIfSchema: zod.ZodType<KazTemplateIf> = zod.object({
   $type: zod.literal('IfLogical'),
   condition: zod.string(),
   children: zod.lazy(() => zod.array(kazTemplateSchema)),
   else: zod.union([kazTemplateElseSchema, kazTemplateElseIfSchema]).optional(),
 })
 
-const kazTemplateSchema = zod.union([
+export const kazTemplateSchema = zod.union([
   kazTemplateTagSchema,
   kazTemplateTextSchema,
   kazTemplateExpressionSchema,
@@ -98,23 +106,23 @@ const kazTemplateSchema = zod.union([
   kazTemplateIfSchema,
 ])
 
-const kazNamedImportSchema = zod.object({
+export const kazNamedImportSchema = zod.object({
   $type: zod.literal('NamedImport'),
   name: zod.string(),
   alias: zod.string().optional(),
 })
 
-const kazDefaultImportSchema = zod.object({
+export const kazDefaultImportSchema = zod.object({
   $type: zod.literal('DefaultImport'),
   name: zod.string(),
 })
 
-const kazNamespaceImportSchema = zod.object({
+export const kazNamespaceImportSchema = zod.object({
   $type: zod.literal('NamespaceImport'),
   name: zod.string(),
 })
 
-const kazImportInstructionSchema = zod.object({
+export const kazImportInstructionSchema = zod.object({
   $type: zod.literal('ImportInstruction'),
   from: zod.string(),
   imports: zod.array(
@@ -126,18 +134,18 @@ const kazImportInstructionSchema = zod.object({
   ).optional(),
 })
 
-const kazWatchedVariableSchema = zod.object({
+export const kazWatchedVariableSchema = zod.object({
   name: zod.string(),
   type: zod.string().optional(),
 })
 
-const kazWatchInstructionSchema = zod.object({
+export const kazWatchInstructionSchema = zod.object({
   $type: zod.literal('WatchInstruction'),
   watchedVariables: zod.array(kazWatchedVariableSchema),
   callbackExpression: zod.string(),
 })
 
-const kazComputedInstructionSchema = zod.object({
+export const kazComputedInstructionSchema = zod.object({
   $type: zod.literal('ComputedInstruction'),
   name: zod.string(),
   type: zod.string().optional(),
@@ -146,19 +154,7 @@ const kazComputedInstructionSchema = zod.object({
   }),
 })
 
-const kazEventParameterSchema = zod.object({
-  name: zod.string(),
-  type: zod.string().optional(),
-})
-
-const kazEventInstructionSchema = zod.object({
-  $type: zod.literal('EventInstruction'),
-  eventName: zod.string(),
-  parameters: zod.array(kazEventParameterSchema),
-  callbackExpression: zod.string(),
-})
-
-const kazPropInstructionSchema = zod.object({
+export const kazPropInstructionSchema = zod.object({
   $type: zod.literal('PropInstruction'),
   name: zod.string(),
   type: zod.string().optional(),
@@ -167,7 +163,7 @@ const kazPropInstructionSchema = zod.object({
   }).optional(),
 })
 
-const kazStateInstructionSchema = zod.object({
+export const kazStateInstructionSchema = zod.object({
   $type: zod.literal('StateInstruction'),
   name: zod.string(),
   type: zod.string().optional(),
@@ -176,14 +172,13 @@ const kazStateInstructionSchema = zod.object({
   }).optional(),
 })
 
-const kazAstSchema = zod.object({
+export const kazAstSchema = zod.object({
   $type: zod.literal('Kaz'),
   instructions: zod.array(
     zod.union([
       kazImportInstructionSchema,
       kazWatchInstructionSchema,
       kazComputedInstructionSchema,
-      kazEventInstructionSchema,
       kazPropInstructionSchema,
       kazStateInstructionSchema,
     ]),
@@ -199,5 +194,4 @@ const kazAstSchema = zod.object({
   ),
 })
 
-export { kazAstSchema }
 export type KazAst = zod.infer<typeof kazAstSchema>

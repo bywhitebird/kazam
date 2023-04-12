@@ -1,14 +1,14 @@
-import { ReadableStream } from "stream/web";
+import { ReadableStream } from 'node:stream/web'
 
 export const InputStream = (input: string) => {
   const stream = new ReadableStream({
     start(controller) {
-      for (const char of input) {
-        controller.enqueue(char);
-      }
-      controller.close();
-    },
-  });
+      for (const char of input)
+        controller.enqueue(char)
 
-  return stream;
+      controller.close()
+    },
+  })
+
+  return stream
 }

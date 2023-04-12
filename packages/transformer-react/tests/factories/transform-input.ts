@@ -1,16 +1,15 @@
 import type { ITransformerInput } from '@whitebird/kazam-transformer-base'
+import deepmerge from 'deepmerge'
 
-const defaultInput: ITransformerInput[number] = {
-  name: 'Test',
-  template: [{ tag: 'div' }],
+const defaultInput: ITransformerInput[string] = {
+  $type: 'Kaz',
+  instructions: [],
+  template: [],
 }
 
 export class TransformerInputFactory {
   static create(input: Partial<ITransformerInput[number]> = {}) {
-    return [{
-      ...defaultInput,
-      ...input,
-    }]
+    return { Test: deepmerge(defaultInput, input) }
   }
 
   static createMany(...inputs: Partial<ITransformerInput[number]>[]) {

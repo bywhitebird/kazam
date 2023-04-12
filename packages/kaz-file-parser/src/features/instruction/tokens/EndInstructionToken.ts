@@ -1,7 +1,6 @@
 import { InstructionContext } from '..'
 import { Token } from '../../../lib/voltair'
 import { ComputedInstructionContext } from '../../computed-instruction'
-import { EventInstructionContext } from '../../event-instruction'
 import { ImportInstructionContext } from '../../import-instruction'
 import { PropInstructionContext } from '../../prop-instruction'
 import { StateInstructionContext } from '../../state-instruction'
@@ -13,7 +12,6 @@ const instructionContexts = [
   () => PropInstructionContext,
   () => StateInstructionContext,
   () => WatchInstructionContext,
-  () => EventInstructionContext,
   () => InstructionContext,
 ]
 

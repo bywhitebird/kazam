@@ -12,11 +12,11 @@ export type ImportInfos = (
   | { wildcardImport?: Required<Pick<ImportInfo, 'alias'>> }
 ) & { path: string }
 
-const generateImportName = (importInfo: ImportInfo) => {
+function generateImportName(importInfo: ImportInfo) {
   return `${importInfo.typeOnly ? 'type ' : ''}${importInfo.name}${importInfo.alias ? ` as ${importInfo.alias}` : ''}`
 }
 
-export const importsToString = (importInfos: ImportInfos[]) => {
+export function importsToString(importInfos: ImportInfos[]) {
   return importInfos.reduce<string>((acc, importInfo) => {
     let importString: string
 
@@ -25,10 +25,10 @@ export const importsToString = (importInfos: ImportInfos[]) => {
     }
     else {
       importString = [
-        'defaultImport' in importInfo && generateImportName(importInfo.defaultImport),
-        'namedImports' in importInfo && importInfo.namedImports.length > 0
+        ...(['defaultImport' in importInfo ? generateImportName(importInfo.defaultImport) : undefined]),
+        ...([('namedImports' in importInfo && importInfo.namedImports.length > 0)
           ? `{ ${importInfo.namedImports.map(namedImport => generateImportName(namedImport)).join(', ')} }`
-          : undefined,
+          : undefined]),
       ].filter(Boolean).join(', ')
     }
 
@@ -36,7 +36,7 @@ export const importsToString = (importInfos: ImportInfos[]) => {
   }, '')
 }
 
-export const mergeImports = (importInfos: ImportInfos[]) => {
+export function mergeImports(importInfos: ImportInfos[]) {
   return importInfos.reduce<ImportInfos[]>((acc, importInfo) => {
     if ('wildcardImport' in importInfo) {
       if (acc.some(accImportInfo => 'wildcardImport' in accImportInfo && accImportInfo.wildcardImport.alias === importInfo.wildcardImport?.alias))
