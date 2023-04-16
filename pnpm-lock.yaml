@@ -42,6 +42,19 @@ importers:
       '@vitest/coverage-c8': 0.25.3
       vitest: 0.25.3
 
+  packages/parser-base:
+    specifiers:
+      '@types/node': ^18.11.9
+      '@whitebird/kazam-transformer-base': workspace:*
+      esno: ^0.16.3
+      rimraf: ^3.0.2
+    dependencies:
+      '@whitebird/kazam-transformer-base': link:../transformer-base
+    devDependencies:
+      '@types/node': 18.11.10
+      esno: 0.16.3
+      rimraf: 3.0.2
+
   packages/transformer-base:
     specifiers:
       '@types/node': ^18.11.9
