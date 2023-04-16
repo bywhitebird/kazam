@@ -9,7 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@whitebird/kaz-file-parser": "workspace:*",
+    "@whitebird/kaz-ast": "workspace:*",
     "zod": "^3.19.1",
     "zod-to-json-schema": "^3.18.1"
   },
