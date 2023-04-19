@@ -1,0 +1,11 @@
+- prop buttonText: string = "Button"
+- prop callback: () => void = () => console.log('Button clicked')
+
+div() {
+    button(
+        class="btn btn-primary",
+        on:click={callback}
+    ) {
+        ${buttonText}
+    }
+}

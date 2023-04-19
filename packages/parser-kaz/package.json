@@ -1,0 +1,23 @@
+{
+  "name": "@whitebird/kazam-parser-kaz",
+  "version": "0.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kazam-parser-base": "workspace:*",
+    "glob": "^10.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@vitest/coverage-c8": "^0.25.3",
+    "vitest": "^0.25.3"
+  }
+}
