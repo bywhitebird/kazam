@@ -6,7 +6,7 @@ import { TemplateExpressionContext } from '../../../features/template'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`const _ = ${rawValue}`)
+  const parsed = parse(`const _ = ${rawValue}`, { warnOnUnsupportedTypeScriptVersion: false })
   const variable = parsed.body[0]
 
   if (variable?.type !== 'VariableDeclaration' || variable.declarations[0] === undefined)
