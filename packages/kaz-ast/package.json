@@ -1,5 +1,5 @@
 {
-  "name": "@whitebird/kaz-file-parser",
+  "name": "@whitebird/kaz-ast",
   "version": "0.0.0",
   "private": true,
   "main": "dist/index.js",
