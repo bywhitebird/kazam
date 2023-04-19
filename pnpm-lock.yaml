@@ -130,6 +130,7 @@ importers:
     specifiers:
       '@types/lodash': ^4.14.191
       '@types/node': ^18.11.9
+      '@types/prettier': ^2.7.2
       '@vitest/coverage-c8': ^0.25.3
       '@whitebird/kaz-ast': workspace:*
       '@whitebird/kazam-transformer-base': workspace:*
@@ -139,6 +140,7 @@ importers:
       zod: ^3.19.1
     dependencies:
       '@types/lodash': 4.14.191
+      '@types/prettier': 2.7.2
       '@whitebird/kaz-ast': link:../kaz-ast
       '@whitebird/kazam-transformer-base': link:../transformer-base
       deepmerge: 4.3.1
@@ -895,6 +897,10 @@ packages:
   /@types/parse-json/4.0.0:
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
     dev: true
+
+  /@types/prettier/2.7.2:
+    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
+    dev: false
 
   /@types/semver/6.2.3:
     resolution: {integrity: sha512-KQf+QAMWKMrtBMsB8/24w53tEsxllMj6TuA80TT/5igJalLI/zm0L3oXRbIAl4Ohfc85gyHX/jhMwsVkmhLU4A==}

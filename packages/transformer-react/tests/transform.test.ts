@@ -1,3 +1,4 @@
+import prettier from 'prettier'
 import { describe, test } from 'vitest'
 
 import * as transformFixtures from './fixtures/transformer-react/transform'
@@ -14,8 +15,18 @@ describe('transformer-react', () => {
           const result = await transformer.transform()
 
           if (fixture.expectedOutput) {
-            for (const [name, output] of Object.entries(result))
-              expectToEqualIgnoreWhitespace(await (output as Blob).text(), fixture.expectedOutput[`components/${name}.tsx`])
+            for (const [name, output] of Object.entries(result)) {
+              expectToEqualIgnoreWhitespace(
+                await (output as Blob).text(),
+                prettier.format(
+                  fixture.expectedOutput[`components/${name}.tsx`],
+                  {
+                    parser: 'babel-ts',
+                    printWidth: Infinity,
+                  },
+                ),
+              )
+            }
           }
         })
       })

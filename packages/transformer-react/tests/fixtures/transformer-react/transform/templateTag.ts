@@ -57,7 +57,7 @@ export const templateTagFixtures = [
         export const Test = () => {
           return (
             <>
-              <div className="hello" id={id}>Hello world</div>
+              <div className="hello" id={id}>{""}Hello world{""}</div>
             </>
           )
         }
