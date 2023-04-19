@@ -15,7 +15,7 @@ describe('transformer-react', () => {
 
           if (fixture.expectedOutput) {
             for (const [name, output] of Object.entries(result))
-              expectToEqualIgnoreWhitespace(await (output as Blob).text(), fixture.expectedOutput[name])
+              expectToEqualIgnoreWhitespace(await (output as Blob).text(), fixture.expectedOutput[`components/${name}.tsx`])
           }
         })
       })
