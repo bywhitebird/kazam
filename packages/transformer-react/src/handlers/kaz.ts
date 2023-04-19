@@ -1,3 +1,5 @@
+import * as path from 'node:path'
+
 import type { IHandler } from '../transformer-react'
 
 export const handleKaz: IHandler<'ast'> = async (kaz, { handle, componentMeta, addImport }) => {
@@ -15,8 +17,10 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { handle, componentMeta, a
   const propsDeclaration = props.map(prop => prop.declaration).join(', ')
   const propsType = props.map(prop => prop.type).join(', ')
 
+  const componentName = path.basename(componentMeta.name, path.extname(componentMeta.name))
+
   return `
-    export const ${componentMeta.name} = (${props.length > 0 ? `{ ${propsDeclaration} }: { ${propsType} }` : ''}) => {
+    export const ${componentName} = (${props.length > 0 ? `{ ${propsDeclaration} }: { ${propsType} }` : ''}) => {
       ${await Promise.all(stateInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
       ${await Promise.all(computedInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
       ${await Promise.all(watchInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
