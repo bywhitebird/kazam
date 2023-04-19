@@ -1,5 +1,5 @@
 {
-  "name": "@whitebird/kazam-transformer-base",
+  "name": "@whitebird/kazam-parser-base",
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -9,9 +9,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@whitebird/kaz-ast": "workspace:*",
-    "zod": "^3.19.1",
-    "zod-to-json-schema": "^3.18.1"
+    "@whitebird/kazam-transformer-base": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

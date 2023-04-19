@@ -1,4 +1,4 @@
-import { schemas } from '@whitebird/kaz-file-parser'
+import { schemas } from '@whitebird/kaz-ast'
 import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
 import type { z } from 'zod'
 
