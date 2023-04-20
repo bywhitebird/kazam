@@ -1,4 +1,4 @@
-import { parse, tokenize } from '@whitebird/kaz-file-parser'
+import { parse, tokenize } from '@whitebird/kaz-ast'
 import { TransformerReact } from '@whitebird/kazam-transformer-react'
 import prettier from 'prettier'
 import zod from 'zod'

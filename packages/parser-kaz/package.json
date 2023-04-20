@@ -1,5 +1,5 @@
 {
-  "name": "@whitebird/kazam-transformer-react",
+  "name": "@whitebird/kazam-parser-kaz",
   "version": "0.0.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,18 +11,13 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.191",
-    "@types/prettier": "^2.7.2",
     "@whitebird/kaz-ast": "workspace:*",
-    "@whitebird/kazam-transformer-base": "workspace:*",
-    "deepmerge": "^4.3.1",
-    "lodash": "^4.17.21",
-    "zod": "^3.19.1"
+    "@whitebird/kazam-parser-base": "workspace:*",
+    "glob": "^10.2.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@vitest/coverage-c8": "^0.25.3",
-    "rimraf": "^3.0.2",
     "vitest": "^0.25.3"
   }
 }

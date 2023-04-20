@@ -1,4 +1,4 @@
-import { kazAstSchema } from '@whitebird/kaz-file-parser'
+import { kazAstSchema } from '@whitebird/kaz-ast'
 import zod from 'zod'
 
 export const TransformerInput = zod.record(zod.string(), kazAstSchema)

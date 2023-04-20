@@ -1,0 +1,8 @@
+- prop placeholder: string
+
+div() {
+    input(
+        placeholder={placeholder},
+        type="text"
+    ) {}
+}
