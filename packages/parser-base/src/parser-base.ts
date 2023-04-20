@@ -1,12 +1,6 @@
-import type { ITransformerInput, TransformerBase } from '@whitebird/kazam-transformer-base'
+import type { ITransformerInput } from '@whitebird/kazam-transformer-base'
 
-// this is temporary, will be replaced when the Kazam package is ready
-export interface KazamConfig {
-  input: string[]
-  output: string
-  parsers: ParserBase[]
-  transformers: TransformerBase[]
-}
+import type { KazamConfig } from './types/KazamConfig'
 
 export abstract class ParserBase {
   abstract load(config: KazamConfig): unknown | Promise<unknown>

@@ -4,7 +4,7 @@ import { ForParametersContext } from '..'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`for (${rawValue}) {}`)
+  const parsed = parse(`for (${rawValue}) {}`, { warnOnUnsupportedTypeScriptVersion: false })
   const forExpression = parsed.body[0]
 
   if (

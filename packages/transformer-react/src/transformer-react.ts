@@ -1,5 +1,8 @@
+import * as path from 'node:path'
+
 import { schemas } from '@whitebird/kaz-ast'
 import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
+import prettier from 'prettier'
 import type { z } from 'zod'
 
 import * as handlers from './handlers'
@@ -58,15 +61,24 @@ export class TransformerReact extends TransformerBase {
   async transform() {
     await Promise.all(Object.entries(this.input).map(async ([componentName, component]) => {
       const result = await this.handle(component, { name: componentName })
-      this.generatedComponents[componentName] = `
+      this.generatedComponents[componentName] = prettier.format(
+        `
         ${importsToString(mergeImports(this.imports[componentName] ?? []))}
 
         ${result}
-      `
+        `,
+        {
+          parser: 'babel-ts',
+          printWidth: Infinity,
+        },
+      )
     }))
 
-    return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [name, content]) => {
-      output[`components/${name}.tsx`] = new Blob([content], { type: 'text/plain' })
+    return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
+      output[id] = Object.assign(
+        new Blob([content], { type: 'text/plain' }),
+        { name: `${id.slice(0, -path.extname(id).length)}.tsx` },
+      )
       return output
     }, {})
   }

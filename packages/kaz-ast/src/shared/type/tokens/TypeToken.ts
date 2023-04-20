@@ -4,7 +4,7 @@ import { TypeContext } from '..'
 import { Token } from '../../../lib/voltair'
 
 const getTypeAnnotation = (rawValue: string) => {
-  const parsed = parse(`type T = ${rawValue}`)
+  const parsed = parse(`type T = ${rawValue}`, { warnOnUnsupportedTypeScriptVersion: false })
   const type = parsed.body[0]
 
   if (type?.type !== 'TSTypeAliasDeclaration')

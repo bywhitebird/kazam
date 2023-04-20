@@ -4,7 +4,7 @@ import { ConditionContext } from '..'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`if (${rawValue}) {}`)
+  const parsed = parse(`if (${rawValue}) {}`, { warnOnUnsupportedTypeScriptVersion: false })
   const ifExpression = parsed.body[0]
 
   if (

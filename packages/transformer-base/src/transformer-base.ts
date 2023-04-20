@@ -5,7 +5,7 @@ import type { ITransformerInput } from '.'
 export type ITransformerOptions = Record<string, never>
 
 export interface ITransformerOutput {
-  [key: string]: ITransformerOutput | Blob
+  [key: string]: ITransformerOutput | (Blob & { name: string })
 }
 
 export abstract class TransformerBase {
@@ -15,5 +15,5 @@ export abstract class TransformerBase {
   ) {
   }
 
-  abstract transform(): Promise<ITransformerOutput>
+  abstract transform(): Promise<ITransformerOutput | void>
 }
