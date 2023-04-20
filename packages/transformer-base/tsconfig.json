@@ -4,7 +4,8 @@
   "extends": "@whitebird/tsconfig/node.json",
   "compilerOptions": {
     "outDir": "dist",
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "module": "ES6"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

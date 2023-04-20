@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/node": "^18.11.9",
     "@vitest/coverage-c8": "^0.25.3",
+    "rimraf": "^3.0.2",
     "vitest": "^0.25.3"
   }
 }

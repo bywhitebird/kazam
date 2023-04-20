@@ -1,7 +1,6 @@
-import _ from 'lodash'
-
 import type { IHandler } from '../transformer-react'
+import { upperFirst } from '../utils/upperFirst'
 
 export const handleTemplateTagEventAttribute: IHandler<'templateTagEventAttribute'> = async (templateTagEventAttribute) => {
-  return `on${_.upperFirst(templateTagEventAttribute.name)}={${templateTagEventAttribute.expression}}`
+  return `on${upperFirst(templateTagEventAttribute.name)}={${templateTagEventAttribute.expression}}`
 }

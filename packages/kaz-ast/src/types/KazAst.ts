@@ -19,14 +19,14 @@ export interface KazTemplateTag {
   $type: 'Tag'
   tagName: string
   attributes: (zod.infer<typeof kazTemplateTagAttributeSchema> | zod.infer<typeof kazTemplateTagEventAttributeSchema>)[]
-  children: zod.infer<typeof kazTemplateSchema>[]
+  children?: zod.infer<typeof kazTemplateSchema>[] | undefined
 }
 
 export const kazTemplateTagSchema: zod.ZodType<KazTemplateTag> = zod.object({
   $type: zod.literal('Tag'),
   tagName: zod.string(),
   attributes: zod.array(zod.union([kazTemplateTagAttributeSchema, kazTemplateTagEventAttributeSchema])),
-  children: zod.lazy(() => zod.array(kazTemplateSchema)),
+  children: zod.lazy(() => zod.array(kazTemplateSchema)).optional(),
 })
 
 export const kazTemplateTextSchema = zod.object({
@@ -183,15 +183,7 @@ export const kazAstSchema = zod.object({
       kazStateInstructionSchema,
     ]),
   ),
-  template: zod.array(
-    zod.union([
-      kazTemplateTagSchema,
-      kazTemplateTextSchema,
-      kazTemplateExpressionSchema,
-      kazTemplateForSchema,
-      kazTemplateIfSchema,
-    ]),
-  ),
+  template: zod.array(kazTemplateSchema),
 })
 
 export type KazAst = zod.infer<typeof kazAstSchema>

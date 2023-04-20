@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import TabTrigger from "../components/TabTrigger.astro";
+import TabContent from "../components/TabContent.astro";
+import TabGroup from "../components/TagGroup.astro";
+import Editor from "../components/Editor";
+import AstOutput from "../components/AstOutput";
+import ReactOutput from "../components/ReactOutput";
+import Documentation from "../components/Documentation.astro";
+import whitebirdWhiteLogo from "../assets/whitebirdWhiteLogo.svg"
+---
+
+<Layout title="Kaz Playground">
+	<div class="w-screen h-screen flex flex-col bg-gray-1000 text-gray-0">
+		<header class="flex flex-row items-center p-2 gap-2 w-full bg-gray-900">
+			<img src={whitebirdWhiteLogo} class="w-16 h-auto mr-1 sm:mr-2 mb-1 hidden min-[376px]:block" />
+			<h1 class="flex items-center text-2xl mb-0">Kaz Playground</h1>
+			<div class="flex-1"></div>
+			<div>
+				<a
+					href="https://github.com/bywhitebird/kazam/tree/main/packages/kaz-file-parser"
+					target="_blank"
+					class="text-gray-400 hover:text-gray-200"
+				>
+					GitHub
+				</a>
+			</div>
+		</header>
+		<div class="flex-1 overflow-hidden">
+			<main class="w-full h-full flex flex-col sm:flex-row">
+				<TabGroup
+					name="Playground"
+					default="Editor"
+					class="flex-1 flex flex-col w-auto h-1/2 sm:w-1/2 sm:h-auto"
+				>
+					<header class="flex flex-row p-2 gap-2 bg-gray-900">
+						<TabTrigger name="Editor" />
+						<TabTrigger name="Documentation" />
+					</header>
+					<div class="flex-1 min-h-0">
+						<TabContent tab="Editor" class="h-full overflow-hidden">
+							<Editor client:load />
+						</TabContent>
+						<TabContent tab="Documentation" class="h-full overflow-auto">
+							<Documentation />
+						</TabContent>
+					</div>
+				</TabGroup>
+				<TabGroup
+					name="Output"
+					default="Ast"
+					class="flex-1 flex flex-col w-auto h-1/2 sm:w-1/2 sm:h-auto"
+				>
+					<header class="flex flex-row p-2 gap-2 bg-gray-900">
+						<span class="flex items-center">Output :</span>
+						<TabTrigger name="Ast" />
+						<TabTrigger name="React" />
+					</header>
+					<div class="flex-1 min-h-0">
+						<TabContent tab="Ast" class="h-full overflow-hidden">
+							<AstOutput client:load />
+						</TabContent>
+						<TabContent tab="React" class="h-full overflow-hidden">
+							<ReactOutput client:load />
+						</TabContent>
+					</div>
+				</TabGroup>
+			</main>
+		</div>
+	</div>
+</Layout>

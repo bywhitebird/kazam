@@ -44,7 +44,7 @@ async function writeOutput(output: Awaited<ReturnType<typeof transformAsts>>, co
         : outputPath
 
       await Promise.all(
-        Object.entries(transformerOutput).map(async ([fileName, file]) => {
+        Object.entries(transformerOutput ?? {}).map(async ([fileName, file]) => {
           if (file === undefined)
             throw new Error(`Transformer ${transformerName} returned undefined for file ${fileName}`)
 

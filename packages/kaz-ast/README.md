@@ -132,21 +132,11 @@ Defines a watcher.
   }
 ```
 
-#### `on`
-
-Defines an event listener.
-
-```kaz
-- on:click {
-    console.log('clicked')
-  }
-```
-
 ### Template
 
 #### Tags
 
-Tags are defined by their name followed by a pair of parentheses. The parentheses can be empty or contain a list of attributes.
+Tags are defined by their name followed by a pair of parentheses. The parentheses can be empty or contain a list of attributes or events.
 
 ```kaz
 div()
@@ -159,12 +149,13 @@ div(
 )
 ```
 
-An attribute can either be a string or a valid JavaScript expression.
+An attribute can either be a string or a valid JavaScript expression. To add an event, use the `on:` prefix followed by the event name. An event **must** be a valid JavaScript expression.
 
 ```kaz
 div(
     id="my-div",
-    onClick={callback}
+    on:click={callback}
+    on:focus={() => console.log('Focused')},
 )
 ```
 
@@ -172,9 +163,7 @@ A tag can also contain a list of children.
 
 ```kaz
 div() {
-    span() {
-        "Hello world"
-    }
+    div() {}
 }
 ```
 
@@ -249,7 +238,7 @@ The `@if` directive is used to conditionally render a template.
 
 @if (show) {
     div() {
-        "Hello world"
+        Hello world
     }
 }
 ```
@@ -262,15 +251,15 @@ The `@else if` and `@else` directives can be used to add more conditions.
 
 @if (show) {
     div() {
-        "Hello world"
+        Hello world
     }
 } @else if (count > 0) {
     div() {
-        "Count is greater than 0"
+        Count is greater than 0
     }
 } @else {
     div() {
-        "Count is 0"
+        Count is 0
     }
 }
 ```
