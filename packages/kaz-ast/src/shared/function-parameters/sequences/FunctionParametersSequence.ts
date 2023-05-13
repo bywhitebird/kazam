@@ -17,4 +17,8 @@ export const FunctionParametersSequence = s(
     { min: 0 },
   ),
   s(CommaToken, { optional: true }),
+  {
+    tmScope: 'meta.function.parameters',
+    tmName: 'FunctionParameters',
+  },
 )

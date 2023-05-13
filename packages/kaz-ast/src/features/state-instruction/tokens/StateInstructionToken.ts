@@ -7,4 +7,5 @@ export const StateInstructionToken = new Token({
   validator: /^state$/,
   startContexts: [() => StateInstructionContext],
   inContexts: [() => InstructionContext],
+  tmScope: 'keyword.control',
 })

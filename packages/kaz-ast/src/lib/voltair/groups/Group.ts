@@ -8,13 +8,17 @@ export class Group {
 
   constructor(
     public readonly $name: string,
-    public readonly child: GroupItem | (() => GroupItem),
+    public child: GroupItem | (() => GroupItem),
     options: Partial<Group['options']> = {},
   ) {
     this.options = {
       forceMultiple: false,
       ...options,
     }
+  }
+
+  public clone(): Group {
+    return new Group(this.$name, this.child, this.options)
   }
 }
 

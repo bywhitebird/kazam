@@ -5,4 +5,5 @@ export const FromKeywordToken = new Token({
   $name: 'FromKeywordToken',
   validator: /^from$/,
   inContexts: [() => ImportInstructionContext],
+  tmScope: 'keyword.control.from.kaz',
 })

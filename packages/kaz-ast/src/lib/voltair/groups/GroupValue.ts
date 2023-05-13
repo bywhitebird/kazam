@@ -6,8 +6,12 @@ type GroupValueItem = Token | Sequence | JsonValue
 
 export class GroupValue {
   constructor(
-    public readonly child: GroupValueItem | (() => GroupValueItem),
+    public child: GroupValueItem | (() => GroupValueItem),
   ) {
+  }
+
+  public clone(): GroupValue {
+    return new GroupValue(this.child)
   }
 }
 

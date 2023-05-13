@@ -7,4 +7,5 @@ export const ComputedInstructionToken = new Token({
   validator: /^computed$/,
   startContexts: [() => ComputedInstructionContext],
   inContexts: [() => InstructionContext],
+  tmScope: 'keyword.control.kaz',
 })

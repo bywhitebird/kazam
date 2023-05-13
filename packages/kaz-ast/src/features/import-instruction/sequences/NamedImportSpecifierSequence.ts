@@ -25,6 +25,9 @@ export const NamedImportSpecifierSequence = s(
     ),
     { optional: true },
   ),
-  s(CommaToken, { optional: true }),
+  s(
+    CommaToken,
+    { optional: true },
+  ),
   RightCurlyBracketToken,
 )

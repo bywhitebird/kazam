@@ -15,4 +15,5 @@ export const TagEventAttributeNameToken = new Token({
     return eventName
   },
   inContexts: [() => TagAttributesContext],
+  tmScope: 'entity.other.attribute-name.kaz',
 })

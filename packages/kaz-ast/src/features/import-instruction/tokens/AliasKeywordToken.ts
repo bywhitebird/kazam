@@ -5,4 +5,5 @@ export const AliasKeywordToken = new Token({
   $name: 'AliasKeywordToken',
   validator: /^as$/,
   inContexts: [() => ImportInstructionContext],
+  tmScope: 'keyword.control.as.kaz',
 })

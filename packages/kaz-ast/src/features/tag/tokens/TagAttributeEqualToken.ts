@@ -5,4 +5,5 @@ export const TagAttributeEqualToken = EqualToken.extends({
   $name: 'TagAttributeEqual',
   inContexts: [() => TagAttributesContext],
   startContexts: [() => TagAttributeValueContext],
+  tmScope: 'punctuation.separator.key-value',
 })

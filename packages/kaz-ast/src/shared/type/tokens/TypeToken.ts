@@ -27,4 +27,6 @@ export const TypeToken = new Token({
   getValue: rawValue => rawValue.trim(),
   inContexts: [() => TypeContext],
   endContexts: [() => TypeContext],
+  tmScope: 'source.ts',
+  tmMatch: '^(\\s*\\{[^}]+\\}\\s*)|([^}]+)$',
 })

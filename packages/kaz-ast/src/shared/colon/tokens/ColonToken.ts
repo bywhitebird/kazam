@@ -4,4 +4,5 @@ export const ColonToken = new Token({
   $name: 'ColonToken',
   validator: /^:$/,
   singleCharacter: true,
+  tmScope: 'punctuation.definition.colon',
 })

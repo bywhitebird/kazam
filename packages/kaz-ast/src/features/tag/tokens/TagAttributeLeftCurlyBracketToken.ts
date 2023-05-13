@@ -5,4 +5,5 @@ export const TagAttributeLeftCurlyBracketToken = LeftCurlyBracketToken.extends({
   $name: 'TagAttributeLeftCurlyBracket',
   startContexts: [() => TagAttributeValueExpressionContext],
   inContexts: [() => TagAttributeValueContext],
+  tmScope: 'punctuation.section.embedded.begin',
 })

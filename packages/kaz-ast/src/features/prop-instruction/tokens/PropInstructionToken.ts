@@ -7,4 +7,5 @@ export const PropInstructionToken = new Token({
   validator: /^prop$/,
   startContexts: [() => PropInstructionContext],
   inContexts: [() => InstructionContext],
+  tmScope: 'keyword.control',
 })

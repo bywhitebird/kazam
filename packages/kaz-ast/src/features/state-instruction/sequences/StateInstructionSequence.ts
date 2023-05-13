@@ -17,5 +17,9 @@ export const StateInstructionSequence = gp(
       ),
       { optional: true },
     ),
+    {
+      tmScope: 'meta.state',
+      tmName: 'StateInstruction',
+    },
   ),
 )

@@ -6,8 +6,12 @@ type GroupParentItem = Sequence | Group
 export class GroupParent {
   constructor(
     public readonly $name: string,
-    public readonly child: GroupParentItem | (() => GroupParentItem),
+    public child: GroupParentItem | (() => GroupParentItem),
   ) {
+  }
+
+  public clone(): GroupParent {
+    return new GroupParent(this.$name, this.child)
   }
 }
 

@@ -7,4 +7,5 @@ export const TagRightParenthesisToken = new Token({
   singleCharacter: true,
   inContexts: [() => TagAttributesContext, () => TagAttributeValueContext],
   endContexts: [() => TagAttributesContext, () => TagAttributeValueContext],
+  tmScope: 'punctuation.definition.parameters.end',
 })

@@ -7,12 +7,19 @@ export const ComputedInstructionSequence = gp(
   s(
     () => ComputedInstructionToken,
     g('name', IdentifierToken),
-    s(g('type', TypeAnnotationSequence), { optional: true }),
+    s(
+      g('type', TypeAnnotationSequence),
+      { optional: true },
+    ),
     g(
       'computeValue',
       s(
         g('expression', VariableDeclarationSequence),
       ),
     ),
+    {
+      tmScope: 'meta.computed.kaz',
+      tmName: 'ComputedInstruction',
+    },
   ),
 )

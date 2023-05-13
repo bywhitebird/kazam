@@ -33,4 +33,6 @@ export const ArrowFunctionBodyToken = ExpressionToken.extends({
 
     return trimmedRawValue
   },
+  tmScope: 'source.ts',
+  tmMatch: '^(\\s*\\{[^}]+\\}\\s*)|([^}]+)$',
 })

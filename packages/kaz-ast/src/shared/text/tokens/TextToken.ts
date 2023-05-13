@@ -4,4 +4,5 @@ export const TextToken = new Token({
   $name: 'TextToken',
   validator: /.+/,
   getValue: rawValue => rawValue,
+  tmScope: 'text',
 })

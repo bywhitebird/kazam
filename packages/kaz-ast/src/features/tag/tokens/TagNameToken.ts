@@ -8,4 +8,6 @@ export const TagNameOrTextToken = new Token({
   validator: /^[^\s]+$/,
   getValue: rawValue => rawValue,
   startContexts: [() => TagContext, () => TemplateContext],
+  tmScope: 'entity.name.tag.kaz meta.tag.kaz',
+  tmMatch: '\\b[a-zA-Z_$][a-zA-Z_$0-9]*\\b',
 })

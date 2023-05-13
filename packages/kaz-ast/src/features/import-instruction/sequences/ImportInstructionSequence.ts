@@ -42,5 +42,9 @@ export const ImportInstructionSequence = gp(
         ),
       ],
     ),
+    {
+      tmScope: 'meta.import',
+      tmName: 'ImportInstruction',
+    },
   ),
 )

@@ -6,4 +6,5 @@ export const ForRightParenthesisToken = new Token({
   inContexts: [() => ForLogicalContext],
   validator: /^\)$/,
   singleCharacter: true,
+  tmScope: 'punctuation.section.parens.end.kaz',
 })

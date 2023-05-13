@@ -12,6 +12,10 @@ export const ForLogicalSequence = gp(
     ForRightParenthesisToken,
     LeftCurlyBracketToken,
     g('children', () => TemplateSequence, { forceMultiple: true }),
-    RightCurlyBracketToken,
+    () => RightCurlyBracketToken,
+    {
+      tmScope: 'meta.control.for.kaz',
+      tmName: 'ForLogical',
+    },
   ),
 )

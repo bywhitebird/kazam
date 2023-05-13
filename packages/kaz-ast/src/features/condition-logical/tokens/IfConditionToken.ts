@@ -28,12 +28,10 @@ export const IfConditionToken = new Token({
   },
   getValue(rawValue) {
     const trimmedRawValue = rawValue.trim()
-
-    if (trimmedRawValue.startsWith('{') && trimmedRawValue.endsWith('}'))
-      return trimmedRawValue.slice(1, -1).trim()
-
     return trimmedRawValue
   },
   inContexts: [() => ConditionContext],
   endContexts: [() => ConditionContext],
+  tmScope: 'source.ts',
+  tmMatch: '\\(((?>[^\\(\\)]+|(?R))*)\\)|(?:(?!\\)).)+',
 })

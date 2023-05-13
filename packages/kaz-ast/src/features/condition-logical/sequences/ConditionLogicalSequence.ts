@@ -50,6 +50,13 @@ export const ConditionLogicalSequence = gp(
     LeftCurlyBracketToken,
     g('children', () => TemplateSequence, { forceMultiple: true }),
     RightCurlyBracketToken,
-    s(ElseLogicalSequence, { optional: true }),
+    s(
+      ElseLogicalSequence,
+      { optional: true },
+    ),
+    {
+      tmScope: 'meta.control.if.kaz',
+      tmName: 'IfLogical',
+    },
   ),
 )

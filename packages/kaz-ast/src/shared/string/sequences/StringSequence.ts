@@ -1,4 +1,10 @@
 import { DoubleQuotedStringSequence, SingleQuotedStringSequence } from '..'
 import { s } from '../../../lib/voltair'
 
-export const StringSequence = s.union([DoubleQuotedStringSequence, SingleQuotedStringSequence])
+export const StringSequence = s.union(
+  [DoubleQuotedStringSequence, SingleQuotedStringSequence],
+  {
+    tmScope: 'string',
+    tmName: 'String',
+  },
+)

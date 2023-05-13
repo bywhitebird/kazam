@@ -12,5 +12,9 @@ export const TagEventAttributeSequence = gp(
       g('expression', () => ExpressionToken),
       TagAttributeRightCurlyBracketToken,
     ),
+    {
+      tmScope: 'meta.tag.attribute.event',
+      tmName: 'TagEventAttribute',
+    },
   ),
 )

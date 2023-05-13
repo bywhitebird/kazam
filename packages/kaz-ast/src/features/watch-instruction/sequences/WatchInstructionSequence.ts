@@ -15,5 +15,9 @@ export const WatchInstructionSequence = gp(
     RightParenthesisToken,
     ArrowToken,
     g('callbackExpression', ArrowFunctionBodyToken),
+    {
+      tmScope: 'meta.watch',
+      tmName: 'WatchInstruction',
+    },
   ),
 )

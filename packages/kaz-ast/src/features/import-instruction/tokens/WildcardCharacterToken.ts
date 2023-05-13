@@ -5,4 +5,5 @@ export const WildcardCharacterToken = new Token({
   $name: 'WildcardCharacterToken',
   validator: /^\*$/,
   inContexts: [() => ImportInstructionContext],
+  tmScope: 'constant.language.import-export-all.kaz',
 })

@@ -7,4 +7,5 @@ export const IfLeftParenthesisToken = new Token({
   singleCharacter: true,
   startContexts: [() => ConditionContext],
   inContexts: [() => ConditionLogicalContext],
+  tmScope: 'punctuation.section.parens.begin.kaz',
 })

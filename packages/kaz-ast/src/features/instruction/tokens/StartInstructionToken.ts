@@ -5,4 +5,5 @@ export const StartInstructionToken = new Token({
   $name: 'StartInstructionToken',
   validator: /^-$/,
   startContexts: [() => InstructionContext],
+  tmScope: 'keyword.control',
 })

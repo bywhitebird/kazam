@@ -30,12 +30,11 @@ export const ForParametersToken = new Token({
   },
   getValue(rawValue) {
     const trimmedRawValue = rawValue.trim()
-
-    if (trimmedRawValue.startsWith('{') && trimmedRawValue.endsWith('}'))
-      return trimmedRawValue.slice(1, -1).trim()
-
     return trimmedRawValue
   },
   inContexts: [() => ForParametersContext],
   endContexts: [() => ForParametersContext],
+  tmScope: 'source.ts',
+  tmMatch: '(?<parameters>\\([^\\)]*\\))\\g<parameters>',
+  // tmMatch: '\\(((?>[^\\(\\)]+|(?R))*)\\)|(?:(?!\\)).)+',
 })

@@ -6,4 +6,5 @@ export const TemplateExpressionEndToken = new Token({
   validator: /^\}/,
   endContexts: [() => TemplateExpressionContext],
   inContexts: [() => TemplateExpressionContext],
+  tmScope: 'punctuation.definition.template-expression.end',
 })

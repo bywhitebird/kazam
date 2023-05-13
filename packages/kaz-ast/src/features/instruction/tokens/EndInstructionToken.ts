@@ -20,4 +20,5 @@ export const EndInstructionToken = new Token({
   validator: /^\n\s*$/,
   inContexts: instructionContexts,
   endContexts: instructionContexts,
+  tmScope: 'punctuation.definition.block',
 })

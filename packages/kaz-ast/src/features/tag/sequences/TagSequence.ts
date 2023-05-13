@@ -24,18 +24,32 @@ export const TagSequence = gp(
   'Tag',
   s(
     g('tagName', () => TagNameOrTextToken),
-    TagLeftParenthesisToken,
-    g(
-      'attributes',
-      TagAttributesSequence,
-      { forceMultiple: true },
+    s(
+      TagLeftParenthesisToken,
+      g(
+        'attributes',
+        TagAttributesSequence,
+        { forceMultiple: true },
+      ),
+      TagRightParenthesisToken,
+      {
+        tmScope: 'meta.tag.attributes.kaz meta.parameters.kaz',
+        tmName: 'TagAttributes',
+      },
     ),
-    TagRightParenthesisToken,
     s(
       LeftCurlyBracketToken,
       g('children', () => TemplateSequence, { forceMultiple: true }),
       RightCurlyBracketToken,
-      { optional: true },
+      {
+        optional: true,
+        tmScope: 'meta.tag.children.kaz',
+        tmName: 'TagChildren',
+      },
     ),
+    {
+      tmScope: 'meta.tag.kaz',
+      tmName: 'Tag',
+    },
   ),
 )

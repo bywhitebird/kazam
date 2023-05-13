@@ -1,11 +1,9 @@
-import { Group } from './groups/Group'
-import { GroupParent } from './groups/GroupParent'
-import { GroupValue } from './groups/GroupValue'
 import type { JsonArray, JsonObject, JsonValue } from './types/JsonValue'
 import { ExpectedTokenError, UnexpectedTokenError } from './utils/errors'
+import { getFirstSequenceToken } from './utils/get-first-sequence-token'
 import { resolveValue } from './utils/resolve-value'
 
-import { Sequence, Token } from '.'
+import { Group, GroupParent, GroupValue, Sequence, Token } from '.'
 
 export type ParserError = ExpectedTokenError | UnexpectedTokenError
 type ParserReturnType = ParserError | TreeValue | void
@@ -122,33 +120,6 @@ const createTokensConsumer = (tokens: Token[]) => {
   return new TokensConsumer(tokens)
 }
 
-const getFirstSequenceToken = (sequence: Sequence['sequence'][number]): Token | undefined => {
-  const resolvedSequence = resolveValue(sequence)
-
-  if (resolvedSequence instanceof Sequence) {
-    const firstToken = resolvedSequence.sequence[0]
-
-    if (firstToken === undefined)
-      return undefined
-
-    return getFirstSequenceToken(firstToken)
-  }
-
-  if (resolvedSequence instanceof Group)
-    return getFirstSequenceToken(resolvedSequence.child)
-
-  if (resolvedSequence instanceof GroupParent)
-    return getFirstSequenceToken(resolvedSequence.child)
-
-  if (resolvedSequence instanceof GroupValue && (resolvedSequence.child instanceof Sequence || resolvedSequence.child instanceof Token))
-    return getFirstSequenceToken(resolvedSequence.child)
-
-  if (resolvedSequence instanceof Token)
-    return resolvedSequence
-
-  return undefined
-}
-
 export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent): ParserError | JsonValue | undefined => {
   const parse = (tokensConsumer: TokensConsumer, expected: Sequence | Token | Group | GroupParent | GroupValue): ParserReturnType => {
     if (expected instanceof GroupParent)
@@ -198,7 +169,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
     if (token === undefined)
       return new ExpectedTokenError(expectedToken)
 
-    if (expectedToken.$name !== token.$name)
+    if (expectedToken.tmName !== token.tmName)
       return new UnexpectedTokenError(token, [expectedToken])
 
     const value = token.$value

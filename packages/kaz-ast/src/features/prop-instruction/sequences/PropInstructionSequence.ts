@@ -17,5 +17,9 @@ export const PropInstructionSequence = gp(
       ),
       { optional: true },
     ),
+    {
+      tmScope: 'meta.prop',
+      tmName: 'PropInstruction',
+    },
   ),
 )

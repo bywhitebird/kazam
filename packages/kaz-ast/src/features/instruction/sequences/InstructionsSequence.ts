@@ -8,13 +8,19 @@ import { WatchInstructionSequence } from '../../watch-instruction'
 
 export const InstructionsSequence = s(
   () => StartInstructionToken,
-  s.union([
-    ImportInstructionSequence,
-    PropInstructionSequence,
-    StateInstructionSequence,
-    ComputedInstructionSequence,
-    WatchInstructionSequence,
-  ]),
+  s.union(
+    [
+      ImportInstructionSequence,
+      PropInstructionSequence,
+      StateInstructionSequence,
+      ComputedInstructionSequence,
+      WatchInstructionSequence,
+    ],
+  ),
   () => EndInstructionToken,
-  { min: 0 },
+  {
+    min: 0,
+    tmScope: 'meta.block',
+    tmName: 'Instructions',
+  },
 )

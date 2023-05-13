@@ -6,4 +6,5 @@ export const ElseIfLogicalToken = new Token({
   $name: 'ElseIfLogicalToken',
   validator: /^if$/,
   startContexts: [() => ConditionLogicalContext, () => TemplateContext],
+  tmScope: 'keyword.control.else-if.kaz',
 })

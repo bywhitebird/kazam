@@ -6,4 +6,5 @@ export const ForLogicalToken = new Token({
   $name: 'ForLogicalToken',
   validator: /^@for$/,
   startContexts: [() => ForLogicalContext, () => TemplateContext],
+  tmScope: 'keyword.control.for.kaz',
 })

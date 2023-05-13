@@ -2,26 +2,32 @@ import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttribute
 import { g, gp, gv, s } from '../../../lib/voltair'
 import { ExpressionToken, StringSequence } from '../../../shared'
 
-export const TagAttributeSequence = s.union([
-  () => TagEventAttributeSequence,
-  gp(
-    'TagAttribute',
-    s(
-      g('name', () => TagAttributeNameToken),
-      s.union([
-        s(
-          TagAttributeEqualToken,
-          s.union([
-            g('value', () => StringSequence),
-            s(
-              TagAttributeLeftCurlyBracketToken,
-              g('expression', () => ExpressionToken),
-              TagAttributeRightCurlyBracketToken,
-            ),
-          ]),
-        ),
-        g('value', s(gv(true))),
-      ]),
+export const TagAttributeSequence = s.union(
+  [
+    () => TagEventAttributeSequence,
+    gp(
+      'TagAttribute',
+      s(
+        g('name', () => TagAttributeNameToken),
+        s.union([
+          s(
+            TagAttributeEqualToken,
+            s.union([
+              g('value', () => StringSequence),
+              s(
+                TagAttributeLeftCurlyBracketToken,
+                g('expression', () => ExpressionToken),
+                TagAttributeRightCurlyBracketToken,
+              ),
+            ]),
+          ),
+          g('value', s(gv(true))),
+        ]),
+      ),
     ),
-  ),
-])
+  ],
+  {
+    tmScope: 'meta.tag.attribute',
+    tmName: 'TagAttribute',
+  },
+)

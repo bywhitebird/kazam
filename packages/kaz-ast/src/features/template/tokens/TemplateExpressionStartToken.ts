@@ -3,6 +3,8 @@ import { Token } from '../../../lib/voltair'
 
 export const TemplateExpressionStartToken = new Token({
   $name: 'TemplateExpressionStartToken',
-  validator: /^\$/,
+  validator: /^\${/,
   startContexts: [() => TemplateExpressionContext],
+  tmScope: 'punctuation.definition.template-expression.begin',
+  tmMatch: '\\${',
 })

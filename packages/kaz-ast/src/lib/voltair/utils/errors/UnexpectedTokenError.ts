@@ -5,16 +5,16 @@ export class UnexpectedTokenError extends Error {
   public token: Token
 
   constructor(token: Token, expectedTokens?: Token[]) {
-    const errorMessage = `Unexpected token "${token.$rawValue}" (${token.$name}) at index ${token.$index}.`
+    const errorMessage = `Unexpected token "${token.$rawValue}" (${token.tmName}) at index ${token.$index}.`
 
     if (!expectedTokens || expectedTokens.length === 0) {
       super(errorMessage)
     }
     else if (expectedTokens.length === 1 && expectedTokens[0]) {
-      super(`${errorMessage} Expected token "${expectedTokens[0].$rawValue}" (${expectedTokens[0].$name}).`)
+      super(`${errorMessage} Expected token "${expectedTokens[0].$rawValue}" (${expectedTokens[0].tmName}).`)
     }
     else {
-      const expectedTokenNames = expectedTokens.map(t => t.$name).join(', ')
+      const expectedTokenNames = expectedTokens.map(t => t.tmName).join(', ')
       super(`${errorMessage} Expected one of the following tokens: ${expectedTokenNames}.`)
     }
 

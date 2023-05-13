@@ -6,4 +6,5 @@ export const IfLogicalToken = new Token({
   $name: 'IfLogicalToken',
   validator: /^@if$/,
   startContexts: [() => ConditionLogicalContext, () => TemplateContext],
+  tmScope: 'keyword.control.if.kaz',
 })

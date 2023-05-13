@@ -7,4 +7,5 @@ export const DoubleQuotedStringToken = new Token({
   getValue: rawValue => rawValue,
   inContexts: [() => DoubleQuotedStringContext],
   endContexts: [() => DoubleQuotedStringContext],
+  tmScope: 'string.quoted.double',
 })

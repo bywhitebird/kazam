@@ -29,4 +29,6 @@ export const ExpressionToken = new Token({
   getValue: rawValue => rawValue.trim(),
   inContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext, () => TemplateExpressionContext],
   endContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext],
+  tmScope: 'source.ts',
+  tmMatch: '(\\s*\\{[^}]+\\}\\s*)|([^}]+)',
 })

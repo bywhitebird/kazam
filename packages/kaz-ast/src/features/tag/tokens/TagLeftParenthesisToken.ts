@@ -7,4 +7,5 @@ export const TagLeftParenthesisToken = new Token({
   validator: /^\($/,
   singleCharacter: true,
   inContexts: [() => TagContext],
+  tmScope: 'punctuation.definition.parameters.begin',
 })
