@@ -1,11 +1,20 @@
 {
   "name": "kazam",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "bin": "dist/cli.js",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "bin": "./dist/cli.cjs",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "unbuild",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
