@@ -89,7 +89,7 @@ export class TransformerReact extends TransformerBase {
 
     for (const handlerName in this.handlers) {
       const handler = this.handlers[handlerName as keyof ISchemaHandlers]
-      // eslint-disable-next-line import/namespace
+
       const result = schemas[`kaz${upperFirst(handlerName as keyof ISchemaHandlers)}Schema`].safeParse(input)
       if (result.success) {
         return handler(result.data as never, {

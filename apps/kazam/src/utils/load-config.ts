@@ -19,8 +19,10 @@ export const loadConfig = async (configPath: string) => {
       },
     }).outputText
 
+    process.env.NODE_PATH += path.delimiter + path.join(process.cwd(), 'node_modules')
     const config = vm.runInThisContext(`
       ((require) => {
+        require('module').Module._initPaths();
         var exports = {};
         ${transpiledConfigDefinition};
         return exports.default;

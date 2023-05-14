@@ -1,0 +1,11 @@
+- prop buttonText: string = "Button"
+- prop callback: () => void = () => console.log('Button clicked')
+
+div() {
+    button(
+        type="submit",
+        on:click={callback}
+    ) {
+        ${buttonText}
+    }
+}

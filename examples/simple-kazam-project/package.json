@@ -1,0 +1,10 @@
+{
+  "name": "simple-kazam-project",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "kazam": "workspace:*",
+    "@whitebird/kazam-transformer-react": "workspace:*",
+    "@whitebird/kazam-parser-kaz": "workspace:*"
+  }
+}
