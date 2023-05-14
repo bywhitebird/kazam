@@ -4,7 +4,8 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "examples/*"
   ],
   "scripts": {
     "build": "turbo run build",
@@ -24,7 +25,8 @@
     "@whitebird/tsconfig": "latest",
     "husky": "^8.0.0",
     "turbo": "latest",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "unbuild": "^1.2.1"
   },
   "engines": {
     "node": ">=18.0.0"

@@ -1,10 +1,20 @@
 {
   "name": "@whitebird/kazam-parser-kaz",
+  "type": "module",
   "version": "0.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "unbuild",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
