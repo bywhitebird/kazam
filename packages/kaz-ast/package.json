@@ -6,12 +6,14 @@
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
-    }
+    },
+    "./README.md": "./README.md"
   },
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "README.md"
   ],
   "scripts": {
     "build": "unbuild",

@@ -1,6 +1,6 @@
 import * as path from 'node:path'
 
-import { schemas } from '@whitebird/kaz-ast'
+import * as schemas from '@whitebird/kaz-ast'
 import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
 import prettier from 'prettier'
 import type { z } from 'zod'

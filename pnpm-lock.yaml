@@ -140,14 +140,12 @@ importers:
       '@types/node': ^18.11.9
       '@whitebird/kazam-transformer-base': workspace:*
       esno: ^0.16.3
-      rimraf: ^3.0.2
       vitest: ^0.25.3
     dependencies:
       '@whitebird/kazam-transformer-base': link:../transformer-base
     devDependencies:
       '@types/node': 18.11.10
       esno: 0.16.3
-      rimraf: 3.0.2
       vitest: 0.25.3
 
   packages/parser-kaz:
@@ -172,7 +170,6 @@ importers:
       '@types/node': ^18.11.9
       '@whitebird/kaz-ast': workspace:*
       esno: ^0.16.3
-      rimraf: ^3.0.2
       zod: ^3.19.1
       zod-to-json-schema: ^3.18.1
     dependencies:
@@ -182,7 +179,6 @@ importers:
     devDependencies:
       '@types/node': 18.11.10
       esno: 0.16.3
-      rimraf: 3.0.2
 
   packages/transformer-react:
     specifiers:
@@ -194,7 +190,6 @@ importers:
       '@whitebird/kazam-transformer-base': workspace:*
       deepmerge: ^4.3.1
       lodash: ^4.17.21
-      rimraf: ^3.0.2
       vitest: ^0.25.3
       zod: ^3.19.1
     dependencies:
@@ -208,7 +203,6 @@ importers:
     devDependencies:
       '@types/node': 18.11.10
       '@vitest/coverage-c8': 0.25.3
-      rimraf: 3.0.2
       vitest: 0.25.3
 
 packages:
