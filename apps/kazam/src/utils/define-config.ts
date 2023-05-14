@@ -42,3 +42,6 @@ export type KazamConfig = z.infer<typeof configSchema>
 export type UserConfig = z.input<typeof configSchema>
 
 export const defineConfig = (config: UserConfig) => configSchema.parse(config)
+
+const assertType = <T>(_: T) => _
+assertType<Parameters<ParserBase['load']>[0]>(<KazamConfig>{})
