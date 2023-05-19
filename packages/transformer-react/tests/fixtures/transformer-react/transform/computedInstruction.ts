@@ -7,9 +7,15 @@ export const computedInstructionFixtures = [
       instructions: [
         {
           $type: 'ComputedInstruction',
-          name: 'computed',
+          name: {
+            $value: 'computed',
+            $range: [0, 0],
+          },
           computeValue: {
-            expression: '1 + 1',
+            expression: {
+              $value: '1 + 1',
+              $range: [0, 0],
+            },
           },
         },
       ],

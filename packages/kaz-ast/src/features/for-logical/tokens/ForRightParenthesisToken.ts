@@ -6,4 +6,9 @@ export const ForRightParenthesisToken = new Token({
   inContexts: [() => ForLogicalContext],
   validator: /^\)$/,
   singleCharacter: true,
+  semantic: {
+    type: 'punctuation',
+    modifiers: ['parenthesis', 'right'],
+    textmateScope: ['punctuation.parenthesis'],
+  },
 })

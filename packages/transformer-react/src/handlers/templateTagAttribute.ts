@@ -1,8 +1,18 @@
 import type { IHandler } from '../transformer-react'
 
 export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute) => {
-  return `${templateTagAttribute.name}=`
-    + `${('value' in templateTagAttribute && typeof templateTagAttribute.value === 'string') ? `"${templateTagAttribute.value}"` : ''}`
-    + `${('value' in templateTagAttribute && typeof templateTagAttribute.value === 'boolean') ? `{${templateTagAttribute.value}}` : ''}`
-    + `${('expression' in templateTagAttribute) ? `{${templateTagAttribute.expression}}` : ''}`
+  return `${templateTagAttribute.name.$value}=`
+    + `${(() => {
+      if ('value' in templateTagAttribute) {
+        if (typeof templateTagAttribute.value === 'boolean')
+          return `{${templateTagAttribute.value}}`
+
+        return `"${templateTagAttribute.value.$value}"`
+      }
+
+      if ('expression' in templateTagAttribute)
+        return `{${templateTagAttribute.expression.$value}}`
+
+      return '{true}'
+    })()}`
 }

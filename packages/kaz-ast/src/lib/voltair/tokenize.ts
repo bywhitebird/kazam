@@ -13,11 +13,15 @@ export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns
     get token() {
       const tokenMatched = tokens
         .find(token => token.test(this.word, this.openedContexts.at(-1)))
-        ?.create({ $rawValue: this.word, $index: this.index - this.word.length })
 
-      return tokenMatched
+      const tokenCreated = tokenMatched?.create({
+        $rawValue: this.word,
+        $index: this.index - (tokenMatched.singleCharacter ? 0 : this.word.length),
+      })
+
+      return tokenCreated
     },
-    index: 0,
+    index: -1,
   }
 
   let contextsEnded: Context[] = []

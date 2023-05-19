@@ -7,6 +7,6 @@ export const NamespaceImportSpecifierSequence = gp(
   s(
     WildcardCharacterToken,
     AliasKeywordToken,
-    g('name', IdentifierToken),
+    g('name', IdentifierToken.extends({ semantic: { type: 'namespace' } })),
   ),
 )

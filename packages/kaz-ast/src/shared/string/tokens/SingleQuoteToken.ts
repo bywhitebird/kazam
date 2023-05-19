@@ -7,4 +7,7 @@ export const SingleQuoteToken = new Token({
   singleCharacter: true,
   startContexts: [() => SingleQuotedStringContext],
   endContexts: [() => SingleQuotedStringContext],
+  semantic: {
+    type: 'string',
+  },
 })

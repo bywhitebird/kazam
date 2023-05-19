@@ -8,9 +8,21 @@ export const watchInstructionFixtures = [
         {
           $type: 'WatchInstruction',
           watchedVariables: [
-            { name: 'color', type: 'string' },
+            {
+              name: {
+                $value: 'color',
+                $range: [0, 0],
+              },
+              type: {
+                $value: 'string',
+                $range: [0, 0],
+              },
+            },
           ],
-          callbackExpression: 'console.log(color)',
+          callbackExpression: {
+            $value: 'console.log(color)',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -35,10 +47,31 @@ export const watchInstructionFixtures = [
         {
           $type: 'WatchInstruction',
           watchedVariables: [
-            { name: 'color' },
-            { name: 'size' },
+            {
+              name: {
+                $value: 'color',
+                $range: [0, 0],
+              },
+              type: {
+                $value: 'string',
+                $range: [0, 0],
+              },
+            },
+            {
+              name: {
+                $value: 'size',
+                $range: [0, 0],
+              },
+              type: {
+                $value: 'number',
+                $range: [0, 0],
+              },
+            },
           ],
-          callbackExpression: 'console.log(color, size)',
+          callbackExpression: {
+            $value: 'console.log(color, size)',
+            $range: [0, 0],
+          },
         },
       ],
     }),

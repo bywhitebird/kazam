@@ -1,5 +1,6 @@
 import type { Context } from './Context'
 import type { JsonPrimitive } from './types/JsonValue'
+import type { Semantic } from './types/Semantic'
 import { resolveValue } from './utils/resolve-value'
 
 export class Token<Name extends string = string, Value extends JsonPrimitive = JsonPrimitive> {
@@ -10,6 +11,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
   public startContexts: (Context | (() => Context))[] | undefined
   public endContexts: (Context | (() => Context))[] | undefined
   public inContexts: (Context | (() => Context))[] | undefined
+  public semantic: Semantic | undefined
 
   protected _$rawValue = ''
   protected _$index = 0
@@ -17,7 +19,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
   private getValue: ((rawValue: string) => Value) | undefined
 
   constructor(
-    { $name, validator, getValue, singleCharacter, ignore, startContexts, endContexts, inContexts }: {
+    { $name, validator, getValue, singleCharacter, ignore, startContexts, endContexts, inContexts, semantic }: {
       $name: Token<Name, Value>['$name']
       validator: Token<Name, Value>['validator']
       getValue?: Token<Name, Value>['getValue']
@@ -26,6 +28,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
       startContexts?: Token<Name, Value>['startContexts']
       endContexts?: Token<Name, Value>['endContexts']
       inContexts?: Token<Name, Value>['inContexts']
+      semantic?: Token<Name, Value>['semantic']
     },
   ) {
     this.$name = $name
@@ -36,6 +39,7 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
     this.startContexts = startContexts
     this.endContexts = endContexts
     this.inContexts = inContexts
+    this.semantic = semantic
   }
 
   create({ $rawValue, $index }: { $rawValue: string; $index: number }): Token<Name, Value> {
@@ -78,6 +82,10 @@ export class Token<Name extends string = string, Value extends JsonPrimitive = J
 
   get $index() {
     return this._$index
+  }
+
+  get $range() {
+    return [this.$index, this.$index + this.$rawValue.length] as const
   }
 
   get $value() {
