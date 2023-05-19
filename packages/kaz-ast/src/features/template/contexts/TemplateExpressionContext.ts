@@ -1,6 +1,6 @@
-import { TemplateExpressionEndToken } from '..'
+import { TemplateExpressionEndToken, TemplateExpressionLeftCurlyToken } from '..'
 import { Context } from '../../../lib/voltair'
-import { ExpressionToken, LeftCurlyBracketToken } from '../../../shared'
+import { ExpressionToken } from '../../../shared'
 
 export const TemplateExpressionContext: Context<'TemplateExpressionContext'> = new Context({
   $name: 'TemplateExpressionContext',
@@ -8,6 +8,6 @@ export const TemplateExpressionContext: Context<'TemplateExpressionContext'> = n
   availableTokens: [
     () => ExpressionToken,
     () => TemplateExpressionEndToken,
-    () => LeftCurlyBracketToken,
+    () => TemplateExpressionLeftCurlyToken,
   ],
 })

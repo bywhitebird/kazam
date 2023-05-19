@@ -6,4 +6,7 @@ export const ElseIfLogicalToken = new Token({
   $name: 'ElseIfLogicalToken',
   validator: /^if$/,
   startContexts: [() => ConditionLogicalContext, () => TemplateContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

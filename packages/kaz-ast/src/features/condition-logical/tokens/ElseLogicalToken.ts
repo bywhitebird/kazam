@@ -6,4 +6,7 @@ export const ElseLogicalToken = new Token({
   $name: 'ElseLogicalToken',
   validator: /^@else$/,
   startContexts: [() => ConditionLogicalContext, () => TemplateContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

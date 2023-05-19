@@ -7,7 +7,7 @@ import { KazSequence } from './features/kaz'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
 import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagEventAttributeNameToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from './features/tag'
-import { TemplateExpressionEndToken, TemplateExpressionStartToken } from './features/template'
+import { TemplateExpressionEndToken, TemplateExpressionLeftCurlyToken, TemplateExpressionStartToken } from './features/template'
 import { WatchInstructionToken } from './features/watch-instruction'
 import { ArrowFunctionBodyToken, ArrowToken, ColonToken, ColonTypeAnnotationToken, CommaToken, DoubleQuoteToken, DoubleQuotedStringToken, EqualToken, EqualVariableDeclarationToken, ExpressionToken, IdentifierToken, LeftCurlyBracketToken, LeftParenthesisToken, RightCurlyBracketToken, RightParenthesisToken, SingleQuoteToken, SingleQuotedStringToken, TextToken, TypeToken, WhitespaceToken } from './shared'
 
@@ -87,6 +87,7 @@ export default {
     [
       // Template expression
       TemplateExpressionStartToken,
+      TemplateExpressionLeftCurlyToken,
       TemplateExpressionEndToken,
     ],
 

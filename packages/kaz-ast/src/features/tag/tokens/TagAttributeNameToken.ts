@@ -6,4 +6,7 @@ export const TagAttributeNameToken = new Token({
   validator: /^[a-zA-Z\-.\p{L}+]+$/,
   getValue: rawValue => rawValue,
   inContexts: [() => TagAttributesContext],
+  semantic: {
+    type: 'parameter',
+  },
 })

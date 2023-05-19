@@ -7,4 +7,9 @@ export const TagRightParenthesisToken = new Token({
   singleCharacter: true,
   inContexts: [() => TagAttributesContext, () => TagAttributeValueContext],
   endContexts: [() => TagAttributesContext, () => TagAttributeValueContext],
+  semantic: {
+    type: 'punctuation',
+    modifiers: ['parenthesis', 'right'],
+    textmateScope: ['punctuation.parenthesis'],
+  },
 })

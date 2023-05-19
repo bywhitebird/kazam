@@ -1,5 +1,5 @@
 import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagEventAttributeNameToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from '../../../src/features/tag'
-import { TemplateExpressionEndToken, TemplateExpressionStartToken } from '../../../src/features/template'
+import { TemplateExpressionEndToken, TemplateExpressionLeftCurlyToken, TemplateExpressionStartToken } from '../../../src/features/template'
 import type { Token } from '../../../src/lib/voltair'
 import { DoubleQuoteToken, DoubleQuotedStringToken, ExpressionToken, LeftCurlyBracketToken, RightCurlyBracketToken } from '../../../src/shared'
 
@@ -176,7 +176,7 @@ export const tagFixtures: ({
       { checker: TagRightParenthesisToken, rawValue: ')' },
       { checker: LeftCurlyBracketToken, rawValue: '{' },
       { checker: TemplateExpressionStartToken, rawValue: '$' },
-      { checker: LeftCurlyBracketToken, rawValue: '{' },
+      { checker: TemplateExpressionLeftCurlyToken, rawValue: '{' },
       { checker: ExpressionToken, value: 'text' },
       { checker: TemplateExpressionEndToken, rawValue: '}' },
       { checker: RightCurlyBracketToken, rawValue: '}' },

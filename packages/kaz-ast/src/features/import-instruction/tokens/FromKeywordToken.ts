@@ -5,4 +5,7 @@ export const FromKeywordToken = new Token({
   $name: 'FromKeywordToken',
   validator: /^from$/,
   inContexts: [() => ImportInstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })
