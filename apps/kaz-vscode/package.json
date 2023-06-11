@@ -1,0 +1,99 @@
+{
+	"private": true,
+	"name": "kaz-vscode",
+	"version": "0.0.0",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bywhitebird/kazam.git",
+		"directory": "apps/kaz-vscode"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"displayName": "Kaz Language Features",
+	"description": "Kaz Language Features",
+	"author": "Arthur Fontaine",
+	"publisher": "Whitebird",
+	"engines": {
+		"vscode": "^1.67.0"
+	},
+	"activationEvents": [
+		"onLanguage:kaz"
+	],
+	"main": "./dist/client.js",
+	"contributes": {
+		"languages": [
+			{
+				"id": "kaz",
+				"extensions": [
+					".kaz"
+				]
+			}
+		],
+		"semanticTokenScopes": [
+			{
+				"language": "kaz",
+				"scopes": {
+					"punctuation.parenthesis.left": [
+						"punctuation.parenthesis"
+					],
+					"punctuation.parenthesis.right": [
+						"punctuation.parenthesis"
+					],
+					"punctuation.template-expression.begin": [
+						"punctuation.section.embedded.begin"
+					],
+					"punctuation.template-expression.end": [
+						"punctuation.section.embedded.end"
+					],
+					"punctuation.comma": [
+						"punctuation.comma"
+					],
+					"punctuation.equal": [
+						"punctuation.equal"
+					],
+					"punctuation.curly-bracket.left": [
+						"punctuation.curly-bracket"
+					],
+					"punctuation.curly-bracket.right": [
+						"punctuation.curly-bracket"
+					],
+					"punctuation.colon": [
+						"punctuation.colon"
+					],
+					"tag": [
+						"entity.name.tag"
+					]
+				}
+			}
+		]
+	},
+	"scripts": {
+		"build": "node scripts/build -- --minify",
+		"build:dev": "pnpm build --watch",
+		"start": "code --extensionDevelopmentPath=$PWD",
+		"start:dev": "pnpm start --wait --disable-extensions --folder-uri=$PWD/sample --inspect-extensions 6010",
+		"predev": "cd ../kaz-language-server && pnpm stub",
+		"dev": "run-p *:dev --race",
+		"postdev": "cd ../kaz-language-server && pnpm build",
+		"prepack": "pnpm build",
+		"pack": "vsce package",
+		"prerelease": "pnpm pack",
+		"release": "vsce publish"
+	},
+	"devDependencies": {
+		"@types/vscode": "1.67.0",
+		"@volar/language-server": "1.5.4",
+		"@volar/vscode": "1.5.4",
+		"@whitebird/kaz-ast": "workspace:*",
+		"@whitebird/kaz-language-server": "workspace:*",
+		"esbuild": "0.15.18",
+		"npm-run-all": "^4.1.5",
+		"@vscode/vsce": "latest",
+		"vscode-languageclient": "^8.1.0"
+	},
+	"dependencies": {
+		"typescript": "^5.0.0",
+		"vscode": "^1.1.37"
+	}
+}
