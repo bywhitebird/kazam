@@ -1,0 +1,36 @@
+{
+  "name": "@whitebird/kaz-language-server",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./bin/kaz-language-server.js": "./bin/kaz-language-server.js"
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "stub": "pnpm build --stub",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "license": "MIT",
+  "bin": {
+    "kaz-language-server": "./bin/kaz-language-server.js"
+  },
+  "dependencies": {
+    "@volar/language-core": "1.5.4",
+    "@volar/language-server": "1.5.4",
+    "@volar/language-service": "1.5.4",
+    "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kazam-transformer-base": "workspace:*",
+    "volar-service-typescript": "^0.0.4",
+    "zod": "^3.19.1"
+  }
+}
