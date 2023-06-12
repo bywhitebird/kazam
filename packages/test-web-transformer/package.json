@@ -1,0 +1,33 @@
+{
+  "name": "@whitebird/kazam-test-web-transformer",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs"
+    }
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "looks-same": "^8.1.0",
+    "playwright": "^1.35.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9",
+    "@types/react-dom": "^18.0.6",
+    "@whitebird/kazam-transformer-base": "workspace:*",
+    "@whitebird/kazam-transformer-react": "workspace:*",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}
