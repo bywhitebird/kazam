@@ -1,8 +1,5 @@
-import vm from 'node:vm'
-
 import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer/src'
-import { renderToString } from 'react-dom/server'
-import typescript from 'typescript'
+import * as esbuild from 'esbuild'
 
 type RenderHtml = Parameters<typeof testWebTransformer>[1]
 type ITransformerOutput = Parameters<RenderHtml>[0]
@@ -12,14 +9,17 @@ export const renderTransformerReactOutputToHtml: RenderHtml = async (output) => 
   const flattenedOutput = await flattenOutput(output)
 
   const indexTsx = findOutput(flattenedOutput, 'Index.tsx')
-  const indexJs = compileTsx(indexTsx)
 
-  const jsContext = createJsContext(flattenedOutput)
-  const result = runJs(indexJs, jsContext)
+  const { outputFiles } = await buildTsx(
+    formatTsxForClient(indexTsx),
+    flattenedOutput,
+  )
+  const indexJs = outputFiles.find(({ path }) => path.endsWith('out.js'))?.text
 
-  const Index = findIndexComponent(result)
+  if (indexJs === undefined)
+    throw new Error('Could not find out.js')
 
-  const html = renderToString(Index())
+  const html = jsToHtml(indexJs)
 
   return html
 }
@@ -49,76 +49,6 @@ async function flattenOutput(
   return flattenedOutput
 }
 
-function findIndexComponent(result: any) {
-  const Index = result.Index
-
-  if (Index === undefined)
-    throw new Error('Index component not found')
-
-  if (typeof Index !== 'function')
-    throw new Error('Index is not a function')
-
-  return Index
-}
-
-function runJs(
-  jsText: string,
-  jsContext: vm.Context,
-) {
-  const script = new vm.Script(`() => { const exports = {};\n${jsText}; return exports; }`)
-  const result = script.runInContext(jsContext)()
-  return result
-}
-
-function compileTsx(tsxSource: string) {
-  const typescriptOptions: typescript.CompilerOptions = {
-    jsx: typescript.JsxEmit.React,
-    module: typescript.ModuleKind.CommonJS,
-    target: typescript.ScriptTarget.ESNext,
-  }
-
-  const jsText = typescript.transpileModule(
-    tsxSource,
-    {
-      compilerOptions: typescriptOptions,
-    },
-  ).outputText
-
-  return jsText
-}
-
-function createJsContext(output: FlattenedOutput) {
-  const jsContext = vm.createContext({
-    require: createCustomRequire(output, () => jsContext),
-  })
-
-  return jsContext
-}
-
-function createCustomRequire(
-  output: FlattenedOutput,
-  getJsContext: () => vm.Context,
-): NodeRequire {
-  const customRequire = Object.assign(
-    (id: string) => {
-      try {
-        const foundOutput = findOutput(output, id)
-
-        const jsContext = getJsContext()
-        const jsText = compileTsx(foundOutput)
-        return runJs(jsText, jsContext)
-      }
-      catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-require-imports
-        return require(id)
-      }
-    },
-    require,
-  )
-
-  return customRequire
-}
-
 function findOutput(
   output: FlattenedOutput,
   id: string,
@@ -129,4 +59,79 @@ function findOutput(
     throw new Error(`Output not found: ${id}`)
 
   return foundOutput
+}
+
+function formatTsxForClient(
+  tsx: string,
+): string {
+  return `
+    import ReactDOM from 'react-dom/client';
+
+    ${tsx}
+
+    const root = ReactDOM.createRoot(
+      document.getElementById('root')
+    );
+    root.render(<Index />);
+  `
+}
+
+function buildTsx(
+  sourceTsx: string,
+  output: FlattenedOutput,
+) {
+  return esbuild.build({
+    bundle: true,
+    stdin: {
+      contents: sourceTsx,
+      resolveDir: __dirname,
+      loader: 'tsx',
+    },
+    plugins: [resolveOutputPlugin(output)],
+    write: false,
+    outfile: 'out.js',
+    target: 'es2015',
+  })
+}
+
+function resolveOutputPlugin(
+  output: FlattenedOutput,
+): esbuild.Plugin {
+  return {
+    name: 'resolveOutput',
+    setup(build) {
+      Object.entries(output).forEach(([id, content]) => {
+        build.onResolve({ filter: new RegExp(`^\.\/${id}$`) }, () => ({
+          path: id,
+          namespace: 'resolveOutput',
+        }))
+
+        build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async () => ({
+          contents: content,
+          loader: 'tsx',
+          resolveDir: __dirname,
+        }))
+      })
+    },
+  }
+}
+
+function jsToHtml(
+  js: string,
+): string {
+  return `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>React App</title>
+      </head>
+      <body>
+        <div id="root"></div>
+        <script type="text/javascript">
+          ${js}
+        </script>
+      </body>
+    </html>
+  `
 }

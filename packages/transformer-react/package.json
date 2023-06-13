@@ -34,6 +34,7 @@
     "@types/react-dom": "^18.0.6",
     "@vitest/coverage-c8": "^0.25.3",
     "@whitebird/kazam-test-web-transformer": "workspace:*",
+    "esbuild": "^0.18.2",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "vitest": "^0.31.0"
