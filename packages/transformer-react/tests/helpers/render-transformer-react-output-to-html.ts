@@ -1,9 +1,8 @@
 import vm from 'node:vm'
 
+import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer/src'
 import { renderToString } from 'react-dom/server'
 import typescript from 'typescript'
-
-import type { testWebTransformer } from '../../../test-web-transformer/src'
 
 type RenderHtml = Parameters<typeof testWebTransformer>[1]
 type ITransformerOutput = Parameters<RenderHtml>[0]
@@ -25,7 +24,10 @@ export const renderTransformerReactOutputToHtml: RenderHtml = async (output) => 
   return html
 }
 
-async function flattenOutput(output: ITransformerOutput, parentPath = ''): Promise<FlattenedOutput> {
+async function flattenOutput(
+  output: ITransformerOutput,
+  parentPath = '',
+): Promise<FlattenedOutput> {
   const flattenedOutput: FlattenedOutput = {}
 
   if (output === undefined)
@@ -59,7 +61,10 @@ function findIndexComponent(result: any) {
   return Index
 }
 
-function runJs(jsText: string, jsContext: vm.Context) {
+function runJs(
+  jsText: string,
+  jsContext: vm.Context,
+) {
   const script = new vm.Script(`() => { const exports = {};\n${jsText}; return exports; }`)
   const result = script.runInContext(jsContext)()
   return result
@@ -114,7 +119,10 @@ function createCustomRequire(
   return customRequire
 }
 
-function findOutput(output: FlattenedOutput, id: string): string {
+function findOutput(
+  output: FlattenedOutput,
+  id: string,
+): string {
   const foundOutput = output[id]
 
   if (foundOutput === undefined)

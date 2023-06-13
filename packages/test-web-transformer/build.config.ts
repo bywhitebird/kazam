@@ -2,11 +2,11 @@
 
 import * as path from 'node:path'
 
-import { TransformerReact } from '@whitebird/kazam-transformer-react'
 import { defineBuildConfig } from 'unbuild'
 
-import { renderTransformerReactOutputToHtml } from './src/utils/render-transformer-react-output-to-html'
 import { runTests } from './src/utils/run-tests'
+import { TransformerReact } from '../transformer-react'
+import { renderTransformerReactOutputToHtml } from '../transformer-react/tests/helpers/render-transformer-react-output-to-html'
 
 export default defineBuildConfig({
   entries: [
