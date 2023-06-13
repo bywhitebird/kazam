@@ -32,7 +32,7 @@ export const testWebTransformer = (
         const { equal } = await lookSame(referenceScreenshot, screenshot)
 
         if (!equal)
-          throw new DiffError(`Screenshot does not match reference image: ${referencePath}`)
+          throw new DiffError(referencePath)
 
         return screenshot
       }

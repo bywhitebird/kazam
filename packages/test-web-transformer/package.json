@@ -5,6 +5,17 @@
   "exports": {
     ".": {
       "import": "./dist/index.mjs"
+    },
+    "./jest": {
+      "import": "./dist/jest-matchers.mjs",
+      "types": "./dist/jest-matchers.d.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "jest": [
+        "./dist/jest-matchers.d.ts"
+      ]
     }
   },
   "main": "./dist/index.mjs",
@@ -22,10 +33,10 @@
     "playwright": "^1.35.0"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.2",
     "@types/node": "^18.11.9",
     "@types/react-dom": "^18.0.6",
     "@whitebird/kazam-transformer-base": "workspace:*",
-    "@whitebird/kazam-transformer-react": "workspace:*",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "typescript": "^5.0.0"

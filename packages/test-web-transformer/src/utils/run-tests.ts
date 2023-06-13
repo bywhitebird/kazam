@@ -10,7 +10,7 @@ const runTest = async (
   renderHtml: RenderHtml,
   browser: playwright.Browser,
   overridePageScreenshot: OverridePageScreenshot,
-): Promise<boolean> => {
+): Promise<true | string> => {
   // eslint-disable-next-line new-cap
   const transformer = new newTransformer(fixture.input, {})
   const output = await transformer.transform()
@@ -29,11 +29,9 @@ const runTest = async (
   }
   catch (error) {
     if (error instanceof DiffError)
-      console.error(error.message)
+      return error.message
     else
       throw error
-
-    return false
   }
   finally {
     await page.close()
@@ -44,13 +42,19 @@ export const runTests = async (
   newTransformer: Transformer,
   renderHtml: RenderHtml,
   overridePageScreenshot: OverridePageScreenshot,
-) => {
+): Promise<true | string> => {
   const browser = await playwright.chromium.launch()
 
   return await Promise.all(
     Object.values(fixtures)
       .map(fixture => runTest(fixture, newTransformer, renderHtml, browser, overridePageScreenshot)),
   )
-    .then(results => results.every(result => result))
+    .then((results) => {
+      const failed = results.find(result => result !== true)
+
+      return failed === undefined
+        ? true
+        : failed
+    })
     .finally(() => browser.close())
 }
