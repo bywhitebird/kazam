@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleWatchInstruction: IHandler<'watchInstruction'> = async (watchInstruction, { addImport }) => {
+export const handleWatchInstruction: IHandler<'watchInstruction'> = async (watchInstruction, { addImport, transformExpression }) => {
   addImport({ namedImports: [{ name: 'useEffect' }], path: 'react' })
 
-  return `useEffect(() => {${watchInstruction.callbackExpression.$value}}, [${watchInstruction.watchedVariables.map(variable => variable.name.$value).join(', ')}])`
+  return `useEffect(() => {${await transformExpression(watchInstruction.callbackExpression)}}, [${watchInstruction.watchedVariables.map(variable => variable.name.$value).join(', ')}])`
 }

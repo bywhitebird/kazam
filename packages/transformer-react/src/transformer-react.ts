@@ -1,12 +1,15 @@
 import * as path from 'node:path'
 
+import * as babelParser from '@babel/parser'
 import * as schemas from '@whitebird/kaz-ast'
 import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
+import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 import prettier from 'prettier'
 import type { z } from 'zod'
 
 import * as handlers from './handlers'
 import { type ImportInfos, importsToString, mergeImports } from './utils/imports-to-string'
+import { transformExpression } from './utils/transform-expression'
 import { type TUppercaseFirst, upperFirst } from './utils/upperFirst'
 
 interface IComponentMeta { name: string }
@@ -14,11 +17,14 @@ interface IComponentMeta { name: string }
 type TLowercaseFirst<T extends string> = T extends `${infer U}${infer V}` ? `${Lowercase<U>}${V}` : T
 type TSchemaName<T extends string> = T extends `kaz${infer U}Schema` ? TLowercaseFirst<U> : never
 
+type TypescriptAst = ReturnType<typeof babelParser.parse>
+type TransformerTypescriptGenerated = Awaited<ReturnType<TransformerTypescript['transformAndGenerateMappings']>>[string]
+
 type THandlerReturnType = unknown
 type ISchemaHandlers = {
   [
   key in TSchemaName<keyof typeof schemas> as z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]> extends { $type: string }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ? typeof schemas[`kaz${TUppercaseFirst<key>}Schema`] extends z.ZodUnion<infer _>
       ? never
       : key
@@ -27,6 +33,7 @@ type ISchemaHandlers = {
   (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, { handle, addImport }: {
     handle: (input: unknown | undefined) => Promise<THandlerReturnType>
     addImport: (...importInfos: ImportInfos[]) => void
+    transformExpression: (expression: Parameters<typeof transformExpression>[0]) => Promise<string>
     componentMeta: IComponentMeta
   }) => Promise<THandlerReturnType>
 }
@@ -57,6 +64,7 @@ export class TransformerReact extends TransformerBase {
 
   private generatedComponents: { [key: string]: string } = {}
   private imports: { [key: string]: ImportInfos[] } = {}
+  private generatedTypescript: Record<string, TransformerTypescriptGenerated & { ast: TypescriptAst }> = {}
 
   async transform() {
     await Promise.all(Object.entries(this.input).map(async ([componentName, component]) => {
@@ -95,6 +103,21 @@ export class TransformerReact extends TransformerBase {
         return handler(result.data as never, {
           handle: input => this.handle(input, componentMeta),
           addImport: (...importInfos) => this.addImport(componentMeta.name, ...importInfos),
+          transformExpression: async (expression) => {
+            const kazAst = this.input[componentMeta.name]
+
+            if (kazAst === undefined)
+              throw new Error(`No kazAst found for component ${componentMeta.name}`)
+
+            const transformedToTypescript = await this.transformToTypescript(componentMeta.name)
+
+            return transformExpression(expression, {
+              kazAst,
+              typescriptFileContent: transformedToTypescript?.content,
+              typescriptMapping: transformedToTypescript?.mapping,
+              typescriptAst: transformedToTypescript?.ast,
+            })
+          },
           componentMeta,
         })
       }
@@ -117,5 +140,39 @@ export class TransformerReact extends TransformerBase {
       ...(this.imports[componentName] ?? []),
       ...importInfos,
     ]
+  }
+
+  private async transformToTypescript(componentName: string) {
+    const foundGeneratedTypescript = this.generatedTypescript[componentName]
+    if (foundGeneratedTypescript !== undefined)
+      return foundGeneratedTypescript
+
+    const input = this.input[componentName]
+
+    if (input === undefined)
+      throw new Error(`No input found for component ${componentName}`)
+
+    const transformerTypescript = new TransformerTypescript({
+      [componentName]: input,
+    }, {})
+
+    const result = await transformerTypescript.transformAndGenerateMappings().then(result => result[componentName])
+
+    if (result === undefined)
+      throw new Error(`No result found for component ${componentName}`)
+
+    const ast = babelParser.parse(result.content, {
+      sourceType: 'module',
+      plugins: ['typescript'],
+    })
+
+    const resultWithAst = {
+      ...result,
+      ast,
+    }
+
+    this.generatedTypescript[componentName] = resultWithAst
+
+    return resultWithAst
   }
 }
