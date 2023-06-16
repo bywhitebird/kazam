@@ -7,4 +7,7 @@ export const WatchInstructionToken = new Token({
   validator: /^watch$/,
   startContexts: [() => WatchInstructionContext],
   inContexts: [() => InstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
 import * as fixtures from './fixtures/parse'
-import { expectDeepContains } from './helpers/customExpects'
+import { checkAST } from './helpers/customExpects'
 import { parse, tokenize } from '../src'
 import { kazAstSchema } from '../src/types/KazAst'
 
@@ -19,7 +19,7 @@ describe('parse', () => {
         }
 
         expect(parseResult).not.toBeInstanceOf(Error)
-        expectDeepContains(parseResult, fixture.expectedTree)
+        checkAST(parseResult, fixture.expectedTree)
 
         expect(kazAstSchema.safeParse(parseResult)).toEqual({
           success: true,

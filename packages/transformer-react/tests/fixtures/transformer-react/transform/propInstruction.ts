@@ -7,8 +7,14 @@ export const propInstructionFixtures = [
       instructions: [
         {
           $type: 'PropInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -28,10 +34,19 @@ export const propInstructionFixtures = [
       instructions: [
         {
           $type: 'PropInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
           defaultValue: {
-            expression: '\'red\'',
+            expression: {
+              $value: '\'red\'',
+              $range: [0, 0],
+            },
           },
         },
       ],
@@ -52,7 +67,10 @@ export const propInstructionFixtures = [
       instructions: [
         {
           $type: 'PropInstruction',
-          name: 'color',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -72,13 +90,25 @@ export const propInstructionFixtures = [
       instructions: [
         {
           $type: 'PropInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
         },
         {
           $type: 'PropInstruction',
-          name: 'size',
-          type: 'number',
+          name: {
+            $value: 'size',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'number',
+            $range: [0, 0],
+          },
         },
       ],
     }),

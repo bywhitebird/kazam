@@ -23,7 +23,10 @@ const TagAttributesSequence = s(
 export const TagSequence = gp(
   'Tag',
   s(
-    g('tagName', () => TagNameOrTextToken),
+    g(
+      'tagName',
+      () => TagNameOrTextToken,
+    ),
     TagLeftParenthesisToken,
     g(
       'attributes',

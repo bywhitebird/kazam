@@ -8,4 +8,8 @@ export const TagNameOrTextToken = new Token({
   validator: /^[^\s]+$/,
   getValue: rawValue => rawValue,
   startContexts: [() => TagContext, () => TemplateContext],
+  semantic: {
+    type: 'tag',
+    textmateScope: ['entity.name.tag'],
+  },
 })

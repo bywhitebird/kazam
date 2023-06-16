@@ -7,4 +7,9 @@ export const ForLeftParenthesisToken = new Token({
   inContexts: [() => ForLogicalContext],
   validator: /^\($/,
   singleCharacter: true,
+  semantic: {
+    type: 'punctuation',
+    modifiers: ['parenthesis', 'left'],
+    textmateScope: ['punctuation.parenthesis'],
+  },
 })
