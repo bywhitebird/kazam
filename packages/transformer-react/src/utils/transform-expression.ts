@@ -1,6 +1,6 @@
 import type * as babelParser from '@babel/parser'
 import traverse, { type NodePath } from '@babel/traverse'
-import type { AssignmentExpression } from '@babel/types'
+import type { AssignmentExpression, UpdateExpression } from '@babel/types'
 import type { KazAst, kazStateInstructionSchema, kazTemplateExpressionSchema } from '@whitebird/kaz-ast'
 import type { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 import type { z } from 'zod'
@@ -55,7 +55,15 @@ function transformSetStateInExpression(
     // Find the range of the replacement expression
     const [start, end] = findReplacementExpressionRange(assignmentIdentifier, typescriptMapping)
 
-    const identifier = assignmentIdentifier.get('left')
+    const identifier = (() => {
+      if (assignmentIdentifier.isAssignmentExpression())
+        return assignmentIdentifier.get('left')
+
+      if (assignmentIdentifier.isUpdateExpression())
+        return assignmentIdentifier.get('argument')
+
+      throw new Error('Expected assignment or update expression')
+    })()
 
     if (!identifier.isIdentifier())
       throw new Error('Expected identifier')
@@ -113,23 +121,33 @@ function findAssignmentsToStateVariable(
   stateInstructions: StateInstruction[],
   nodePaths: NodePath[],
 ) {
-  const assignmentIdentifiers: NodePath<AssignmentExpression>[] = []
+  const assignmentIdentifiers: NodePath<AssignmentExpression | UpdateExpression>[] = []
 
   for (const nodePath of nodePaths) {
     const parentNodePath = nodePath.parentPath
 
-    if (parentNodePath === null || !parentNodePath.isAssignmentExpression())
+    if (parentNodePath === null)
       continue
 
-    const leftNodePath = parentNodePath.get('left')
-
-    if (!leftNodePath.isIdentifier())
+    if (!parentNodePath.isAssignmentExpression() && !parentNodePath.isUpdateExpression())
       continue
 
-    if (leftNodePath.node !== nodePath.node)
+    if (assignmentIdentifiers.includes(parentNodePath))
+      continue;
+
+    const updatedNodePath = parentNodePath.isAssignmentExpression()
+      ? parentNodePath.get('left')
+      : parentNodePath.isUpdateExpression()
+        ? parentNodePath.get('argument')
+        : null
+
+    if (updatedNodePath === null)
       continue
 
-    if (stateInstructions.some(stateInstruction => stateInstruction.name.$value === leftNodePath.node.name))
+    if (!updatedNodePath.isIdentifier())
+      continue
+
+    if (stateInstructions.some(stateInstruction => stateInstruction.name.$value === updatedNodePath.node.name))
       assignmentIdentifiers.push(parentNodePath)
   }
 
@@ -137,7 +155,7 @@ function findAssignmentsToStateVariable(
 }
 
 function findReplacementExpressionRange(
-  assignmentIdentifier: NodePath<AssignmentExpression>,
+  assignmentIdentifier: NodePath<AssignmentExpression | UpdateExpression>,
   typescriptMapping: Mapping[],
 ) {
   const [assigmentStart, assignmentEnd] = [assignmentIdentifier.node.start, assignmentIdentifier.node.end]
