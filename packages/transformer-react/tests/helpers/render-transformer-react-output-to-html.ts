@@ -101,17 +101,22 @@ function resolveOutputPlugin(
     name: 'resolveOutput',
     setup(build) {
       Object.entries(output).forEach(([id, content]) => {
-        build.onResolve({ filter: new RegExp(`^\.\/${id}$`) }, () => ({
+        const resolveResult: esbuild.OnResolveResult = {
           path: id,
           namespace: 'resolveOutput',
-        }))
+        }
 
-        build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async () => ({
-          contents: content,
+        build.onResolve(
+          { filter: new RegExp(`^\.\/${id}$`) },
+          () => resolveResult,
+        )
+      })
+
+      build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async (args) => ({
+          contents: output[args.path],
           loader: 'tsx',
           resolveDir: __dirname,
-        }))
-      })
+      }))
     },
   }
 }
