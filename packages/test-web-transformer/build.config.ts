@@ -4,6 +4,8 @@ import * as path from 'node:path'
 
 import { defineBuildConfig } from 'unbuild'
 
+import { rimraf } from 'rimraf'
+
 import { runTests } from './src/utils/run-tests'
 import { TransformerReact } from '../transformer-react'
 import { renderTransformerReactOutputToHtml } from '../transformer-react/tests/helpers/render-transformer-react-output-to-html'
@@ -20,6 +22,7 @@ export default defineBuildConfig({
   externals: ['zod'],
   hooks: {
     'build:before': async () => {
+      await rimraf(path.join(__dirname, 'src', 'fixtures', '**', 'screenshots'), { glob: true })
       await updateFixtureScreenshots()
     },
   },
