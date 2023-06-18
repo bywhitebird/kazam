@@ -23,6 +23,20 @@ const runTest = async (
   const takeScreenshot = page.screenshot.bind(page)
   page.screenshot = overridePageScreenshot(takeScreenshot, fixture)
 
+  const consoleLogs: string[] = []
+
+  page.on('pageerror', (err) => {
+    throw new Error([...consoleLogs, err.toString()].join('\n'))
+  })
+
+  page.on('console', (message) => {
+    console.log('[CONSOLE]', message)
+    consoleLogs.push(message.text())
+
+    if (message.type() === 'error')
+      throw new Error(consoleLogs.join('\n'))
+  })
+
   await page.setContent(html)
 
   try {
