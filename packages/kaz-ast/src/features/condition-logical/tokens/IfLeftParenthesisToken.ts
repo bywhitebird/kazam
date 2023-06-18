@@ -7,4 +7,9 @@ export const IfLeftParenthesisToken = new Token({
   singleCharacter: true,
   startContexts: [() => ConditionContext],
   inContexts: [() => ConditionLogicalContext],
+  semantic: {
+    type: 'punctuation',
+    modifiers: ['parenthesis', 'left'],
+    textmateScope: ['punctuation.parenthesis'],
+  },
 })

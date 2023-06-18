@@ -7,4 +7,7 @@ export const StateInstructionToken = new Token({
   validator: /^state$/,
   startContexts: [() => StateInstructionContext],
   inContexts: [() => InstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

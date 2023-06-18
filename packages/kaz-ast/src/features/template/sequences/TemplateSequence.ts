@@ -1,6 +1,6 @@
-import { TemplateExpressionEndToken, TemplateExpressionStartToken } from '..'
+import { TemplateExpressionEndToken, TemplateExpressionLeftCurlyToken, TemplateExpressionStartToken } from '..'
 import { g, gp, s } from '../../../lib/voltair'
-import { ExpressionToken, LeftCurlyBracketToken } from '../../../shared'
+import { ExpressionToken } from '../../../shared'
 import { ConditionLogicalSequence } from '../../condition-logical'
 import { ForLogicalSequence } from '../../for-logical'
 import { TagNameOrTextToken, TagSequence } from '../../tag'
@@ -18,7 +18,7 @@ export const TemplateSequence = s(
       'Expression',
       s(
         () => TemplateExpressionStartToken,
-        () => LeftCurlyBracketToken,
+        () => TemplateExpressionLeftCurlyToken,
         g('expression', s(() => ExpressionToken)),
         () => TemplateExpressionEndToken,
       ),

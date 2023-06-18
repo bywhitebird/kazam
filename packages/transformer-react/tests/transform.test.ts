@@ -10,7 +10,7 @@ describe('transformer-react', () => {
     Object.values(transformFixtures).forEach((fixtures) => {
       fixtures.forEach((fixture) => {
         test(fixture.name, async () => {
-          const transformer = new TransformerReact(fixture.input, {})
+          const transformer = new TransformerReact(await fixture.input, {})
 
           const result = await transformer.transform()
 

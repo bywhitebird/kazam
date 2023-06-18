@@ -15,4 +15,7 @@ export const TagEventAttributeNameToken = new Token({
     return eventName
   },
   inContexts: [() => TagAttributesContext],
+  semantic: {
+    type: 'event',
+  },
 })

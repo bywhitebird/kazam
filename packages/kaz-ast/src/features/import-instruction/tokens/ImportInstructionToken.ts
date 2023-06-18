@@ -7,4 +7,7 @@ export const ImportInstructionToken = new Token({
   validator: /^import$/,
   startContexts: [() => ImportInstructionContext],
   inContexts: [() => InstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

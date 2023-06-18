@@ -10,3 +10,5 @@ export * from './Token'
 
 export * from './tokenize'
 export * from './parse'
+
+export * from './utils/get-semantic-tokens-legend'

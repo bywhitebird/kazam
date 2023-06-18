@@ -10,10 +10,16 @@ export const importInstructionFixtures = [
           imports: [
             {
               $type: 'DefaultImport',
-              name: 'UI',
+              name: {
+                $value: 'UI',
+                $range: [0, 0],
+              },
             },
           ],
-          from: 'whitebird-ui',
+          from: {
+            $value: 'whitebird-ui',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -37,10 +43,18 @@ export const importInstructionFixtures = [
           imports: [
             {
               $type: 'NamedImport',
-              name: 'Button',
+              // name: 'Button',
+              name: {
+                $value: 'Button',
+                $range: [0, 0],
+              },
             },
           ],
-          from: 'whitebird-ui',
+          // from: 'whitebird-ui',
+          from: {
+            $value: 'whitebird-ui',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -64,10 +78,16 @@ export const importInstructionFixtures = [
           imports: [
             {
               $type: 'NamespaceImport',
-              name: 'components',
+              name: {
+                $value: 'components',
+                $range: [0, 0],
+              },
             },
           ],
-          from: 'whitebird-ui',
+          from: {
+            $value: 'whitebird-ui',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -91,14 +111,23 @@ export const importInstructionFixtures = [
           imports: [
             {
               $type: 'DefaultImport',
-              name: 'UI',
+              name: {
+                $value: 'UI',
+                $range: [0, 0],
+              },
             },
             {
               $type: 'NamedImport',
-              name: 'Button',
+              name: {
+                $value: 'Button',
+                $range: [0, 0],
+              },
             },
           ],
-          from: 'whitebird-ui',
+          from: {
+            $value: 'whitebird-ui',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -122,14 +151,23 @@ export const importInstructionFixtures = [
           imports: [
             {
               $type: 'DefaultImport',
-              name: 'UI',
+              name: {
+                $value: 'UI',
+                $range: [0, 0],
+              },
             },
             {
               $type: 'NamespaceImport',
-              name: 'components',
+              name: {
+                $value: 'components',
+                $range: [0, 0],
+              },
             },
           ],
-          from: 'whitebird-ui',
+          from: {
+            $value: 'whitebird-ui',
+            $range: [0, 0],
+          },
         },
       ],
     }),
