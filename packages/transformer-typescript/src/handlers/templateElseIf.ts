@@ -3,7 +3,7 @@ import type { IHandler } from '../transformer-typescript'
 export const handleTemplateElseIf: IHandler<'templateElseIf'> = async (templateElseIf, { handle, addGeneratedContent }) => {
   addGeneratedContent('else ')
   handle({
-    ...templateElseIf,
+    ...templateElseIf.if,
     $type: 'IfLogical',
   })
 }
