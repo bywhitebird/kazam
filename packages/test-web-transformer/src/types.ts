@@ -13,5 +13,5 @@ export type Fixture = typeof fixtures[keyof typeof fixtures]
 
 export type OverridePageScreenshot = (
   takeScreenshot: playwright.Page['screenshot'],
-  fixture: Fixture
+  fixture: Awaited<Fixture>
 ) => playwright.Page['screenshot']

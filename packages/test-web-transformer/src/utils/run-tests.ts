@@ -5,12 +5,14 @@ import * as fixtures from '../fixtures'
 import type { Fixture, OverridePageScreenshot, RenderHtml, Transformer } from '../types'
 
 const runTest = async (
-  fixture: Fixture,
+  fixturePromise: Fixture,
   newTransformer: Transformer,
   renderHtml: RenderHtml,
   browser: playwright.Browser,
   overridePageScreenshot: OverridePageScreenshot,
 ): Promise<true | string> => {
+  const fixture = await fixturePromise
+
   // eslint-disable-next-line new-cap
   const transformer = new newTransformer(fixture.input, {})
   const output = await transformer.transform()
@@ -45,16 +47,14 @@ export const runTests = async (
 ): Promise<true | string> => {
   const browser = await playwright.chromium.launch()
 
-  return await Promise.all(
-    Object.values(fixtures)
-      .map(fixture => runTest(fixture, newTransformer, renderHtml, browser, overridePageScreenshot)),
-  )
-    .then((results) => {
-      const failed = results.find(result => result !== true)
+  for (const [_fixtureName, fixture] of Object.entries(fixtures)) {
+    const testResult = await runTest(fixture, newTransformer, renderHtml, browser, overridePageScreenshot)
 
-      return failed === undefined
-        ? true
-        : failed
-    })
-    .finally(() => browser.close())
+    if (testResult !== true)
+      return testResult
+  }
+
+  await browser.close()
+
+  return true
 }
