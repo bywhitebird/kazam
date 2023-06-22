@@ -1,4 +1,4 @@
-import * as path from 'node:path'
+import path from 'node:path'
 
 import * as babelParser from '@babel/parser'
 import * as schemas from '@whitebird/kaz-ast'
@@ -30,10 +30,12 @@ type ISchemaHandlers = {
       : key
     : never
   ]:
-  (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, { handle, addImport }: {
+  (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, utils: {
     handle: (input: unknown | undefined) => Promise<THandlerReturnType>
     addImport: (...importInfos: ImportInfos[]) => void
     transformExpression: (expression: Parameters<typeof transformExpression>[0]) => Promise<string>
+    checkIsComponent: (componentName: string) => Promise<boolean>
+    importComponent: (componentName: string) => void
     componentMeta: IComponentMeta
   }) => Promise<THandlerReturnType>
 }
@@ -85,7 +87,7 @@ export class TransformerReact extends TransformerBase {
     return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
       output[id] = Object.assign(
         new Blob([content], { type: 'text/plain' }),
-        { name: `${id.slice(0, -path.extname(id).length)}.tsx` },
+        { name: `${id}.tsx` },
       )
       return output
     }, {})
@@ -118,6 +120,8 @@ export class TransformerReact extends TransformerBase {
               typescriptAst: transformedToTypescript?.ast,
             })
           },
+          checkIsComponent: componentName => this.checkIsComponent(componentName),
+          importComponent: componentName => this.importComponent(componentName, componentMeta),
           componentMeta,
         })
       }
@@ -133,6 +137,31 @@ export class TransformerReact extends TransformerBase {
     }
 
     throw new Error(`No handler found for input ${inputString}`)
+  }
+
+  private async checkIsComponent(componentName: string): Promise<boolean> {
+    return Object.keys(this.input)
+      .map(componentName => path.basename(componentName, path.extname(componentName)))
+      .includes(componentName)
+  }
+
+  private async importComponent(componentName: string, componentMeta: IComponentMeta) {
+    const relativePath = path.relative(
+      path.dirname(componentMeta.name),
+      path.resolve(
+        path.dirname(componentMeta.name),
+        `${componentName}.tsx`,
+      ),
+    )
+
+    this.addImport(componentMeta.name, {
+      namedImports: [
+        {
+          name: componentName,
+        },
+      ],
+      path: `./${relativePath}`,
+    })
   }
 
   private addImport(componentName: string, ...importInfos: ImportInfos[]) {
