@@ -19,7 +19,6 @@ export default defineBuildConfig({
     },
   ],
   declaration: true,
-  externals: ['zod'],
   hooks: {
     'build:before': async () => {
       await rimraf(path.join(__dirname, 'src', 'fixtures', '**', 'screenshots'), { glob: true })
