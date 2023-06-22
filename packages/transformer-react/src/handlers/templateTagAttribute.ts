@@ -1,8 +1,6 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute, utils) => {
-  const { transformExpression } = utils
-
+export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute, { transformExpression }) => {
   return `${templateTagAttribute.name.$value}=`
     + `${await (async () => {
       const [startChars, endChars] = ((): [string, string] => {
