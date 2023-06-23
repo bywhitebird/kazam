@@ -17,7 +17,7 @@
     },
     "test": {
       "outputs": [],
-      "dependsOn": ["lint", "build"]
+      "dependsOn": ["build"]
     }
   }
 }

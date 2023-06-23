@@ -8,6 +8,7 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "kaz-playground"
+    "kaz-playground",
+    "simple-kazam-project"
   ]
 }

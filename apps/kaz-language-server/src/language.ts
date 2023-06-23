@@ -2,7 +2,7 @@ import type { Language, VirtualFile } from '@volar/language-core'
 import { FileCapabilities, FileKind, FileRangeCapabilities } from '@volar/language-core'
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import type * as ts from 'typescript/lib/tsserverlibrary'
-import { TransformerTypescriptMapping } from './transformer-typescript-mapping'
+import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 
 export const language: Language<KazFile> = {
   createVirtualFile(fileName, snapshot) {
@@ -69,11 +69,11 @@ export class KazFile implements VirtualFile {
     if (ast === undefined || ast.instructions === undefined)
       return
 
-    const transformerTypescriptMapping = new TransformerTypescriptMapping({
+    const transformerTypescript = new TransformerTypescript({
       [this.fileName]: ast,
     }, {})
 
-    const tsFiles = await transformerTypescriptMapping.transformAndGenerateMappings()
+    const tsFiles = await transformerTypescript.transformAndGenerateMappings()
 
     Object.entries(tsFiles).forEach(([fileName, { content, mapping }]) => {
       this.embeddedFiles.push({

@@ -30,6 +30,7 @@
     "@volar/language-service": "1.5.4",
     "@whitebird/kaz-ast": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
+    "@whitebird/kazam-transformer-typescript": "workspace:*",
     "volar-service-typescript": "^0.0.4",
     "zod": "^3.19.1"
   }

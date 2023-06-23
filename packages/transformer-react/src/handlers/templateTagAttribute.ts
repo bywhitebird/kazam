@@ -1,18 +1,38 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute) => {
+export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute, { transformExpression }) => {
   return `${templateTagAttribute.name.$value}=`
-    + `${(() => {
-      if ('value' in templateTagAttribute) {
-        if (typeof templateTagAttribute.value === 'boolean')
-          return `{${templateTagAttribute.value}}`
+    + `${await (async () => {
+      const [startChars, endChars] = ((): [string, string] => {
+        const isStringValue = 'value' in templateTagAttribute && typeof templateTagAttribute.value !== 'boolean'
 
-        return `"${templateTagAttribute.value.$value}"`
-      }
+        if (templateTagAttribute.name.$value === 'style') {
+          if (isStringValue)
+            return ['{{ cssText: "', '" }}']
 
-      if ('expression' in templateTagAttribute)
-        return `{${templateTagAttribute.expression.$value}}`
+          return ['{{ cssText: ', ' }}']
+        }
 
-      return '{true}'
+        if (isStringValue)
+          return ['"', '"']
+
+        return ['{', '}']
+      })()
+
+      const value = await (async () => {
+        if ('value' in templateTagAttribute) {
+          if (typeof templateTagAttribute.value === 'boolean')
+            return templateTagAttribute.value
+
+          return templateTagAttribute.value.$value
+        }
+
+        if ('expression' in templateTagAttribute)
+          return await transformExpression(templateTagAttribute.expression)
+
+        return 'true'
+      })()
+
+      return `${startChars}${value}${endChars}`
     })()}`
 }

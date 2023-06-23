@@ -133,4 +133,29 @@ export const stateInstructionFixtures = [
       `,
     },
   },
+  {
+    name: 'When I pass a state instruction and change its value, component is generated',
+    input: TransformerInputFactory.create(
+      ` - state color: string
+
+div (on:click={      () => { color = 'red' }}) {}`,
+    ),
+    expectedOutput: {
+      'components/Test.tsx': `
+        import React, { useState } from 'react'
+
+        export const Test = () => {
+          const [color, setColor] = useState<string>()
+
+          return (<>
+            <div onClick={() => { setColor((color) => {
+              color = 'red'
+              return color
+            }) }}></div>
+            </>
+          )
+        }
+      `,
+    },
+  },
 ]
