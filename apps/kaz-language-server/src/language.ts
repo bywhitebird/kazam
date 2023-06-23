@@ -1,8 +1,8 @@
 import type { Language, VirtualFile } from '@volar/language-core'
 import { FileCapabilities, FileKind, FileRangeCapabilities } from '@volar/language-core'
 import { parse, tokenize } from '@whitebird/kaz-ast'
-import type * as ts from 'typescript/lib/tsserverlibrary'
 import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
+import type ts from 'typescript/lib/tsserverlibrary'
 
 export const language: Language<KazFile> = {
   createVirtualFile(fileName, snapshot) {
@@ -37,15 +37,10 @@ export class KazFile implements VirtualFile {
 
   private _updateTimestamp = 0
   public update(newSnapshot: ts.IScriptSnapshot) {
-    console.log('update', this.fileName);
     (async () => {
       const timestamp = Date.now()
 
       const { snapshot, embeddedFiles, mappings } = await this.onSnapshotUpdated(newSnapshot)
-
-      console.log(`Snapshot updated: ${this.fileName} (${timestamp}) ${
-        timestamp < this._updateTimestamp ? '(ignored)' : ''
-      }`)
 
       if (timestamp < this._updateTimestamp)
         return

@@ -4,7 +4,7 @@ import createTypescriptService from 'volar-service-typescript'
 import { language } from './language'
 import { createKazService } from './service'
 
-const plugin: LanguageServerPlugin = (): ReturnType<LanguageServerPlugin> => ({
+const plugin: LanguageServerPlugin = () => ({
   extraFileExtensions: [{ extension: 'kaz', isMixedContent: true, scriptKind: 7 }],
   resolveConfig(config) {
     // languages

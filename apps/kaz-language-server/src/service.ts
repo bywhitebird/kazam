@@ -2,7 +2,7 @@ import type { Diagnostic, Service, TextDocument } from '@volar/language-server/n
 
 import { KazFile } from './language'
 
-export const createKazService: () => Service = () => (context) => ({
+export const createKazService: () => Service = () => context => ({
   provideDiagnostics(document) {
     if (context === undefined)
       return
@@ -50,7 +50,7 @@ export const createKazService: () => Service = () => (context) => ({
         if (tokenModifierIndex !== -1)
           serverTokenModifiersBitFlags = `${serverTokenModifiersBitFlags.slice(0, -tokenModifierIndex - 1)}1${serverTokenModifiersBitFlags.slice(-tokenModifierIndex)}`
       })
-      const serverTokenModifiers = parseInt(serverTokenModifiersBitFlags, 2)
+      const serverTokenModifiers = Number.parseInt(serverTokenModifiersBitFlags, 2)
 
       // https://github.com/volarjs/services/blob/f5d49495d6698761f4df8c9ef2747cc01fc777d6/packages/typescript/src/services/semanticTokens.ts#LL66C1-L70C2
       for (let line = startPosition.line; line <= endPosition.line; line++) {
