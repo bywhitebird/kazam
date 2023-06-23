@@ -8,7 +8,6 @@ require('esbuild').build({
   outdir: './dist',
   external: [
     'vscode',
-    'typescript',
   ],
   format: 'cjs',
   platform: 'node',

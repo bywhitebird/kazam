@@ -10,8 +10,9 @@
 	"categories": [
 		"Programming Languages"
 	],
-	"displayName": "Kaz Language Features",
-	"description": "Kaz Language Features",
+	"displayName": "Kaz",
+	"description": "Language support for Kaz",
+	"icon": "assets/icon.png",
 	"author": "Arthur Fontaine",
 	"publisher": "Whitebird",
 	"engines": {
@@ -25,9 +26,14 @@
 		"languages": [
 			{
 				"id": "kaz",
+				"aliases": [
+					"Kaz",
+					"kaz"
+				],
 				"extensions": [
 					".kaz"
-				]
+				],
+				"configuration": "./languages/kaz-language-configuration.json"
 			}
 		],
 		"semanticTokenScopes": [
@@ -69,20 +75,22 @@
 		]
 	},
 	"scripts": {
-		"build": "node scripts/build -- --minify",
+		"build": "node scripts/build",
 		"build:dev": "pnpm build --watch",
 		"start": "code --extensionDevelopmentPath=$PWD",
 		"start:dev": "pnpm start --wait --disable-extensions --folder-uri=$PWD/sample --inspect-extensions 6010",
 		"predev": "cd ../kaz-language-server && pnpm stub",
 		"dev": "run-p *:dev --race",
 		"postdev": "cd ../kaz-language-server && pnpm build",
-		"prepack": "pnpm build",
-		"pack": "vsce package",
-		"prerelease": "pnpm pack",
-		"release": "vsce publish"
+		"prepackage": "pnpm build",
+		"package": "vsce package --no-dependencies",
+		"prerelease": "pnpm package",
+		"release:vsce": "vsce publish --no-dependencies --skip-duplicate",
+		"release:openvsx": "ovsx publish --no-dependencies --skip-duplicate",
+		"release": "run-s release:*"
 	},
 	"devDependencies": {
-		"@types/vscode": "1.67.0",
+		"@types/vscode": "^1.67.0",
 		"@volar/language-server": "1.7.8",
 		"@volar/vscode": "1.7.8",
 		"@vscode/vsce": "latest",
@@ -90,10 +98,9 @@
 		"@whitebird/kaz-language-server": "workspace:*",
 		"esbuild": "0.15.18",
 		"npm-run-all": "^4.1.5",
-		"vscode-languageclient": "^8.1.0"
-	},
-	"dependencies": {
+		"ovsx": "^0.8.1",
 		"typescript": "^5.0.0",
-		"vscode": "^1.1.37"
+		"vscode": "^1.1.37",
+		"vscode-languageclient": "^8.1.0"
 	}
 }

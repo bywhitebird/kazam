@@ -1,8 +1,6 @@
-import * as path from 'node:path'
-
 import type { InitializationOptions } from '@volar/language-server'
 import { DiagnosticModel } from '@volar/language-server'
-import { activateAutoInsertion } from '@volar/vscode'
+import { activateAutoInsertion, getTsdk } from '@volar/vscode'
 import { semanticTokensLegend } from '@whitebird/kaz-ast'
 import * as vscode from 'vscode'
 import * as lsp from 'vscode-languageclient/node'
@@ -25,11 +23,8 @@ export async function activate(context: vscode.ExtensionContext) {
       options: debugOptions,
     },
   }
-  console.log('TS', path.dirname(require.resolve('typescript')))
   const initializationOptions: InitializationOptions = {
-    typescript: {
-      tsdk: path.dirname(require.resolve('typescript')),
-    },
+    typescript: { tsdk: (await getTsdk(context)).tsdk },
     diagnosticModel: DiagnosticModel.Pull,
     semanticTokensLegend,
   }
