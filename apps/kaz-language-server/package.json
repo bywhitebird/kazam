@@ -25,13 +25,16 @@
     "kaz-language-server": "./bin/kaz-language-server.js"
   },
   "dependencies": {
-    "@volar/language-core": "1.5.4",
-    "@volar/language-server": "1.5.4",
-    "@volar/language-service": "1.5.4",
+    "@volar/language-core": "1.7.8",
+    "@volar/language-server": "1.7.8",
+    "@volar/language-service": "1.7.8",
     "@whitebird/kaz-ast": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
     "@whitebird/kazam-transformer-typescript": "workspace:*",
-    "volar-service-typescript": "^0.0.4",
+    "volar-service-typescript": "^0.0.8",
     "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9"
   }
 }

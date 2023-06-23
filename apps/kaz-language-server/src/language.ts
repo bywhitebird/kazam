@@ -11,8 +11,8 @@ export const language: Language<KazFile> = {
 
     return undefined
   },
-  async updateVirtualFile(kazFile, snapshot) {
-    await kazFile.update(snapshot)
+  updateVirtualFile(kazFile, snapshot) {
+    kazFile.update(snapshot)
   },
 }
 
@@ -21,6 +21,7 @@ export class KazFile implements VirtualFile {
   public capabilities = FileCapabilities.full
   public mappings: VirtualFile['mappings'] = []
   public embeddedFiles: VirtualFile['embeddedFiles'] = []
+  public codegenStacks: VirtualFile['codegenStacks'] = []
 
   public fileName: string
   public tokens: Awaited<ReturnType<typeof tokenize>> | undefined = undefined
@@ -31,43 +32,69 @@ export class KazFile implements VirtualFile {
     public snapshot: ts.IScriptSnapshot,
   ) {
     this.fileName = sourceFileName
-    this.onSnapshotUpdated()
+    this.update(snapshot)
   }
 
-  public async update(newSnapshot: ts.IScriptSnapshot) {
-    this.snapshot = newSnapshot
-    await this.onSnapshotUpdated()
+  private _updateTimestamp = 0
+  public update(newSnapshot: ts.IScriptSnapshot) {
+    console.log('update', this.fileName);
+    (async () => {
+      const timestamp = Date.now()
+
+      const { snapshot, embeddedFiles, mappings } = await this.onSnapshotUpdated(newSnapshot)
+
+      console.log(`Snapshot updated: ${this.fileName} (${timestamp}) ${
+        timestamp < this._updateTimestamp ? '(ignored)' : ''
+      }`)
+
+      if (timestamp < this._updateTimestamp)
+        return
+
+      this.snapshot = snapshot
+      this.embeddedFiles = embeddedFiles
+      this.mappings = mappings
+      this._updateTimestamp = timestamp
+    })()
   }
 
-  public async onSnapshotUpdated() {
-    this.mappings = [{
-      sourceRange: [0, this.snapshot.getLength()],
-      generatedRange: [0, this.snapshot.getLength()],
-      data: FileRangeCapabilities.full,
-    }]
-
-    const tokens = await tokenize(this.snapshot.getText(0, this.snapshot.getLength()))
+  public async onSnapshotUpdated(snapshot: ts.IScriptSnapshot) {
+    const tokens = await tokenize(snapshot.getText(0, snapshot.getLength()))
     const ast = await parse([...tokens])
 
     this.tokens = tokens
     this.ast = ast
 
-    await this.createEmbeddedFiles()
+    return {
+      snapshot,
+      embeddedFiles: await this.createEmbeddedFiles(),
+      mappings: [{
+        sourceRange: [0, snapshot.getLength()] as [number, number],
+        generatedRange: [0, snapshot.getLength()] as [number, number],
+        data: FileRangeCapabilities.full,
+      }],
+    }
   }
 
   private async createEmbeddedFiles() {
-    this.embeddedFiles = []
-    await this.createTypeScriptEmbeddedFile()
+    const embeddedFilesCreators = [
+      this.createTypeScriptEmbeddedFile,
+    ]
+
+    const embeddedFiles = await Promise.all(embeddedFilesCreators.map(creator => creator.call(this)))
+
+    return embeddedFiles.flat()
   }
 
   private async createTypeScriptEmbeddedFile() {
+    const embeddedFiles: VirtualFile[] = []
+
     const ast = this.ast
 
     if (ast instanceof Error)
-      return
+      return []
 
     if (ast === undefined || ast.instructions === undefined)
-      return
+      return []
 
     const transformerTypescript = new TransformerTypescript({
       [this.fileName]: ast,
@@ -76,7 +103,7 @@ export class KazFile implements VirtualFile {
     const tsFiles = await transformerTypescript.transformAndGenerateMappings()
 
     Object.entries(tsFiles).forEach(([fileName, { content, mapping }]) => {
-      this.embeddedFiles.push({
+      embeddedFiles.push({
         fileName: `${fileName}.ts`,
         kind: FileKind.TypeScriptHostFile,
         snapshot: {
@@ -90,10 +117,10 @@ export class KazFile implements VirtualFile {
         })),
         capabilities: FileCapabilities.full,
         embeddedFiles: [],
+        codegenStacks: [],
       })
     })
 
-    // TODO: Remove
-    ;(global as any).embeddedFiles = this.embeddedFiles
+    return embeddedFiles
   }
 }
