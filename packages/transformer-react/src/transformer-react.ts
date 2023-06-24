@@ -87,7 +87,7 @@ export class TransformerReact extends TransformerBase {
     return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
       output[id] = Object.assign(
         new Blob([content], { type: 'text/plain' }),
-        { name: `${id}.tsx` },
+        { name: `${path.basename(id, path.extname(id))}.tsx` },
       )
       return output
     }, {})
