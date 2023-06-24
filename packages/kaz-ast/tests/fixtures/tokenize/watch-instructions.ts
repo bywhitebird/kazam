@@ -27,7 +27,7 @@ export const watchInstructionsFixtures: ({
       { checker: IdentifierToken, value: 'foo' },
       { checker: RightParenthesisToken, rawValue: ')' },
       { checker: ArrowToken, rawValue: '=>' },
-      { checker: ArrowFunctionBodyToken, value: 'console.log(\'Foo changed\')\n        console.log(foo)' },
+      { checker: ArrowFunctionBodyToken, value: '{\n        console.log(\'Foo changed\')\n        console.log(foo)\n      }' },
       { checker: EndInstructionToken, rawValue: '' },
     ],
   },

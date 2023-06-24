@@ -23,7 +23,7 @@ export const watchInstructionsFixtures: (
         {
           $type: 'WatchInstruction',
           watchedVariables: [{ name: 'foo' }],
-          callbackExpression: 'console.log(\'Foo changed\')\n        console.log(foo)',
+          callbackExpression: '{\n        console.log(\'Foo changed\')\n        console.log(foo)\n      }',
         },
       ],
     },
@@ -58,7 +58,7 @@ export const watchInstructionsFixtures: (
         {
           $type: 'WatchInstruction',
           watchedVariables: [{ name: 'foo' }, { name: 'bar' }],
-          callbackExpression: 'console.log(\'Foo or bar changed\')\n        console.log(foo, bar)',
+          callbackExpression: '{\n        console.log(\'Foo or bar changed\')\n        console.log(foo, bar)\n      }',
         },
       ],
     },
@@ -77,7 +77,7 @@ export const watchInstructionsFixtures: (
         {
           $type: 'WatchInstruction',
           watchedVariables: [{ name: 'foo', type: 'string' }, { name: 'bar', type: 'number' }],
-          callbackExpression: 'console.log(\'Foo or bar changed\')\n        console.log(foo, bar)',
+          callbackExpression: '{\n        console.log(\'Foo or bar changed\')\n        console.log(foo, bar)\n      }',
         },
       ],
     },

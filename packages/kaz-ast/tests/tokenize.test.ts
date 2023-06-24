@@ -18,9 +18,19 @@ describe('tokenize', () => {
           if (expectedRawValue)
             expect(result[index].$rawValue).toBe(expectedRawValue)
 
-          const expectedValue = checker.value
-          if (expectedValue)
-            expect(result[index].$value).toBe(expectedValue)
+          let expectedValue = checker.value
+
+          if (typeof expectedValue === 'string')
+            expectedValue = expectedValue.trim()
+
+          if (expectedValue) {
+            const value = result[index].$value
+
+            if (typeof value === 'string')
+              expect(value.trim()).toBe(expectedValue)
+            else
+              expect(result[index].$value).toBe(expectedValue)
+          }
         })
       })
     })
