@@ -3,11 +3,16 @@
   "display": "Default",
   "extends": "@whitebird/tsconfig/node.json",
   "compilerOptions": {
-		"outDir": "out",
-		"rootDir": "src",
+    "outDir": "out",
+    "rootDir": "src",
     "ignoreDeprecations": "5.0",
     "module": "ES6"
   },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

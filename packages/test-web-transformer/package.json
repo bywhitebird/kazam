@@ -1,16 +1,18 @@
 {
   "name": "@whitebird/kazam-test-web-transformer",
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
   "exports": {
     ".": {
       "import": "./dist/index.mjs"
     },
     "./jest": {
-      "import": "./dist/jest-matchers.mjs",
-      "types": "./dist/jest-matchers.d.ts"
+      "types": "./dist/jest-matchers.d.ts",
+      "import": "./dist/jest-matchers.mjs"
     }
   },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "typesVersions": {
     "*": {
       "jest": [
@@ -18,8 +20,6 @@
       ]
     }
   },
-  "main": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],

@@ -13,7 +13,7 @@ module.exports = {
       colors: {
         gray: Object.fromEntries(
           [...Array(11).keys()].map((i) => {
-            const formattedI = parseInt(`${i}00`).toString()
+            const formattedI = Number.parseInt(`${i}00`).toString()
             return [
               formattedI,
               `var(--color-gray-${formattedI})`,

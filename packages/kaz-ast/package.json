@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@typescript-eslint/parser": "^5.50.0",
-    "eslint": "^8.33.0",
+    "eslint": "^8.43.0",
     "typescript": "^5.0.0",
     "zod": "^3.21.4"
   },

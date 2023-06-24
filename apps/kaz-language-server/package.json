@@ -1,7 +1,8 @@
 {
   "name": "@whitebird/kaz-language-server",
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "license": "MIT",
   "exports": {
     ".": {
       "require": "./dist/index.cjs",
@@ -11,6 +12,9 @@
   },
   "main": "./dist/index.cjs",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "kaz-language-server": "./bin/kaz-language-server.js"
+  },
   "files": [
     "dist"
   ],
@@ -19,10 +23,6 @@
     "stub": "pnpm build --stub",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
-  },
-  "license": "MIT",
-  "bin": {
-    "kaz-language-server": "./bin/kaz-language-server.js"
   },
   "dependencies": {
     "@volar/language-core": "1.7.8",

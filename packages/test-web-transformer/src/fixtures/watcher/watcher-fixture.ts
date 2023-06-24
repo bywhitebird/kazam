@@ -15,8 +15,14 @@ export const watcherFixture = createTestWebTransformerFixture({
       }
 
       div() {
-        Count: span(style={${'`color: ${color}`'}}) {
-          ${'${count}'}
+        Count: span(style={${
+          /* eslint-disable-next-line no-template-curly-in-string */
+          '`color: ${color}`'
+        }}) {
+          ${
+            /* eslint-disable-next-line no-template-curly-in-string */
+            '${count}'
+          }
         }
       }
       button(on:click={() => count++}) { Increment }

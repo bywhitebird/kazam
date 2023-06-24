@@ -2,9 +2,8 @@
 
 import * as path from 'node:path'
 
-import { defineBuildConfig } from 'unbuild'
-
 import { rimraf } from 'rimraf'
+import { defineBuildConfig } from 'unbuild'
 
 import { runTests } from './src/utils/run-tests'
 import { TransformerReact } from '../transformer-react'

@@ -9,7 +9,10 @@ export const stateFixture = createTestWebTransformerFixture({
       - state count: number = 0
 
       div() {
-        Count: ${'${count}'}
+        Count: ${
+          /* eslint-disable-next-line no-template-curly-in-string */
+          '${count}'
+        }
       }
       button(on:click={() => count++}) { Increment }
     `,

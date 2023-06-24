@@ -7,7 +7,7 @@ export const simpleRenderingFixture = createTestWebTransformerFixture({
   input: {
     Index: dedent`
       Hello World
-    `
+    `,
   },
   scenario: async (page) => {
     await page.screenshot({ path: 'simple-rendering.png' })

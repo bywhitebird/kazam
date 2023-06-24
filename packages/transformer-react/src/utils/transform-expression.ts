@@ -133,7 +133,7 @@ function findAssignmentsToStateVariable(
       continue
 
     if (assignmentIdentifiers.includes(parentNodePath))
-      continue;
+      continue
 
     const updatedNodePath = parentNodePath.isAssignmentExpression()
       ? parentNodePath.get('left')

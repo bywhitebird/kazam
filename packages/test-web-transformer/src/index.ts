@@ -26,6 +26,7 @@ export const testWebTransformer = (
         const referenceScreenshot = await fs.promises.readFile(referencePath)
 
         // remove path from options to prevent playwright from saving the screenshot
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { path: _, ...optionsWithoutPath } = options
         const screenshot = await takeScreenshot(optionsWithoutPath)
 

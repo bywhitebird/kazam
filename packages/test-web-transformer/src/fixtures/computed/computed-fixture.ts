@@ -10,7 +10,10 @@ export const computedFixture = createTestWebTransformerFixture({
       - computed doubleCount = count * 2
 
       div() {
-        Double count: ${'${doubleCount}'}
+        Double count: ${
+          /* eslint-disable-next-line no-template-curly-in-string */
+          '${doubleCount}'
+        }
       }
       button(on:click={() => count++}) { Increment }
     `,

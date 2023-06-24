@@ -30,10 +30,12 @@ const runTest = async (
   })
 
   page.on('console', (message) => {
+    // eslint-disable-next-line no-console
     console.log('[CONSOLE]', message)
     consoleLogs.push(message.text())
 
     if (message.type() === 'error')
+      // eslint-disable-next-line unicorn/error-message
       throw new Error(consoleLogs.join('\n'))
   })
 
@@ -61,7 +63,7 @@ export const runTests = async (
 ): Promise<true | string> => {
   const browser = await playwright.chromium.launch()
 
-  for (const [_fixtureName, fixture] of Object.entries(fixtures)) {
+  for (const [, fixture] of Object.entries(fixtures)) {
     const testResult = await runTest(fixture, newTransformer, renderHtml, browser, overridePageScreenshot)
 
     if (testResult !== true)

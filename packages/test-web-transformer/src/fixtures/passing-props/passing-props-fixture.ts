@@ -12,7 +12,10 @@ export const passingPropsFixture = createTestWebTransformerFixture({
       - prop text: string
 
       span() {
-        ${'${text}'}
+        ${
+          /* eslint-disable-next-line no-template-curly-in-string */
+          '${text}'
+        }
       }
     `,
   },
