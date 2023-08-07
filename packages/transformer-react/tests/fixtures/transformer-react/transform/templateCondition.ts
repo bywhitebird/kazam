@@ -7,8 +7,19 @@ export const templateConditionFixtures = [
       template: [
         {
           $type: 'IfLogical',
-          condition: '0 === 0',
-          children: [{ $type: 'Text', text: 'Hello world' }],
+          condition: {
+            $value: '0 === 0',
+            $range: [0, 0],
+          },
+          children: [
+            {
+              $type: 'Text',
+              text: {
+                $value: 'Hello world',
+                $range: [0, 0],
+              },
+            },
+          ],
         },
       ],
     }),
@@ -36,11 +47,30 @@ export const templateConditionFixtures = [
       template: [
         {
           $type: 'IfLogical',
-          condition: '0 === 0',
-          children: [{ $type: 'Text', text: 'Hello world' }],
+          condition: {
+            $value: '0 === 0',
+            $range: [0, 0],
+          },
+          children: [
+            {
+              $type: 'Text',
+              text: {
+                $value: 'Hello world',
+                $range: [0, 0],
+              },
+            },
+          ],
           else: {
             $type: 'ElseLogical',
-            children: [{ $type: 'Text', text: 'Goodbye world' }],
+            children: [
+              {
+                $type: 'Text',
+                text: {
+                  $value: 'Goodbye world',
+                  $range: [0, 0],
+                },
+              },
+            ],
           },
         },
       ],
@@ -69,23 +99,64 @@ export const templateConditionFixtures = [
       template: [
         {
           $type: 'IfLogical',
-          condition: '0 === 0',
-          children: [{ $type: 'Text', text: 'Hello world' }],
+          condition: {
+            $value: '0 === 0',
+            $range: [0, 0],
+          },
+          children: [
+            {
+              $type: 'Text',
+              text: {
+                $value: 'Hello world',
+                $range: [0, 0],
+              },
+            },
+          ],
           else: {
             $type: 'ElseLogical',
             if: {
               $type: 'ElseIfLogical',
-              condition: '0 === 1',
-              children: [{ $type: 'Text', text: 'Goodbye world' }],
+              condition: {
+                $value: '0 === 1',
+                $range: [0, 0],
+              },
+              children: [
+                {
+                  $type: 'Text',
+                  text: {
+                    $value: 'Goodbye world',
+                    $range: [0, 0],
+                  },
+                },
+              ],
               else: {
                 $type: 'ElseLogical',
                 if: {
                   $type: 'ElseIfLogical',
-                  condition: '0 === 2',
-                  children: [{ $type: 'Text', text: 'Good night world' }],
+                  condition: {
+                    $value: '0 === 2',
+                    $range: [0, 0],
+                  },
+                  children: [
+                    {
+                      $type: 'Text',
+                      text: {
+                        $value: 'Good night world',
+                        $range: [0, 0],
+                      },
+                    },
+                  ],
                   else: {
                     $type: 'ElseLogical',
-                    children: [{ $type: 'Text', text: 'Bad night world' }],
+                    children: [
+                      {
+                        $type: 'Text',
+                        text: {
+                          $value: 'Bad night world',
+                          $range: [0, 0],
+                        },
+                      },
+                    ],
                   },
                 },
               },

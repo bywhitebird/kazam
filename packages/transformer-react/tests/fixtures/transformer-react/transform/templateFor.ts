@@ -7,8 +7,19 @@ export const templateForFixtures = [
       template: [
         {
           $type: 'ForLogical',
-          parameters: 'let i = 0; i < 10; i++',
-          children: [{ $type: 'Expression', expression: 'i' }],
+          parameters: {
+            $value: 'let i = 0; i < 10; i++',
+            $range: [0, 0],
+          },
+          children: [
+            {
+              $type: 'Expression',
+              expression: {
+                $value: 'i',
+                $range: [0, 0],
+              },
+            },
+          ],
         },
       ],
     }),

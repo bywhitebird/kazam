@@ -7,8 +7,14 @@ export const stateInstructionFixtures = [
       instructions: [
         {
           $type: 'StateInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -30,10 +36,19 @@ export const stateInstructionFixtures = [
       instructions: [
         {
           $type: 'StateInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
           defaultValue: {
-            expression: '\'red\'',
+            expression: {
+              $value: '\'red\'',
+              $range: [0, 0],
+            },
           },
         },
       ],
@@ -56,7 +71,10 @@ export const stateInstructionFixtures = [
       instructions: [
         {
           $type: 'StateInstruction',
-          name: 'color',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
         },
       ],
     }),
@@ -78,14 +96,26 @@ export const stateInstructionFixtures = [
       instructions: [
         {
           $type: 'StateInstruction',
-          name: 'color',
-          type: 'string',
+          name: {
+            $value: 'color',
+            $range: [0, 0],
+          },
+          type: {
+            $value: 'string',
+            $range: [0, 0],
+          },
         },
         {
           $type: 'StateInstruction',
-          name: 'size',
+          name: {
+            $value: 'size',
+            $range: [0, 0],
+          },
           defaultValue: {
-            expression: '10',
+            expression: {
+              $value: '10',
+              $range: [0, 0],
+            },
           },
         },
       ],
@@ -99,6 +129,31 @@ export const stateInstructionFixtures = [
           const [size, setSize] = useState(10)
 
           return (<></>)
+        }
+      `,
+    },
+  },
+  {
+    name: 'When I pass a state instruction and change its value, component is generated',
+    input: TransformerInputFactory.create(
+      ` - state color: string
+
+div (on:click={      () => { color = 'red' }}) {}`,
+    ),
+    expectedOutput: {
+      'components/Test.tsx': `
+        import React, { useState } from 'react'
+
+        export const Test = () => {
+          const [color, setColor] = useState<string>()
+
+          return (<>
+            <div onClick={() => { setColor((color) => {
+              color = 'red'
+              return color
+            }) }}></div>
+            </>
+          )
         }
       `,
     },

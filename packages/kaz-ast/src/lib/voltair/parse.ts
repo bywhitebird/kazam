@@ -202,8 +202,12 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
       return new UnexpectedTokenError(token, [expectedToken])
 
     const value = token.$value
-    if (value)
-      return new TreeValue(value)
+    if (value) {
+      return new TreeValue({
+        $value: value,
+        $range: token.$range,
+      })
+    }
   }
 
   function parseGroupParent(tokensConsumer: TokensConsumer, expectedGroupParent: GroupParent): ParserReturnType {

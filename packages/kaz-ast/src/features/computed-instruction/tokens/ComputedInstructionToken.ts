@@ -7,4 +7,7 @@ export const ComputedInstructionToken = new Token({
   validator: /^computed$/,
   startContexts: [() => ComputedInstructionContext],
   inContexts: [() => InstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

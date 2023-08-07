@@ -6,4 +6,7 @@ export const ForLogicalToken = new Token({
   $name: 'ForLogicalToken',
   validator: /^@for$/,
   startContexts: [() => ForLogicalContext, () => TemplateContext],
+  semantic: {
+    type: 'keyword',
+  },
 })

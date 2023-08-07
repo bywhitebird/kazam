@@ -7,9 +7,21 @@ export const templateTagFixtures = [
       template: [
         {
           $type: 'Tag',
-          tagName: 'div',
+          // tagName: 'div',
+          tagName: {
+            $value: 'div',
+            $range: [0, 0],
+          },
           attributes: [],
-          children: [{ $type: 'Text', text: 'Hello world' }],
+          children: [
+            {
+              $type: 'Text',
+              text: {
+                $value: 'Hello world',
+                $range: [0, 0],
+              },
+            },
+          ],
         },
       ],
     }),
@@ -33,20 +45,43 @@ export const templateTagFixtures = [
       template: [
         {
           $type: 'Tag',
-          tagName: 'div',
+          tagName: {
+            $value: 'div',
+            $range: [0, 0],
+          },
           attributes: [
             {
               $type: 'TagAttribute',
-              name: 'className',
-              value: 'hello',
+              name: {
+                $value: 'className',
+                $range: [0, 0],
+              },
+              value: {
+                $value: 'hello',
+                $range: [0, 0],
+              },
             },
             {
               $type: 'TagAttribute',
-              name: 'id',
-              expression: 'id',
+              name: {
+                $value: 'id',
+                $range: [0, 0],
+              },
+              expression: {
+                $value: 'id',
+                $range: [0, 0],
+              },
             },
           ],
-          children: [{ $type: 'Text', text: 'Hello world' }],
+          children: [
+            {
+              $type: 'Text',
+              text: {
+                $value: 'Hello world',
+                $range: [0, 0],
+              },
+            },
+          ],
         },
       ],
     }),
@@ -70,7 +105,10 @@ export const templateTagFixtures = [
       template: [
         {
           $type: 'Tag',
-          tagName: 'div',
+          tagName: {
+            $value: 'div',
+            $range: [0, 0],
+          },
           attributes: [],
           children: [],
         },
@@ -96,12 +134,21 @@ export const templateTagFixtures = [
       template: [
         {
           $type: 'Tag',
-          tagName: 'div',
+          tagName: {
+            $value: 'div',
+            $range: [0, 0],
+          },
           attributes: [
             {
               $type: 'TagEventAttribute',
-              name: 'click',
-              expression: 'handleClick',
+              name: {
+                $value: 'click',
+                $range: [0, 0],
+              },
+              expression: {
+                $value: 'handleClick',
+                $range: [0, 0],
+              },
             },
           ],
           children: [],

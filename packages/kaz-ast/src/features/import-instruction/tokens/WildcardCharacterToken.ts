@@ -5,4 +5,7 @@ export const WildcardCharacterToken = new Token({
   $name: 'WildcardCharacterToken',
   validator: /^\*$/,
   inContexts: [() => ImportInstructionContext],
+  semantic: {
+    type: 'keyword',
+  },
 })
