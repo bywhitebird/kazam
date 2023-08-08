@@ -1,0 +1,131 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer'
+import tmp from 'tmp'
+import * as vite from 'vite'
+import { viteSingleFile } from 'vite-plugin-singlefile'
+import vue from '@vitejs/plugin-vue'
+
+type RenderHtml = Parameters<typeof testWebTransformer>[1]
+type ITransformerOutput = Parameters<RenderHtml>[0]
+type FlattenedOutput = Record<string, string>
+
+export const renderTransformerVueOutputToHtml: RenderHtml = async (output) => {
+  const flattenedOutput = await flattenOutput(output)
+
+  const tmpProjectDir = tmp.dirSync({
+    tmpdir: process.cwd(),
+    unsafeCleanup: true,
+  })
+
+  try {
+    writeProjectFiles(tmpProjectDir.name, flattenedOutput)
+
+    let indexHtml = await getBundledIndexHtml(tmpProjectDir.name)
+
+    if (indexHtml instanceof Uint8Array)
+      indexHtml = Buffer.from(indexHtml).toString()
+
+    return indexHtml
+  }
+  catch (error) {
+    throw error
+  }
+  finally {
+    tmpProjectDir.removeCallback()
+  }
+}
+
+async function flattenOutput(
+  output: ITransformerOutput,
+  parentPath = '',
+): Promise<FlattenedOutput> {
+  const flattenedOutput: FlattenedOutput = {}
+
+  if (output === undefined)
+    return flattenedOutput
+
+  for (const [key, value] of Object.entries(output)) {
+    if (value instanceof Blob) {
+      const blob = value as Blob
+      const blobText = await blob.text()
+      flattenedOutput[parentPath + value.name] = blobText
+    }
+    else {
+      const nestedOutput = value as ITransformerOutput
+      const nestedFlattenedOutput = await flattenOutput(nestedOutput, `${parentPath + key}/`)
+      Object.assign(flattenedOutput, nestedFlattenedOutput)
+    }
+  }
+
+  return flattenedOutput
+}
+
+function writeProjectFiles(
+  projectDir: string,
+  output: FlattenedOutput,
+) {
+  for (const [id, content] of Object.entries(output)) {
+    const filePath = path.join(projectDir, id)
+    fs.mkdirSync(path.dirname(filePath), { recursive: true })
+    fs.writeFileSync(filePath, content)
+  }
+
+  fs.writeFileSync(path.join(projectDir, 'index.html'), `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <title>Vue App</title>
+      </head>
+      <body>
+        <div id="root"></div>
+        <script type="module">
+          import Index from './Index.vue'
+          import { createApp } from 'vue'
+          createApp(Index).mount('#root')
+        </script>
+      </body>
+    </html>
+  `)
+}
+
+async function getBundledIndexHtml(
+  projectDir: string,
+) {
+  const buildResult = await vite.build({
+    root: projectDir,
+    logLevel: 'silent',
+    build: {
+      write: false,
+    },
+    plugins: [
+      vue(),
+      viteSingleFile(),
+    ],
+  })
+    .then((result) => {
+      if (Array.isArray(result)) {
+        if (result.length > 1)
+          throw new Error('Expected single build result')
+
+        return result[0]
+      }
+
+      if (!('output' in result))
+        throw new Error('Expected build result to have output')
+
+      return result
+    })
+  
+  const indexHtml = buildResult.output.find((file) => file.fileName === 'index.html')
+
+  if (indexHtml === undefined)
+    throw new Error('Expected index.html to be in build output')
+
+  if (indexHtml.type !== 'asset')
+    throw new Error('Expected index.html to be an asset')
+
+  return indexHtml.source
+}

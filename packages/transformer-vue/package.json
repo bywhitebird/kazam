@@ -36,7 +36,14 @@
     "@types/estraverse": "^5.1.2",
     "@types/estree": "^1.0.1",
     "@types/node": "^18.11.9",
+    "@types/tmp": "^0.2.3",
+    "@vitejs/plugin-vue": "^4.2.3",
     "@vitest/coverage-c8": "^0.25.3",
-    "vitest": "^0.25.3"
+    "@whitebird/kazam-test-web-transformer": "workspace:*",
+    "tmp": "^0.2.1",
+    "vite": "^4.4.9",
+    "vite-plugin-singlefile": "^0.13.5",
+    "vitest": "^0.31.0",
+    "vue": "^3.3.4"
   }
 }

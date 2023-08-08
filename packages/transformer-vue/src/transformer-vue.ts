@@ -82,7 +82,7 @@ export class TransformerVue extends TransformerBase {
     return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
       output[id] = Object.assign(
         new Blob([content], { type: 'text/plain' }),
-        { name: `${id.slice(0, -path.extname(id).length)}.vue` },
+        { name: `${id}.vue` },
       )
       return output
     }, {})
