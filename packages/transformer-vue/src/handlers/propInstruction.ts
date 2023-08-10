@@ -9,9 +9,9 @@ export const handlePropInstruction: IHandler<'propInstruction'> = async (propIns
     path: 'vue',
   })
 
-  return `${propInstruction.name}: {
-    type: undefined as unknown as PropType<${propInstruction.type ?? 'any'}>,
+  return `${propInstruction.name.$value}: {
+    type: undefined as unknown as PropType<${propInstruction.type?.$value ?? 'any'}>,
     skipCheck: true,
-    ${propInstruction.defaultValue !== undefined ? `default: ${transformVueExpression(propInstruction.defaultValue.expression)},` : ''}
+    ${propInstruction.defaultValue !== undefined ? `default: ${transformVueExpression(propInstruction.defaultValue.expression.$value)},` : ''}
   }`
 }

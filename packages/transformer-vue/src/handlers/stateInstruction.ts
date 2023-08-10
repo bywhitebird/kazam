@@ -9,9 +9,9 @@ export const handleStateInstruction: IHandler<'stateInstruction'> = async (state
     path: 'vue',
   })
 
-  return `const ${stateInstruction.name} = ref${
+  return `const ${stateInstruction.name.$value} = ref${
     stateInstruction.type === undefined
       ? ''
-      : `<${stateInstruction.type}>`
-  }(${stateInstruction.defaultValue !== undefined ? transformVueExpression(stateInstruction.defaultValue.expression) : ''})`
+      : `<${stateInstruction.type.$value}>`
+  }(${stateInstruction.defaultValue !== undefined ? transformVueExpression(stateInstruction.defaultValue.expression.$value) : ''})`
 }

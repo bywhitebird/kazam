@@ -1,8 +1,10 @@
 import type { IHandler } from '../transformer-vue'
+import { mergeTextChildren } from '../utils/merge-text-children'
+import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handleTemplateIf: IHandler<'templateIf'> = async (templateIf, { handle }) => {
-  return `${templateIf.condition}
-      ? [${await Promise.all(templateIf.children.map(handle)).then(instructions => instructions.join(',\n'))}]
+  return `${transformVueExpression(templateIf.condition.$value)}
+      ? [${await Promise.all(mergeTextChildren(templateIf.children).map(handle)).then(child => child.join(',\n'))}]
       : ${templateIf.else !== undefined
         ? await handle(templateIf.else)
         : 'null'

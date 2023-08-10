@@ -120,7 +120,7 @@ export class TransformerVue extends TransformerBase {
   }
 
   private async checkIsComponent(componentName: string): Promise<boolean> {
-    return componentName in Object.keys(this.input).map(componentName => path.basename(componentName, path.extname(componentName)))
+    return Object.keys(this.input).includes(componentName)
   }
 
   private async importComponent(componentName: string, componentMeta: IComponentMeta) {
@@ -133,13 +133,10 @@ export class TransformerVue extends TransformerBase {
     )
 
     this.addImport(componentMeta.name, {
-      namedImports: [
-        {
-          name: componentName,
-          alias: componentName,
-        },
-      ],
-      path: relativePath,
+      defaultImport: {
+        name: componentName,
+      },
+      path: `./${relativePath}`,
     })
   }
 

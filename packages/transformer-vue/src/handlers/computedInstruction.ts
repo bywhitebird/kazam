@@ -9,9 +9,9 @@ export const handleComputedInstruction: IHandler<'computedInstruction'> = async 
     path: 'vue',
   })
 
-  return `const ${computedInstruction.name} = computed${
+  return `const ${computedInstruction.name.$value} = computed${
     computedInstruction.type === undefined
       ? ''
-      : `<${computedInstruction.type}>`
-  }(() => ${transformVueExpression(computedInstruction.computeValue.expression)})`
+      : `<${computedInstruction.type.$value}>`
+  }(() => ${transformVueExpression(computedInstruction.computeValue.expression.$value)})`
 }

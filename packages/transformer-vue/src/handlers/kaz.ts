@@ -2,6 +2,7 @@ import type { kazPropInstructionSchema } from '@whitebird/kaz-ast'
 import type { z } from 'zod'
 
 import type { IHandler } from '../transformer-vue'
+import { mergeTextChildren } from '../utils/merge-text-children'
 
 export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => {
   addImport({
@@ -29,7 +30,7 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => 
         ${propsDeclaration}
       },
       setup(props) {
-        return (({ ${propInstructions.map(prop => prop.name).join(', ')} }) => {
+        return (({ ${propInstructions.map(prop => prop.name.$value).join(', ')} }) => {
           ${await Promise.all(otherInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
 
           return () => (
@@ -37,7 +38,7 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => 
               Fragment,
               null,
               [
-                ${await Promise.all(kaz.template.map(child => handle(child))).then(children => children.join(',\n'))}
+                ${await Promise.all(mergeTextChildren(kaz.template).map(child => handle(child))).then(children => children.join(',\n'))}
               ],
             )
           )
