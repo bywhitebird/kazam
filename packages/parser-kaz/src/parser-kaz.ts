@@ -1,5 +1,6 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+import process from 'node:process'
 
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'

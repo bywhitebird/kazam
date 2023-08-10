@@ -6,7 +6,7 @@ export const handleWatchInstruction: IHandler<'watchInstruction'> = async (watch
     namedImports: [
       { name: 'watch' },
     ],
-    path: 'vue'
+    path: 'vue',
   })
 
   return `watch(

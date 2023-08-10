@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./README.md": "./README.md"
   },
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@typescript-eslint/parser": "^5.50.0",
-    "eslint": "^8.33.0",
+    "eslint": "8.46.0",
     "typescript": "^5.0.0",
     "zod": "^3.21.4"
   },

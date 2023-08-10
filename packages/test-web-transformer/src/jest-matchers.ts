@@ -21,6 +21,7 @@ export const matchers = {
   },
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Matcher<F extends (arg1: any, arg2: any) => any> = F extends (...args: any) => Promise<any>
   ? (args: Parameters<F>[1]) => Promise<void>
   : (args: Parameters<F>[1]) => void

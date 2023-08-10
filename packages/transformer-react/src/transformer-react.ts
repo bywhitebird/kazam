@@ -79,7 +79,7 @@ export class TransformerReact extends TransformerBase {
         `,
         {
           parser: 'babel-ts',
-          printWidth: Infinity,
+          printWidth: Number.POSITIVE_INFINITY,
         },
       )
     }))

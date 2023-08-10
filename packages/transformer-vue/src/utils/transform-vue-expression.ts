@@ -4,7 +4,6 @@ import type { Node } from 'estree'
 import isReference from 'is-reference'
 
 export const transformVueExpression = (expression: string) => {
-  const receivedExpression = expression
   const expressionAst = parse(expression, { range: true })
   let indexShift = 0
 

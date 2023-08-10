@@ -72,7 +72,7 @@ export class TransformerVue extends TransformerBase {
             `,
         {
           parser: 'babel-ts',
-          printWidth: Infinity,
+          printWidth: Number.POSITIVE_INFINITY,
         },
       )
         }</script>

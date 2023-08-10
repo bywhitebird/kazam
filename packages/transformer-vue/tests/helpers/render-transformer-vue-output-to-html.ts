@@ -1,11 +1,13 @@
+import { Buffer } from 'node:buffer'
 import fs from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 
+import vue from '@vitejs/plugin-vue'
 import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer'
 import tmp from 'tmp'
 import * as vite from 'vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
-import vue from '@vitejs/plugin-vue'
 
 type RenderHtml = Parameters<typeof testWebTransformer>[1]
 type ITransformerOutput = Parameters<RenderHtml>[0]
@@ -29,6 +31,7 @@ export const renderTransformerVueOutputToHtml: RenderHtml = async (output) => {
 
     return indexHtml
   }
+  // eslint-disable-next-line no-useless-catch
   catch (error) {
     throw error
   }
@@ -118,8 +121,8 @@ async function getBundledIndexHtml(
 
       return result
     })
-  
-  const indexHtml = buildResult.output.find((file) => file.fileName === 'index.html')
+
+  const indexHtml = buildResult.output.find(file => file.fileName === 'index.html')
 
   if (indexHtml === undefined)
     throw new Error('Expected index.html to be in build output')

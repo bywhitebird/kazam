@@ -15,8 +15,6 @@ describe('transformer-vue', () => {
 expect.extend(matchers)
 
 declare module 'vitest' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface Assertion<T = any> extends TestWebTransformerMatchers<T> { }
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
+  interface Assertion<T> extends TestWebTransformerMatchers<T> { }
   interface AsymmetricMatchersContaining extends TestWebTransformerMatchers { }
 }
