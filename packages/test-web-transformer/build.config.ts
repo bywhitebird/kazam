@@ -2,12 +2,11 @@
 
 import * as path from 'node:path'
 
+import { rimraf } from 'rimraf'
 import { defineBuildConfig } from 'unbuild'
 
-import { rimraf } from 'rimraf'
-
 import { runTests } from './src/utils/run-tests'
-import { TransformerReact } from '../transformer-react'
+import { TransformerReact } from '../transformer-react/src'
 import { renderTransformerReactOutputToHtml } from '../transformer-react/tests/helpers/render-transformer-react-output-to-html'
 
 export default defineBuildConfig({

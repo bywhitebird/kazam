@@ -100,7 +100,7 @@ function resolveOutputPlugin(
   return {
     name: 'resolveOutput',
     setup(build) {
-      Object.entries(output).forEach(([id, content]) => {
+      Object.entries(output).forEach(([id]) => {
         const resolveResult: esbuild.OnResolveResult = {
           path: id,
           namespace: 'resolveOutput',
@@ -112,10 +112,10 @@ function resolveOutputPlugin(
         )
       })
 
-      build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async (args) => ({
-          contents: output[args.path],
-          loader: 'tsx',
-          resolveDir: __dirname,
+      build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async args => ({
+        contents: output[args.path],
+        loader: 'tsx',
+        resolveDir: __dirname,
       }))
     },
   }

@@ -1,5 +1,6 @@
 import * as fs from 'node:fs'
 import path from 'node:path'
+import process from 'node:process'
 
 import type { KazAst } from '@whitebird/kaz-ast'
 
@@ -21,7 +22,19 @@ async function transformAsts(asts: Record<string, KazAst>, transformers: KazamCo
   return Object.fromEntries(
     await Promise.all(
       transformers.map(async (Transformer) => {
-        const transformerInstance = new Transformer(asts, {})
+        const transformerInstance = new Transformer(
+          Object.fromEntries(
+            Object.entries(asts).map(([fileName, ast]) => {
+              const fileExtension = path.extname(fileName)
+
+              if (fileExtension.length === 0)
+                return [fileName, ast]
+
+              return [fileName.slice(0, -fileExtension.length), ast]
+            }),
+          ),
+          {},
+        )
         const output = await transformerInstance.transform()
 
         return [Transformer.name, output] as const
