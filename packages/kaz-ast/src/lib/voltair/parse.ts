@@ -326,7 +326,7 @@ export const parse = (tokens: Token[], expectedSequence: Sequence | GroupParent)
 
     const unionSequences = [new Sequence(expectedSequence.sequence), ...expectedSequence.modifiers.union]
 
-    let result: ParserReturnType
+    let result: ParserReturnType | undefined
     for (const sequence of unionSequences) {
       const beforeParseRemainingTokensNumber = tokensConsumer.length
       result = parse(tokensConsumer, resolveValue(sequence))
