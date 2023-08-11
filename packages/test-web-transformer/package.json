@@ -26,7 +26,8 @@
   "scripts": {
     "build": "unbuild",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "postinstall": "playwright install"
   },
   "dependencies": {
     "looks-same": "^8.1.0",
