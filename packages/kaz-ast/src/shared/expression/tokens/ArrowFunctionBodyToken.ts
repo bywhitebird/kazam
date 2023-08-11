@@ -26,9 +26,11 @@ export const ArrowFunctionBodyToken = ExpressionToken.extends({
     }
   },
   getValue(rawValue) {
-    if (rawValue.startsWith('{') && rawValue.endsWith('}'))
-      return rawValue.slice(1, -1)
+    const trimmedRawValue = rawValue.trim()
 
-    return rawValue
+    if (trimmedRawValue.startsWith('{') && trimmedRawValue.endsWith('}'))
+      return trimmedRawValue.slice(1, -1).trim()
+
+    return trimmedRawValue
   },
 })

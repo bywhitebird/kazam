@@ -172,11 +172,7 @@ function findReplacementExpressionRange(
   if (correspondingMapping === undefined)
     throw new Error('Could not find corresponding mapping')
 
-  const [typescriptStart, typescriptEnd] = correspondingMapping.generatedRange
-  const [kazStart, kazEnd] = correspondingMapping.sourceRange
-
-  if (typescriptStart - kazStart !== typescriptEnd - kazEnd)
-    throw new Error('Unexpected difference in length')
+  const [typescriptStart] = correspondingMapping.generatedRange
 
   const start = assigmentStart - typescriptStart
   const end = start + assignmentLength

@@ -26,7 +26,7 @@ export const ExpressionToken = new Token({
       return false
     }
   },
-  getValue: rawValue => rawValue,
+  getValue: rawValue => rawValue.trim(),
   inContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext, () => TemplateExpressionContext],
   endContexts: [() => ExpressionContext, () => TagAttributeValueExpressionContext],
 })
