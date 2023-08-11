@@ -23,17 +23,17 @@
     "release": "changeset version && changeset publish"
   },
   "dependencies": {
-    "@changesets/cli": "^2.25.2"
+    "@changesets/cli": "^2.26.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.2.0",
-    "@commitlint/config-conventional": "^17.2.0",
+    "@commitlint/cli": "^17.7.1",
+    "@commitlint/config-conventional": "^17.7.0",
     "@whitebird/eslint-config": "latest",
     "@whitebird/tsconfig": "latest",
     "eslint": "8.46.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "turbo": "latest",
-    "typescript": "^5.0.0",
+    "typescript": "^5.1.6",
     "unbuild": "^1.2.1"
   }
 }
