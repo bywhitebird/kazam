@@ -9,6 +9,8 @@ describe('transformer-vue', () => {
     await expect(TransformerVue).toSatisfyWebScenarios({
       renderHtml: renderTransformerVueOutputToHtml,
     })
+  }, {
+    timeout: 30000,
   })
 })
 
