@@ -2,6 +2,7 @@
   "name": "@whitebird/kazam-parser-base",
   "type": "module",
   "version": "0.1.0",
+  "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
