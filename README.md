@@ -1,41 +1,49 @@
-<h1>Whitebird <u>Node.js starter</u></h1>
+# Kazam 🪄
 
-This is a starter project for Node.js projects. It is built on top of the [Turborepo starter](https://github.com/vercel/turbo/tree/main/examples/with-pnpm).
+Create reusable components for multiple frameworks and libraries using a single codebase.
 
-## What's inside?
+> **Warning**
+> This project is still in early development. You can use it, but expect breaking changes.
 
-It uses [pnpm](https://pnpm.io/) as a package manager.
+## Contributing
 
-### Utilities
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) to see how to setup the project and to know the contribution guidelines.
 
- - [TypeScript](https://www.typescriptlang.org/) for static type checking configured with [@whitebird/tsconfig](https://github.com/bywhitebird/whitebird/tree/main/packages/tsconfig)
- - [ESLint](https://eslint.org/) for code linting configured with [@whitebird/eslint-config](https://github.com/bywhitebird/whitebird/tree/main/packages/eslint-config)
- - [Husky](https://typicode.github.io/husky/#/) for Git hooks
- - [Commitlint](https://commitlint.js.org/#/) for commit message linting
- - [Changesets](https://github.com/changesets/changesets) and the GitHub Action [changesets/action](https://github.com/changesets/action) for versioning and publishing
+## Getting Started
 
-## Setup
+Please refer to the [examples](examples) folder to see how to use Kazam.
 
-```bash
-git clone --depth=1 https://github.com/bywhitebird/starter-node.git
-rm -rf starter-node/.git
-cd starter-node
-pnpm install
-```
+## Packages
 
-## Usage
+### Core
 
-The `packages/my-package` directory is a sample package/app. You can copy it to `packages` or `apps` directory and start working on it.
+| Package | Version | Description |
+| --- | --- | --- |
+| [`kazam`](packages/kazam) | [![npm](https://img.shields.io/npm/v/kazam.svg)](https://www.npmjs.com/package/kazam) | The core package of Kazam. |
+| [`@whitebird/kaz-ast`](packages/kaz-ast) | [![npm](https://img.shields.io/npm/v/@whitebird/kaz-ast)](https://www.npmjs.com/package/@whitebird/kaz-ast) | A library to manipulate Kaz files |
 
-### Commands
+### Transformers
 
- - `pnpm build` - build the project
- - `pnpm dev` - run the project in development mode
- - `pnpm lint` - lint the project
- - `pnpm test` - run tests
- - `pnpm format` - format the project
+| Package | Version | Description |
+| --- | --- | --- |
+| [`@whitebird/kazam-transformer-react`](packages/kazam-transformer-react) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-transformer-react)](https://www.npmjs.com/package/@whitebird/kazam-transformer-react) | The React transformer |
+| [`@whitebird/kazam-transformer-vue`](packages/kazam-transformer-vue) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-transformer-vue)](https://www.npmjs.com/package/@whitebird/kazam-transformer-vue) | The Vue transformer |
+| [`@whitebird/kazam-transformer-typescript`](packages/kazam-transformer-typescript) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-transformer-typescript)](https://www.npmjs.com/package/@whitebird/kazam-transformer-typescript) | The TypeScript transformer |
 
-## Useful links
+### Parsers
 
- - [Turborepo documentation](https://turbo.build/repo/docs)
- - [Turborepo starter](https://github.com/vercel/turbo/tree/main/examples/with-pnpm)
+| Package | Version | Description |
+| --- | --- | --- |
+| [`@whitebird/kazam-parser-kaz`](packages/kazam-parser-kaz) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-parser-kaz)](https://www.npmjs.com/package/@whitebird/kazam-parser-kaz) | The Kaz parser |
+
+### Other
+
+| Package | Version | Description |
+| --- | --- | --- |
+| [`@whitebird/kazam-parser-base`](packages/kazam-parser-base) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-parser-base)](https://www.npmjs.com/package/@whitebird/kazam-parser-base) | An abstract class to create your own parser |
+| [`@whitebird/kazam-transformer-base`](packages/kazam-transformer-base) | [`@whitebird/kazam-transformer-base`](packages/kazam-transformer-base) | An abstract class to create your own transformer |
+| [`@whitebird/kazam-test-web-transformer`](packages/kazam-test-web-transformer) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-test-web-transformer)](https://www.npmjs.com/package/@whitebird/kazam-test-web-transformer) | Utility to test your custom transformers |
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,7 +1,8 @@
 {
   "name": "@whitebird/kazam-test-web-transformer",
   "type": "module",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/index.mjs"
