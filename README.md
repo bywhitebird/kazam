@@ -41,7 +41,7 @@ Please refer to the [examples](examples) folder to see how to use Kazam.
 | Package | Version | Description |
 | --- | --- | --- |
 | [`@whitebird/kazam-parser-base`](packages/kazam-parser-base) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-parser-base)](https://www.npmjs.com/package/@whitebird/kazam-parser-base) | An abstract class to create your own parser |
-| [`@whitebird/kazam-transformer-base`](packages/kazam-transformer-base) | [`@whitebird/kazam-transformer-base`](packages/kazam-transformer-base) | An abstract class to create your own transformer |
+| [`@whitebird/kazam-transformer-base`](packages/kazam-transformer-base) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-transformer-base)](https://www.npmjs.com/package/@whitebird/kazam-transformer-base) | An abstract class to create your own transformer |
 | [`@whitebird/kazam-test-web-transformer`](packages/kazam-test-web-transformer) | [![npm](https://img.shields.io/npm/v/@whitebird/kazam-test-web-transformer)](https://www.npmjs.com/package/@whitebird/kazam-test-web-transformer) | Utility to test your custom transformers |
 
 ## License
