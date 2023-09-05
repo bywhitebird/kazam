@@ -2,16 +2,13 @@ import { describe, expect, test } from 'vitest'
 
 import * as fixtures from './fixtures/parse'
 import { checkAST } from './helpers/customExpects'
-import { parse, tokenize } from '../src'
-import { kazAstSchema } from '../src/types/KazAst'
+import { parse } from '../src'
 
 describe('parse', () => {
   describe('instructions', () => {
     Object.values(fixtures).flat().forEach((fixture) => {
       test(fixture.name, async () => {
-        const tokens = await tokenize(fixture.input)
-
-        const parseResult = parse(tokens)
+        const parseResult = parse(fixture.input)
 
         if ('expectError' in fixture) {
           expect(parseResult).toBeInstanceOf(Error)
@@ -20,11 +17,6 @@ describe('parse', () => {
 
         expect(parseResult).not.toBeInstanceOf(Error)
         checkAST(parseResult, fixture.expectedTree)
-
-        expect(kazAstSchema.safeParse(parseResult)).toEqual({
-          success: true,
-          data: parseResult,
-        })
       })
     })
   })
