@@ -1,14 +1,6 @@
-import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
+import type { Fixture } from '../../types/fixture'
 
-export const watchInstructionsFixtures: (
-  {
-    name: string
-    input: string
-  } & (
-    | { expectedTree: JsonValue }
-    | { expectError: boolean }
-  )
-)[] = [
+export const watchInstructionsFixtures: Fixture[] = [
   {
     name: 'When I use a watch instruction with a function, watch is validated',
     input: `

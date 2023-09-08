@@ -24,9 +24,11 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "effect": "2.0.0-next.29"
+    "effect": "2.0.0-next.29",
+    "ts-pattern": "^5.0.5"
   },
   "devDependencies": {
+    "@total-typescript/ts-reset": "^0.5.1",
     "@types/node": "^18.11.9",
     "@vitest/coverage-v8": "^0.34.1",
     "esno": "^0.16.3",

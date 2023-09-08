@@ -1,14 +1,6 @@
-import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
+import type { Fixture } from '../../types/fixture'
 
-export const importInstructionsFixtures: (
-  {
-    name: string
-    input: string
-  } & (
-    | { expectedTree: JsonValue }
-    | { expectError: boolean }
-  )
-)[] = [
+export const importInstructionsFixtures: Fixture[] = [
   {
     name: 'When I use a named import, import is validated',
     input: `

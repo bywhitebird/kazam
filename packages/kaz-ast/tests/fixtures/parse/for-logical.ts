@@ -1,14 +1,6 @@
-import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
+import type { Fixture } from '../../types/fixture'
 
-export const forLogicalFixtures: (
-  {
-    name: string
-    input: string
-  } & (
-    | { expectedTree: JsonValue }
-    | { expectError: boolean }
-  )
-)[] = [
+export const forLogicalFixtures: Fixture[] = [
   {
     name: 'When I use a for logical instruction, for logical is validated',
     input: `

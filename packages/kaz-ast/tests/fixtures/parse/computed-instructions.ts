@@ -1,24 +1,16 @@
-import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
+import type { Fixture } from '../../types/fixture'
 
-export const computedInstructionsFixtures: (
-  {
-    name: string
-    input: string
-  } & (
-    | { expectedTree: JsonValue }
-    | { expectError: boolean }
-  )
-)[] = [
+export const computedInstructionsFixtures: Fixture[] = [
   {
     name: 'When I use a computed instruction with a compute value, computed is validated',
     input: `
     - computed foo = n * 2
     `,
     expectedTree: {
-      $type: 'Kaz',
+      $type: 'root',
       instructions: [
         {
-          $type: 'ComputedInstruction',
+          $type: 'computed',
           name: 'foo',
           computeValue: {
             expression: 'n * 2',
@@ -33,10 +25,10 @@ export const computedInstructionsFixtures: (
     - computed foo: number = n * 2
     `,
     expectedTree: {
-      $type: 'Kaz',
+      $type: 'root',
       instructions: [
         {
-          $type: 'ComputedInstruction',
+          $type: 'computed',
           name: 'foo',
           type: 'number',
           computeValue: {

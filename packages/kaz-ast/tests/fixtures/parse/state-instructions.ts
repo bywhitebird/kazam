@@ -1,14 +1,6 @@
-import type { JsonValue } from '../../../src/lib/voltair/types/JsonValue'
+import type { Fixture } from '../../types/fixture'
 
-export const stateInstructionsFixtures: (
-  {
-    name: string
-    input: string
-  } & (
-    | { expectedTree: JsonValue }
-    | { expectError: boolean }
-  )
-)[] = [
+export const stateInstructionsFixtures: Fixture[] = [
   {
     name: 'When I use a state instruction, state is validated',
     input: `
