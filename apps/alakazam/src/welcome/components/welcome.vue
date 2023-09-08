@@ -1,5 +1,6 @@
 <template>
   <div>
-    <NuxtWelcome />
+    Hello
+    TEST54
   </div>
 </template>

@@ -10,6 +10,8 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "nuxt": "^3.7.1"
+    "glob": "^10.3.4",
+    "nuxt": "^3.7.1",
+    "nuxt-typed-router": "^3.3.1"
   }
 }
