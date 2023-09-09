@@ -6,10 +6,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "prepare": "panda codegen"
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@pandacss/dev": "^0.14.0",
     "glob": "^10.3.4",
     "nuxt": "^3.7.1",
     "nuxt-typed-router": "^3.3.1"
