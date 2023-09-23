@@ -4,7 +4,7 @@
 <template>
   <div>
     test
-    <welcome />
+    <Welcome />
     <NuxtLink :to="{ name: 'welcome-page' }">
       TEST 43
     </NuxtLink>

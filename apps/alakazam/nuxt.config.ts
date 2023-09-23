@@ -1,5 +1,4 @@
 import { createResolver } from '@nuxt/kit'
-import * as glob from 'glob'
 
 const { resolve } = createResolver(import.meta.url)
 
@@ -7,10 +6,10 @@ const { resolve } = createResolver(import.meta.url)
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  srcDir: 'src',
+
   modules: [
     'nuxt-typed-router',
-    './modules/panda',
-    ...glob.sync('./src/*').map(path => `~/${path}`),
   ],
 
   alias: {
@@ -34,5 +33,9 @@ export default defineNuxtConfig({
         imports: ['css'],
       },
     ],
+  },
+
+  build: {
+    transpile: ['fsevents'],
   },
 })

@@ -23,11 +23,15 @@ export default defineConfig({
       fonts: {
         body: { value: 'system-ui, sans-serif' },
       },
+      fontSizes: {
+        sm: { value: '12px' },
+        md: { value: '16px' },
+      },
     },
   },
 
   // The output directory for your css system
-  outdir: 'styled-system',
+  outdir: './src/styled-system',
 
   // Generate JSX components
   jsxFramework: 'vue',
