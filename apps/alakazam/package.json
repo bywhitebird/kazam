@@ -12,6 +12,7 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@pandacss/dev": "^0.14.0",
+    "eslint-plugin-vue": "^9.17.0",
     "glob": "^10.3.4",
     "nuxt": "^3.7.1",
     "nuxt-typed-router": "^3.3.1"
