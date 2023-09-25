@@ -6,8 +6,8 @@ import { tokenize } from '../src'
 describe('tokenize', () => {
   describe('instructions', () => {
     Object.values(fixtures).flat().forEach((fixture) => {
-      test(fixture.name, async () => {
-        const result = await tokenize(fixture.input)
+      test(fixture.name, () => {
+        const result = tokenize(fixture.input)
 
         expect(result).toHaveLength(fixture.expectedTokenCheckers.length)
 

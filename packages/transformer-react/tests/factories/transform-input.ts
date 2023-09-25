@@ -11,8 +11,8 @@ const defaultInput: ITransformerInput[string] = {
 export class TransformerInputFactory {
   static async create(input: Partial<ITransformerInput[number]> | string = {}) {
     if (typeof input === 'string') {
-      const tokens = await tokenize(input)
-      const ast = await parse(tokens)
+      const tokens = tokenize(input)
+      const ast = parse(tokens)
 
       if (ast instanceof Error || ast === undefined)
         throw new Error('Failed to parse input')

@@ -33,8 +33,8 @@ export class ParserKaz extends ParserBase {
           await (async () => {
             const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-            const tokens = await tokenize(fileContent)
-            const ast = await parse(tokens)
+            const tokens = tokenize(fileContent)
+            const ast = parse(tokens)
 
             if (ast instanceof Error)
               throw ast
