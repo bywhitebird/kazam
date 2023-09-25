@@ -1,5 +1,5 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleNamespaceImport: IHandler<'namespaceImport'> = async (namespaceImport) => {
+export const handleNamespaceImport: IHandler<'namespaceImport'> = (namespaceImport) => {
   return { alias: namespaceImport.name.$value }
 }

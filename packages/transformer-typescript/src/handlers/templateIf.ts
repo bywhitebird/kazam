@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleTemplateIf: IHandler<'templateIf'> = async (templateIf, { handle, addGeneratedContent }) => {
+export const handleTemplateIf: IHandler<'templateIf'> = (templateIf, { handle, addGeneratedContent }) => {
   addGeneratedContent('if (')
   addGeneratedContent(templateIf.condition)
   addGeneratedContent(') {\n')

@@ -35,33 +35,24 @@ export class KazFile implements VirtualFile {
     this.update(snapshot)
   }
 
-  private _updateTimestamp = 0
   public update(newSnapshot: ts.IScriptSnapshot) {
-    (async () => {
-      const timestamp = Date.now()
+    const { snapshot, embeddedFiles, mappings } = this.onSnapshotUpdated(newSnapshot)
 
-      const { snapshot, embeddedFiles, mappings } = await this.onSnapshotUpdated(newSnapshot)
-
-      if (timestamp < this._updateTimestamp)
-        return
-
-      this.snapshot = snapshot
-      this.embeddedFiles = embeddedFiles
-      this.mappings = mappings
-      this._updateTimestamp = timestamp
-    })()
+    this.snapshot = snapshot
+    this.embeddedFiles = embeddedFiles
+    this.mappings = mappings
   }
 
-  public async onSnapshotUpdated(snapshot: ts.IScriptSnapshot) {
-    const tokens = await tokenize(snapshot.getText(0, snapshot.getLength()))
-    const ast = await parse([...tokens])
+  public onSnapshotUpdated(snapshot: ts.IScriptSnapshot) {
+    const tokens = tokenize(snapshot.getText(0, snapshot.getLength()))
+    const ast = parse([...tokens])
 
     this.tokens = tokens
     this.ast = ast
 
     return {
       snapshot,
-      embeddedFiles: await this.createEmbeddedFiles(),
+      embeddedFiles: this.createEmbeddedFiles(),
       mappings: [{
         sourceRange: [0, snapshot.getLength()] as [number, number],
         generatedRange: [0, snapshot.getLength()] as [number, number],
@@ -70,17 +61,17 @@ export class KazFile implements VirtualFile {
     }
   }
 
-  private async createEmbeddedFiles() {
+  private createEmbeddedFiles() {
     const embeddedFilesCreators = [
       this.createTypeScriptEmbeddedFile,
     ]
 
-    const embeddedFiles = await Promise.all(embeddedFilesCreators.map(creator => creator.call(this)))
+    const embeddedFiles = embeddedFilesCreators.map(creator => creator.call(this))
 
     return embeddedFiles.flat()
   }
 
-  private async createTypeScriptEmbeddedFile() {
+  private createTypeScriptEmbeddedFile() {
     const embeddedFiles: VirtualFile[] = []
 
     const ast = this.ast
@@ -95,7 +86,7 @@ export class KazFile implements VirtualFile {
       [this.fileName]: ast,
     }, {})
 
-    const tsFiles = await transformerTypescript.transformAndGenerateMappings()
+    const tsFiles = transformerTypescript.transformAndGenerateMappings()
 
     Object.entries(tsFiles).forEach(([fileName, { content, mapping }]) => {
       embeddedFiles.push({

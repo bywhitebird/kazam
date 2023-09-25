@@ -15,5 +15,5 @@ export abstract class TransformerBase {
   ) {
   }
 
-  abstract transform(): Promise<ITransformerOutput | void>
+  abstract transform(): ITransformerOutput | void
 }

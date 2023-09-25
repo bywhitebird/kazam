@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleKaz: IHandler<'ast'> = async (kaz, { handle, addGeneratedContent }) => {
+export const handleKaz: IHandler<'ast'> = (kaz, { handle, addGeneratedContent }) => {
   // First handle imports
   const importInstructions = kaz.instructions.filter(instruction => instruction.$type === 'ImportInstruction')
   importInstructions.forEach(handle)

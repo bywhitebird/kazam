@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-react'
 import { upperFirst } from '../utils/upperFirst'
 
-export const handleStateInstruction: IHandler<'stateInstruction'> = async (stateInstruction, { addImport, transformExpression }) => {
+export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstruction, { addImport, transformExpression }) => {
   addImport({ namedImports: [{ name: 'useState' }], path: 'react' })
 
   return `const [${
@@ -14,7 +14,7 @@ export const handleStateInstruction: IHandler<'stateInstruction'> = async (state
       : ''
   }(${
     stateInstruction.defaultValue !== undefined
-      ? await transformExpression(stateInstruction.defaultValue.expression)
+      ? transformExpression(stateInstruction.defaultValue.expression)
       : ''
   })`
 }

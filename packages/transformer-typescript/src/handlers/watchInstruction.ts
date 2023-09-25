@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleWatchInstruction: IHandler<'watchInstruction'> = async (watchInstruction, { addGeneratedContent }) => {
+export const handleWatchInstruction: IHandler<'watchInstruction'> = (watchInstruction, { addGeneratedContent }) => {
   addGeneratedContent('(({ ')
 
   watchInstruction.watchedVariables.forEach((watchedVariable) => {

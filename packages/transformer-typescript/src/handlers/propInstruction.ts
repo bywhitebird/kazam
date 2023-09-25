@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handlePropInstruction: IHandler<'propInstruction'> = async (propInstruction, { addGeneratedContent }) => {
+export const handlePropInstruction: IHandler<'propInstruction'> = (propInstruction, { addGeneratedContent }) => {
   addGeneratedContent(propInstruction.name)
 
   if (propInstruction.type !== undefined) {
