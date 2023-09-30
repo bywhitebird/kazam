@@ -25,8 +25,8 @@ describe('kazam', () => {
         input: [path.join(__dirname, 'fixtures')],
       })
 
-      expect(path.join(__dirname, 'output', 'Button.tsx')).toSatisfy(fs.existsSync)
-      expect(path.join(__dirname, 'output', 'Input.tsx')).toSatisfy(fs.existsSync)
+      expect(path.join(baseKazamConfig.output, 'Button.tsx')).toSatisfy(fs.existsSync)
+      expect(path.join(baseKazamConfig.output, 'Input.tsx')).toSatisfy(fs.existsSync)
     })
   })
 })

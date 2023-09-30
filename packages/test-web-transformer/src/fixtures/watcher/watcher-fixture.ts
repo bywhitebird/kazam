@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */ // NOTE: Need to disable this to use `${}` with dedent
 import dedent from 'dedent'
 
 import { createTestWebTransformerFixture } from '../../utils/create-test-web-transformer-fixture'
@@ -15,14 +16,8 @@ export const watcherFixture = createTestWebTransformerFixture({
       }
 
       div() {
-        Count: span(style={${
-          /* eslint-disable-next-line no-template-curly-in-string */
-          '`color: ${color}`'
-        }}) {
-          ${
-            /* eslint-disable-next-line no-template-curly-in-string */
-            '${count}'
-          }
+        Count: span(style={${'`color: ${color}`'}}) {
+          ${'${count}'}
         }
       }
       button(on:click={() => count++}) { Increment }

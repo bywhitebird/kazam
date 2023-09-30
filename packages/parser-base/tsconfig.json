@@ -3,8 +3,7 @@
   "display": "Default",
   "extends": "@whitebird/tsconfig/node.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "ignoreDeprecations": "5.0"
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

@@ -2,10 +2,11 @@
   "name": "@whitebird/kazam-parser-base",
   "type": "module",
   "version": "0.1.0",
+  "license": "MIT",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.cjs",
@@ -24,6 +25,6 @@
   "devDependencies": {
     "@types/node": "^18.11.9",
     "esno": "^0.16.3",
-    "vitest": "^0.25.3"
+    "vitest": "^0.34.1"
   }
 }

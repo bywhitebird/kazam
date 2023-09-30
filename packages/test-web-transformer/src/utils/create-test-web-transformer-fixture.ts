@@ -10,7 +10,7 @@ export interface TestWebTransformerFixture {
 
 interface TestWebTransformerFixtureInput {
   fixtureDirectory: string
-  input: { 'Index': string; [key: string]: string }
+  input: { 'Index': string;[key: string]: string }
   scenario: (page: Page) => Promise<void>
 }
 

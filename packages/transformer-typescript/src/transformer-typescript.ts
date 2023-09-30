@@ -20,10 +20,10 @@ type ISchemaHandlers = {
   [
   key in TSchemaName<keyof typeof schemas> as z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]> extends { $type: string }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ? typeof schemas[`kaz${TUppercaseFirst<key>}Schema`] extends z.ZodUnion<infer _>
-  ? never
-  : key
-  : never
+    ? typeof schemas[`kaz${TUppercaseFirst<key>}Schema`] extends z.ZodUnion<infer _>
+      ? never
+      : key
+    : never
   ]:
   (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, { handle, componentMeta }: {
     handle: (input: unknown | undefined) => THandlerReturnType

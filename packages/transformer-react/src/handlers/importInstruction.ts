@@ -13,10 +13,10 @@ export const handleImportInstruction: IHandler<'importInstruction'> = (importIns
           : importInstruction.$type === 'NamedImport'
             ? 'namedImports'
             : 'wildcardImport']: (
-            importInstruction.$type === 'NamedImport'
-              ? [handle(importInstruction)]
-              : handle(importInstruction)
-          ),
+          importInstruction.$type === 'NamedImport'
+            ? [handle(importInstruction)]
+            : handle(importInstruction)
+        ),
       })
     })
   }

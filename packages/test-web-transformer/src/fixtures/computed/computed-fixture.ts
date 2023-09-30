@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */ // NOTE: Need to disable this to use `${}` with dedent
 import dedent from 'dedent'
 
 import { createTestWebTransformerFixture } from '../../utils/create-test-web-transformer-fixture'
@@ -10,10 +11,7 @@ export const computedFixture = createTestWebTransformerFixture({
       - computed doubleCount = count * 2
 
       div() {
-        Double count: ${
-          /* eslint-disable-next-line no-template-curly-in-string */
-          '${doubleCount}'
-        }
+        Double count: ${'${doubleCount}'}
       }
       button(on:click={() => count++}) { Increment }
     `,

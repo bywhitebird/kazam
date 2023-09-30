@@ -3,13 +3,12 @@
   "display": "Default",
   "extends": "@whitebird/tsconfig/node.json",
   "compilerOptions": {
-    "outDir": "dist",
     "target": "es6",
     "module": "commonjs",
-    "sourceMap": true,
-    "esModuleInterop": true,
     "moduleResolution": "node",
-    "ignoreDeprecations": "5.0"
+    "sourceMap": true,
+    "outDir": "dist",
+    "esModuleInterop": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

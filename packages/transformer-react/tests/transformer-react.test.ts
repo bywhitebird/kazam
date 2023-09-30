@@ -9,6 +9,8 @@ describe('transformer-react', () => {
     await expect(TransformerReact).toSatisfyWebScenarios({
       renderHtml: renderTransformerReactOutputToHtml,
     })
+  }, {
+    timeout: 30000,
   })
 })
 

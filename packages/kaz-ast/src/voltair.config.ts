@@ -165,5 +165,5 @@ export default {
     ArrowFunctionBodyToken,
     WhitespaceToken,
     TextToken,
-  ].flat(Infinity as 9999),
+  ].flat(Number.POSITIVE_INFINITY as 9999),
 }

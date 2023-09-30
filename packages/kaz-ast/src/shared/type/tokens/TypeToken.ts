@@ -24,7 +24,7 @@ export const TypeToken = new Token({
       return false
     }
   },
-  getValue: rawValue => rawValue,
+  getValue: rawValue => rawValue.trim(),
   inContexts: [() => TypeContext],
   endContexts: [() => TypeContext],
 })

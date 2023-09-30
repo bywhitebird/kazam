@@ -32,6 +32,9 @@ export function importsToString(importInfos: ImportInfos[]) {
       ].filter(Boolean).join(', ')
     }
 
+    if (importString.trim().length === 0)
+      return `${acc}\nimport '${importInfo.path}'`
+
     return `${acc}\nimport ${importString} from '${importInfo.path}'`
   }, '')
 }

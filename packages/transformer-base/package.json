@@ -2,10 +2,11 @@
   "name": "@whitebird/kazam-transformer-base",
   "type": "module",
   "version": "0.1.0",
+  "license": "MIT",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     }
   },
   "main": "./dist/index.cjs",

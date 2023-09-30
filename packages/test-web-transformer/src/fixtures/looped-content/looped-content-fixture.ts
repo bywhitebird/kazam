@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */ // NOTE: Need to disable this to use `${}` with dedent
 import dedent from 'dedent'
 
 import { createTestWebTransformerFixture } from '../../utils/create-test-web-transformer-fixture'
@@ -7,10 +8,7 @@ export const loopedContentFixture = createTestWebTransformerFixture({
   input: {
     Index: dedent`
       @for(let i = 0; i < 10; i++) {
-        ${
-          /* eslint-disable-next-line no-template-curly-in-string */
-          '${i}'
-        }
+        ${'${i}'}
       }
     `,
   },
