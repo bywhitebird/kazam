@@ -25,13 +25,13 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@volar/language-core": "1.7.8",
-    "@volar/language-server": "1.7.8",
-    "@volar/language-service": "1.7.8",
+    "@volar/language-core": "~1.10.1",
+    "@volar/language-server": "~1.10.1",
+    "@volar/language-service": "~1.10.1",
     "@whitebird/kaz-ast": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
     "@whitebird/kazam-transformer-typescript": "workspace:*",
-    "volar-service-typescript": "^0.0.8",
+    "volar-service-typescript": "0.0.13",
     "zod": "^3.19.1"
   },
   "devDependencies": {
