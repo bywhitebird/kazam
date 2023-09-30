@@ -1,6 +1,12 @@
 import type { IHandler } from '../transformer-react'
 
 export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = (templateTagAttribute, { transformExpression }) => {
+  switch (templateTagAttribute.name.$value) {
+    case 'class': {
+      templateTagAttribute.name.$value = 'className'
+    }
+  }
+
   return `${templateTagAttribute.name.$value}=`
     + `${(() => {
       const [startChars, endChars] = ((): [string, string] => {
