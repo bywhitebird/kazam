@@ -85,8 +85,8 @@
     "prepackage": "pnpm build",
     "package": "vsce package --no-dependencies",
     "prerelease": "pnpm package",
-    "release:vsce": "vsce publish --no-dependencies --skip-duplicate",
-    "release:openvsx": "ovsx publish --no-dependencies --skip-duplicate",
+    "release:vsce": "vsce publish --no-dependencies --skip-duplicate -p $VSCE_PAT",
+    "release:openvsx": "ovsx publish --no-dependencies --skip-duplicate -p $OVSX_PAT",
     "release": "run-s release:*"
   },
   "devDependencies": {
