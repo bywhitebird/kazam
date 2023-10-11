@@ -10,7 +10,7 @@ export interface TestWebTransformerFixture {
 
 interface TestWebTransformerFixtureInput {
   fixtureDirectory: string
-  input: { 'Index': string; [key: string]: string }
+  input: { 'Index': string;[key: string]: string }
   scenario: (page: Page) => Promise<void>
 }
 
@@ -18,17 +18,15 @@ export const createTestWebTransformerFixture = async (fixture: TestWebTransforme
   return {
     ...fixture,
     input: Object.fromEntries(
-      await Promise.all(
-        Object.entries(fixture.input).map(async ([key, value]) => {
-          const tokens = await tokenize(value)
-          const ast = await parse(tokens)
+      Object.entries(fixture.input).map(([key, value]) => {
+        const tokens = tokenize(value)
+        const ast = parse(tokens)
 
-          if (ast instanceof Error || ast === undefined)
-            throw new Error(`Failed to parse ${key} in ${fixture.fixtureDirectory}`)
+        if (ast instanceof Error || ast === undefined)
+          throw new Error(`Failed to parse ${key} in ${fixture.fixtureDirectory}`)
 
-          return [key, ast] as const
-        },
-        ),
-      )) as TestWebTransformerFixture['input'],
+        return [key, ast] as const
+      }),
+    ) as TestWebTransformerFixture['input'],
   }
 }

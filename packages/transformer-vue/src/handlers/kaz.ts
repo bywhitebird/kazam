@@ -4,7 +4,7 @@ import type { z } from 'zod'
 import type { IHandler } from '../transformer-vue'
 import { mergeTextChildren } from '../utils/merge-text-children'
 
-export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => {
+export const handleKaz: IHandler<'ast'> = (kaz, { addImport, handle }) => {
   addImport({
     namedImports: [
       { name: 'defineComponent' },
@@ -17,10 +17,10 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => 
   })
 
   const importInstructions = kaz.instructions.filter(instruction => instruction.$type === 'ImportInstruction')
-  await Promise.all(importInstructions.map(instruction => handle(instruction)))
+  importInstructions.forEach(instruction => handle(instruction))
 
   const propInstructions = kaz.instructions.filter(instruction => instruction.$type === 'PropInstruction') as z.infer<typeof kazPropInstructionSchema>[]
-  const propsDeclaration = await Promise.all(propInstructions.map(prop => handle(prop))).then(props => props.join(',\n'))
+  const propsDeclaration = propInstructions.map(prop => handle(prop)).join(',\n')
 
   const otherInstructions = kaz.instructions.filter(instruction => instruction.$type !== 'ImportInstruction' && instruction.$type !== 'PropInstruction')
 
@@ -31,14 +31,14 @@ export const handleKaz: IHandler<'ast'> = async (kaz, { addImport, handle }) => 
       },
       setup(props) {
         return (({ ${propInstructions.map(prop => prop.name.$value).join(', ')} }) => {
-          ${await Promise.all(otherInstructions.map(instruction => handle(instruction))).then(instructions => instructions.join('\n'))}
+          ${otherInstructions.map(instruction => handle(instruction)).join('\n')}
 
           return () => (
             createVNode(
               Fragment,
               null,
               [
-                ${await Promise.all(mergeTextChildren(kaz.template).map(child => handle(child))).then(children => children.join(',\n'))}
+                ${mergeTextChildren(kaz.template).map(child => handle(child)).join(',\n')}
               ],
             )
           )

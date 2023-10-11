@@ -5,6 +5,7 @@ import process from 'node:process'
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
 import { glob } from 'glob'
+
 import { fixAstImportPaths } from './utils/fix-ast'
 
 export class ParserKaz extends ParserBase {
@@ -35,8 +36,8 @@ export class ParserKaz extends ParserBase {
           await (async () => {
             const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-            const tokens = await tokenize(fileContent)
-            const ast = await parse(tokens)
+            const tokens = tokenize(fileContent)
+            const ast = parse(tokens)
 
             if (ast instanceof Error)
               throw ast
@@ -45,7 +46,7 @@ export class ParserKaz extends ParserBase {
               throw new Error(`Could not parse file ${filePath}`)
 
             const fixedAst = fixAstImportPaths(
-              ast, filePath, config
+              ast, filePath, config,
             )
 
             return fixedAst

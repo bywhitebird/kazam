@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleComputedInstruction: IHandler<'computedInstruction'> = async (computedInstruction, { transformExpression }) => {
+export const handleComputedInstruction: IHandler<'computedInstruction'> = (computedInstruction, { transformExpression }) => {
   return `const ${computedInstruction.name.$value}`
     + `${computedInstruction.type !== undefined ? `: ${computedInstruction.type.$value}` : ''}`
-    + ` = ${await transformExpression(computedInstruction.computeValue.expression)}`
+    + ` = ${transformExpression(computedInstruction.computeValue.expression)}`
 }

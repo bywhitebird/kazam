@@ -1,10 +1,8 @@
 import type { Context } from './Context'
 import type { Token } from './Token'
-import { InputStream } from './utils/input-stream'
 import { resolveValue } from './utils/resolve-value'
 
-export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns: RegExp[]): Promise<Token[]> => {
-  const inputStream = InputStream(input)
+export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns: RegExp[]): Token[] => {
   const tokensFound = <Token[]>[]
 
   const current = {
@@ -106,19 +104,10 @@ export const tokenize = (input: string, tokens: Token[], defaultBreakingPatterns
       addCurrentToken()
   }
 
-  return new Promise((resolve) => {
-    const reader = inputStream.getReader()
-    const read = async () => {
-      const { done, value } = await reader.read()
-      if (done) {
-        addCurrentToken()
-        resolve(tokensFound)
-        return
-      }
+  const inputCharacters = input.split('')
+  while (inputCharacters.length > 0)
+    dataHandler(inputCharacters.shift())
 
-      dataHandler(value)
-      read()
-    }
-    read()
-  })
+  addCurrentToken()
+  return tokensFound
 }

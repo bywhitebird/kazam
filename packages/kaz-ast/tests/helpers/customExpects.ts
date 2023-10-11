@@ -18,9 +18,16 @@ export const checkAST = (actual: unknown, expected: unknown) => {
     })
   }
   else {
-    if (typeof actual === 'object' && actual !== null && '$value' in actual)
-      expect(actual.$value).toEqual(expected)
-    else
+    if (typeof actual === 'object' && actual !== null && '$value' in actual) {
+      const value = actual.$value
+
+      if (typeof value === 'string')
+        expect(value.trim()).toBe(expected)
+      else
+        expect(value).toEqual(expected)
+    }
+    else {
       expect(actual).toEqual(expected)
+    }
   }
 }

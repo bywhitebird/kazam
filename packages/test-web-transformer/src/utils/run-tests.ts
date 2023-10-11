@@ -30,6 +30,7 @@ const runTest = async (
   })
 
   page.on('console', (message) => {
+    // eslint-disable-next-line no-console
     console.log('[CONSOLE]', message)
     consoleLogs.push(message.text())
 

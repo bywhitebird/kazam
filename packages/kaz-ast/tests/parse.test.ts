@@ -8,8 +8,8 @@ import { kazAstSchema } from '../src/types/KazAst'
 describe('parse', () => {
   describe('instructions', () => {
     Object.values(fixtures).flat().forEach((fixture) => {
-      test(fixture.name, async () => {
-        const tokens = await tokenize(fixture.input)
+      test(fixture.name, () => {
+        const tokens = tokenize(fixture.input)
 
         const parseResult = parse(tokens)
 

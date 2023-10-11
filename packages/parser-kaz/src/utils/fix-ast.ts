@@ -1,6 +1,6 @@
 import path from 'node:path'
 
-import type { KazAst } from "@whitebird/kaz-ast"
+import type { KazAst } from '@whitebird/kaz-ast'
 import type { ParserBase } from '@whitebird/kazam-parser-base'
 
 export function fixAstImportPaths(ast: KazAst, filePath: string, config: Parameters<ParserBase['load']>[0]) {

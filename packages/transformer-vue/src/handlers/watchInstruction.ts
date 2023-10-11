@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-vue'
 import { transformVueExpression } from '../utils/transform-vue-expression'
 
-export const handleWatchInstruction: IHandler<'watchInstruction'> = async (watchInstruction, { addImport }) => {
+export const handleWatchInstruction: IHandler<'watchInstruction'> = (watchInstruction, { addImport }) => {
   addImport({
     namedImports: [
       { name: 'watch' },

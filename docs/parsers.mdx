@@ -1,0 +1,56 @@
+---
+draft: true
+slug: parsers
+---
+
+# Parsers
+
+## Creating a parser
+
+> **Note:**
+> If you are planning to release a parser to npm, we recommend that you name it with the `kazam-parser-` prefix so that it can be easily discovered by other developers.
+
+Creating a custom parser is straightforward with Kazam. You simply need to create a class that extends the `ParserBase` class from the `@whitebird/kazam-parser-base` package and implement the necessary methods.
+
+> **Note:**
+> We recommend that you use name your parser class with the `Parser` prefix, such as `ParserCustom`.
+
+```ts
+import { ParserBase } from '@whitebird/kazam-parser-base'
+
+export class ParserCustom extends ParserBase {
+  // ...
+}
+```
+
+The `ParserBase` class has two abstract methods that you need to implement:
+
+- `load` - This method should load the input sources and return the result. The result will be passed to the `parse` method.
+- `parse` - This method should parse the result of the `load` method and return an object that will be passed to the transformers.
+
+Here is the full definition of the `ParserBase` class:
+
+```ts
+// packages/parser-base/src/ParserBase.ts
+import type { ITransformerInput } from '@whitebird/kazam-transformer-base'
+
+import type { KazamConfig } from './types/KazamConfig'
+
+export abstract class ParserBase {
+  abstract load(config: KazamConfig): unknown | Promise<unknown>
+
+  abstract parse(loadResult: Awaited<ReturnType<this['load']>>, config: KazamConfig): ITransformerInput | Promise<ITransformerInput>
+}
+
+// packages/transfomer-base/src/index.ts
+export const TransformerInput = zod.record(zod.string(), kazAstSchema)
+export type ITransformerInput = zod.infer<typeof TransformerInput>
+```
+
+As you can see, the `parse` method returns an object that conforms to the `ITransformerInput` type. `ITransformerInput` is a record of strings and Kaz AST nodes. The keys of the record are the names of the components, and the values are the Kaz AST nodes that represent the components. You can find the schema for the Kaz AST nodes [in the `kaz-ast` package](https://github.com/bywhitebird/kazam/blob/18c7d0e969e9804faf54eda0c2afd3bb93df6c8b/packages/kaz-ast/src/types/KazAst.ts#L175).
+
+## Existing parsers
+
+### Official parsers
+
+- [`@whitebird/kazam-parser-kaz`](https://npmjs.com/package/@whitebird/kazam-parser-kaz) - Parses Kaz Language files.

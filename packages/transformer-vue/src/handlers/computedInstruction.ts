@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-vue'
 import { transformVueExpression } from '../utils/transform-vue-expression'
 
-export const handleComputedInstruction: IHandler<'computedInstruction'> = async (computedInstruction, { addImport }) => {
+export const handleComputedInstruction: IHandler<'computedInstruction'> = (computedInstruction, { addImport }) => {
   addImport({
     namedImports: [
       { name: 'computed' },

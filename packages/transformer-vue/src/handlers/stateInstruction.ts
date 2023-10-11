@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-vue'
 import { transformVueExpression } from '../utils/transform-vue-expression'
 
-export const handleStateInstruction: IHandler<'stateInstruction'> = async (stateInstruction, { addImport }) => {
+export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstruction, { addImport }) => {
   addImport({
     namedImports: [
       { name: 'ref' },

@@ -1,5 +1,5 @@
 import type { IHandler } from '../transformer-react'
 
-export const handleTemplateExpression: IHandler<'templateExpression'> = async (templateExpression, { transformExpression }) => {
-  return `{${await transformExpression(templateExpression.expression)}}`
+export const handleTemplateExpression: IHandler<'templateExpression'> = (templateExpression, { transformExpression }) => {
+  return `{${transformExpression(templateExpression.expression)}}`
 }

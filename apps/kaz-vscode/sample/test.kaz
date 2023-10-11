@@ -1,0 +1,21 @@
+- import Lodash from "lodash"
+- state count: number = 0
+- state buttonText: boolean = true
+- computed doubleCount: number = count * 2
+- computed tripleCount: number = Lodash.multiply(count, 3)
+- state callback: () => void
+
+div() {
+    button(
+        type="submit",
+        on:click={  callback }
+    ) {
+        ${String(buttonText)}
+    }
+
+    @for (let i = 0; i < 1; i++) {
+        div() {
+            ${i}
+        }
+    }
+}

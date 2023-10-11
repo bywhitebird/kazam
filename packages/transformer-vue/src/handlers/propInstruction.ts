@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-vue'
 import { transformVueExpression } from '../utils/transform-vue-expression'
 
-export const handlePropInstruction: IHandler<'propInstruction'> = async (propInstruction, { addImport }) => {
+export const handlePropInstruction: IHandler<'propInstruction'> = (propInstruction, { addImport }) => {
   addImport({
     namedImports: [
       { name: 'PropType', typeOnly: true },

@@ -1,5 +1,5 @@
 import type { IHandler } from '../transformer-vue'
 
-export const handleTemplateElseIf: IHandler<'templateElseIf'> = async (templateElseIf, { handle }) => {
-  return await handle({ ...templateElseIf.if, $type: 'IfLogical' })
+export const handleTemplateElseIf: IHandler<'templateElseIf'> = (templateElseIf, { handle }) => {
+  return handle({ ...templateElseIf.if, $type: 'IfLogical' })
 }
