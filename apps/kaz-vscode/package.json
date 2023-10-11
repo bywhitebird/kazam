@@ -2,7 +2,7 @@
   "publisher": "Whitebird",
   "name": "kaz-vscode",
   "displayName": "Kaz",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Language support for Kaz",
   "author": "Arthur Fontaine",
