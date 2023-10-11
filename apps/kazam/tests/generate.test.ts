@@ -27,6 +27,8 @@ describe('kazam', () => {
 
       expect(path.join(baseKazamConfig.output, 'Button.tsx')).toSatisfy(fs.existsSync)
       expect(path.join(baseKazamConfig.output, 'Input.tsx')).toSatisfy(fs.existsSync)
+    }, {
+      timeout: 30000, // This should not take as long as 30 seconds, but in CI it is very slow
     })
   })
 })
