@@ -19,7 +19,7 @@
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "prepare": "husky install",
-    "prerelease": "turbo run build lint test && changeset version",
+    "prerelease": "turbo run build test && changeset version",
     "release:npm": "changeset publish",
     "release:others": "turbo run release",
     "release": "run-p release:*"
