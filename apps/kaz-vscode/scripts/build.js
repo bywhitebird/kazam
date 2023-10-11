@@ -22,7 +22,18 @@ require('esbuild').build({
         build.onResolve({ filter: /^(vscode-.*|estree-walker|jsonc-parser)/ }, (args) => {
           const pathUmdMay = require.resolve(args.path, { paths: [args.resolveDir] })
           // Call twice the replace is to solve the problem of the path in Windows
-          const pathEsm = pathUmdMay.replace('/umd/', '/esm/').replace('\\umd\\', '\\esm\\')
+          let pathEsm = pathUmdMay.replace('/umd/', '/esm/').replace('\\umd\\', '\\esm\\')
+
+          // Try to resolve the path
+          // If it fails, if the file extension is .js, try to replace it with .mjs
+          try {
+            require.resolve(pathEsm, { paths: [args.resolveDir] })
+          }
+          catch {
+            if (pathEsm.endsWith('.js'))
+              pathEsm = pathEsm.replace(/\.js$/, '.mjs')
+          }
+
           return { path: pathEsm }
         })
       },
