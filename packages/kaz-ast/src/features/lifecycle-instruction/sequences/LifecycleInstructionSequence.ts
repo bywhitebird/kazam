@@ -1,11 +1,16 @@
-import { LifecycleInstructionToken } from '..'
+import { LifecycleInstructionContext, LifecycleInstructionToken } from '..'
 import { g, gp, s } from '../../../lib/voltair'
-import { VariableDeclarationSequence } from '../../../shared'
+import { ArrowFunctionBodyToken, ArrowToken, LeftParenthesisToken, RightParenthesisToken } from '../../../shared'
 
 export const LifecycleInstructionSequence = gp(
   'LifecycleEventInstruction',
   s(
     g('event', () => LifecycleInstructionToken),
-    g('callbackExpression', () => VariableDeclarationSequence),
+    LeftParenthesisToken,
+    RightParenthesisToken,
+    ArrowToken,
+    () => g('callbackExpression', ArrowFunctionBodyToken.extends({
+      endContexts: [LifecycleInstructionContext],
+    })),
   ),
 )

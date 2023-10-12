@@ -12,7 +12,8 @@ export const lifecycleInstructionsFixtures: (
   {
     name: 'When I use a onMount instruction with a function, onMount is validated',
     input: `
-    - onMount = () => {
+    - onMount () => {
+        console.log('Hello')
         console.log('Mounted')
       }
     `,
@@ -22,15 +23,18 @@ export const lifecycleInstructionsFixtures: (
         {
           $type: 'LifecycleEventInstruction',
           event: 'mount',
-          callbackExpression: '() => {\n        console.log(\'Mounted\')\n      }',
+          callbackExpression: 'console.log(\'Hello\')\n        console.log(\'Mounted\')',
         },
       ],
     },
   },
   {
-    name: 'When I use a onMount instruction without a function, onMount is not validated',
+    name: 'When I use a onMount instruction without an arrow, onMount is not validated',
     input: `
-    - onMount =
+    - onMount () {
+        console.log('Hello')
+        console.log('Mounted')
+      }
     `,
     expectError: true,
   },
@@ -38,15 +42,6 @@ export const lifecycleInstructionsFixtures: (
     name: 'When I use only the onMount keyword, onMount is not validated',
     input: `
     - onMount
-    `,
-    expectError: true,
-  },
-  {
-    name: 'When I use a onMount instruction without the equal sign, onMount is not validated',
-    input: `
-    - onMount () => {
-        console.log('Mounted')
-      }
     `,
     expectError: true,
   },

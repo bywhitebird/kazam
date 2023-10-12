@@ -7,7 +7,7 @@ export const handleLifecycleEventInstruction: IHandler<'lifecycleEventInstructio
 
   switch (event.$value) {
     case 'mount': {
-      return `useEffect(${transformExpression(callbackExpression)}, [])`
+      return `useEffect(() => {${transformExpression(callbackExpression)}}, [])`
     }
   }
 }

@@ -1,7 +1,16 @@
 import { Context } from '../../../lib/voltair'
+import { ArrowFunctionBodyToken, ArrowToken, LeftParenthesisToken, RightParenthesisToken, WhitespaceToken } from '../../../shared'
+import { EndInstructionToken } from '../../instruction'
 
-export const LifecycleInstructionContext = new Context({
+export const LifecycleInstructionContext: Context<'LifecycleInstructionContext'> = new Context({
   $name: 'LifecycleInstructionContext',
   breakingPatterns: [/\s+/, /^\($/, /^\)$/, /^=>$/, /^,$/],
-  availableTokens: [],
+  availableTokens: [
+    () => LeftParenthesisToken,
+    () => RightParenthesisToken,
+    () => ArrowToken,
+    () => ArrowFunctionBodyToken,
+    () => EndInstructionToken,
+    () => WhitespaceToken,
+  ],
 })

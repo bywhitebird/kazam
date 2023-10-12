@@ -9,5 +9,5 @@ export const handleLifecycleEventInstruction: IHandler<'lifecycleEventInstructio
     path: 'vue',
   })
 
-  return `onMounted(${transformVueExpression(lifecycleEvent.callbackExpression.$value)})`
+  return `onMounted(() => {${transformVueExpression(lifecycleEvent.callbackExpression.$value)}})`
 }

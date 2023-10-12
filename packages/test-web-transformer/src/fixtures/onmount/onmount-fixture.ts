@@ -8,7 +8,7 @@ export const onmountFixture = createTestWebTransformerFixture({
   input: {
     Index: dedent`
       - state mounted: boolean = false
-      - onMount = () => {
+      - onMount () => {
         setTimeout(() => {
           mounted = true
         }, 1000)
