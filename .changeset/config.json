@@ -6,8 +6,13 @@
   "linked": [],
   "access": "public",
   "baseBranch": "main",
+  "privatePackages": {
+    "tag": true,
+    "version": true
+  },
   "updateInternalDependencies": "patch",
   "ignore": [
-    "kaz-playground"
+    "kaz-playground",
+    "simple-kazam-project"
   ]
 }

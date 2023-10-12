@@ -1,5 +1,5 @@
 import type { IHandler } from '../transformer-vue'
 
-export const handleNamedImport: IHandler<'namedImport'> = async (namedImport) => {
+export const handleNamedImport: IHandler<'namedImport'> = (namedImport) => {
   return { name: namedImport.name.$value, alias: namedImport.alias?.$value }
 }

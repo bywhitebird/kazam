@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleImportInstruction: IHandler<'importInstruction'> = async (importInstruction, { addGeneratedContent, handle }) => {
+export const handleImportInstruction: IHandler<'importInstruction'> = (importInstruction, { addGeneratedContent, handle }) => {
   addGeneratedContent('import ')
 
   if (importInstruction.imports !== undefined && importInstruction.imports.length > 0) {

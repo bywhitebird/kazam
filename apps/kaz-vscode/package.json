@@ -1,0 +1,106 @@
+{
+  "publisher": "Whitebird",
+  "name": "kaz-vscode",
+  "displayName": "Kaz",
+  "version": "0.1.1",
+  "private": true,
+  "description": "Language support for Kaz",
+  "author": "Arthur Fontaine",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bywhitebird/kazam.git",
+    "directory": "apps/kaz-vscode"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/client.js",
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.67.0"
+  },
+  "activationEvents": [
+    "onLanguage:kaz"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "kaz",
+        "aliases": [
+          "Kaz",
+          "kaz"
+        ],
+        "extensions": [
+          ".kaz"
+        ],
+        "configuration": "./languages/kaz-language-configuration.json"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "kaz",
+        "scopes": {
+          "punctuation.parenthesis.left": [
+            "punctuation.parenthesis"
+          ],
+          "punctuation.parenthesis.right": [
+            "punctuation.parenthesis"
+          ],
+          "punctuation.template-expression.begin": [
+            "punctuation.section.embedded.begin"
+          ],
+          "punctuation.template-expression.end": [
+            "punctuation.section.embedded.end"
+          ],
+          "punctuation.comma": [
+            "punctuation.comma"
+          ],
+          "punctuation.equal": [
+            "punctuation.equal"
+          ],
+          "punctuation.curly-bracket.left": [
+            "punctuation.curly-bracket"
+          ],
+          "punctuation.curly-bracket.right": [
+            "punctuation.curly-bracket"
+          ],
+          "punctuation.colon": [
+            "punctuation.colon"
+          ],
+          "tag": [
+            "entity.name.tag"
+          ]
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "build": "node scripts/build",
+    "build:dev": "pnpm build --watch",
+    "start": "code --extensionDevelopmentPath=$PWD",
+    "start:dev": "pnpm start --wait --disable-extensions --folder-uri=$PWD/sample --inspect-extensions 6010",
+    "predev": "cd ../kaz-language-server && pnpm stub",
+    "dev": "run-p *:dev --race",
+    "postdev": "cd ../kaz-language-server && pnpm build",
+    "prepackage": "pnpm build",
+    "package": "vsce package --no-dependencies",
+    "prerelease": "pnpm package",
+    "release:vsce": "vsce publish --no-dependencies --skip-duplicate -p $VSCE_PAT",
+    "release:openvsx": "ovsx publish --no-dependencies --skip-duplicate -p $OVSX_PAT",
+    "release": "run-s release:*"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.67.0",
+    "@volar/language-server": "~1.10.1",
+    "@volar/vscode": "~1.10.1",
+    "@vscode/vsce": "latest",
+    "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kaz-language-server": "workspace:*",
+    "esbuild": "0.15.18",
+    "npm-run-all": "^4.1.5",
+    "ovsx": "^0.8.1",
+    "typescript": "^5.0.0",
+    "vscode": "^1.1.37",
+    "vscode-languageclient": "^8.1.0"
+  }
+}

@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleComputedInstruction: IHandler<'computedInstruction'> = async (computedInstruction, { addGeneratedContent }) => {
+export const handleComputedInstruction: IHandler<'computedInstruction'> = (computedInstruction, { addGeneratedContent }) => {
   addGeneratedContent('const ')
   addGeneratedContent(computedInstruction.name)
 

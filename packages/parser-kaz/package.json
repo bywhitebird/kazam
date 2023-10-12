@@ -24,7 +24,7 @@
   "dependencies": {
     "@whitebird/kaz-ast": "workspace:*",
     "@whitebird/kazam-parser-base": "workspace:*",
-    "glob": "^10.2.1"
+    "glob": "10.2.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

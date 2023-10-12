@@ -8,7 +8,9 @@ export const expressionRenderingFixture = createTestWebTransformerFixture({
   input: {
     Index: dedent`
       span() {
-        ${'${1 + 1}'}
+        ${
+          '${1 + 1}'
+        }
       }
     `,
   },

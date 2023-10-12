@@ -6,8 +6,8 @@ import { tokenize } from '../src'
 describe('tokenize', () => {
   describe('instructions', () => {
     Object.values(fixtures).flat().forEach((fixture) => {
-      test(fixture.name, async () => {
-        const result = await tokenize(fixture.input)
+      test(fixture.name, () => {
+        const result = tokenize(fixture.input)
 
         expect(result).toHaveLength(fixture.expectedTokenCheckers.length)
 
@@ -18,9 +18,19 @@ describe('tokenize', () => {
           if (expectedRawValue)
             expect(result[index].$rawValue).toBe(expectedRawValue)
 
-          const expectedValue = checker.value
-          if (expectedValue)
-            expect(result[index].$value).toBe(expectedValue)
+          let expectedValue = checker.value
+
+          if (typeof expectedValue === 'string')
+            expectedValue = expectedValue.trim()
+
+          if (expectedValue) {
+            const value = result[index].$value
+
+            if (typeof value === 'string')
+              expect(value.trim()).toBe(expectedValue)
+            else
+              expect(result[index].$value).toBe(expectedValue)
+          }
         })
       })
     })

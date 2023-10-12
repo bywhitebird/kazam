@@ -6,8 +6,10 @@ import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
 import { glob } from 'glob'
 
+import { fixAstImportPaths } from './utils/fix-ast'
+
 export class ParserKaz extends ParserBase {
-  async load(config: { input: string[] }) {
+  async load(config: Parameters<ParserBase['load']>[0]) {
     const normalizedInput = config.input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
@@ -23,7 +25,7 @@ export class ParserKaz extends ParserBase {
     return kazFiles.flat()
   }
 
-  async parse(kazFiles: Awaited<ReturnType<this['load']>>, config: { input: string[] }) {
+  async parse(kazFiles: Awaited<ReturnType<this['load']>>, config: Parameters<ParserBase['load']>[0]) {
     return Object.fromEntries(
       await Promise.all(kazFiles.map(async filePath =>
         [
@@ -34,8 +36,8 @@ export class ParserKaz extends ParserBase {
           await (async () => {
             const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-            const tokens = await tokenize(fileContent)
-            const ast = await parse(tokens)
+            const tokens = tokenize(fileContent)
+            const ast = parse(tokens)
 
             if (ast instanceof Error)
               throw ast
@@ -43,7 +45,11 @@ export class ParserKaz extends ParserBase {
             if (ast === undefined)
               throw new Error(`Could not parse file ${filePath}`)
 
-            return ast
+            const fixedAst = fixAstImportPaths(
+              ast, filePath, config,
+            )
+
+            return fixedAst
           })(),
         ] as const,
       )),

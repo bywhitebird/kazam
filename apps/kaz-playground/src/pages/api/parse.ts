@@ -22,7 +22,7 @@ export async function get({ request }: { request: Request }) {
   const { code, type } = params.data
 
   if (type === 'ast') {
-    const tokens = await tokenize(code)
+    const tokens = tokenize(code)
     const ast = parse(tokens)
     const result = ast instanceof Error ? ast : JSON.stringify(ast)
 
@@ -33,7 +33,7 @@ export async function get({ request }: { request: Request }) {
     })
   }
   else if (type === 'react') {
-    const tokens = await tokenize(code)
+    const tokens = tokenize(code)
     const ast = parse(tokens)
 
     if (ast instanceof Error) {

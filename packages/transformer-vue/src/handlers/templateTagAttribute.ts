@@ -1,7 +1,7 @@
 import type { IHandler } from '../transformer-vue'
 import { transformVueExpression } from '../utils/transform-vue-expression'
 
-export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute) => {
+export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = (templateTagAttribute) => {
   let value = ''
 
   if ('value' in templateTagAttribute && typeof templateTagAttribute.value === 'object' && '$value' in templateTagAttribute.value)

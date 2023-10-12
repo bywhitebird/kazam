@@ -26,13 +26,13 @@ type ISchemaHandlers = {
     : never
   ]:
   (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, { handle, componentMeta }: {
-    handle: (input: unknown | undefined) => Promise<THandlerReturnType>
+    handle: (input: unknown | undefined) => THandlerReturnType
     addGeneratedContent: (content: string | {
       $range: [number, number]
       $value: string
     }) => void
     componentMeta: IComponentMeta
-  }) => Promise<THandlerReturnType>
+  }) => THandlerReturnType
 }
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
@@ -65,16 +65,18 @@ export class TransformerTypescript extends TransformerBase {
   /**
    * @deprecated Use `transformAndGenerateMappings` instead.
    */
-  override transform(): Promise<void | ITransformerOutput> {
+  override transform(): void | ITransformerOutput {
     throw new Error('Method not implemented. Use `transformAndGenerateMappings` instead.')
   }
 
-  async transformAndGenerateMappings(): Promise<{
+  transformAndGenerateMappings(): {
     [key: string]: { content: string; mapping: Mapping[] }
-  }> {
-    await Promise.all(Object.entries(this.input).map(([componentName, component]) =>
-      this.handle(component, { name: componentName }),
-    ))
+  } {
+    for (const componentName in this.input) {
+      const component = this.input[componentName]
+
+      this.handle(component, { name: componentName })
+    }
 
     return Object.entries(this.generatedContent).reduce<{
       [key: string]: { content: string; mapping: Mapping[] }
@@ -88,7 +90,7 @@ export class TransformerTypescript extends TransformerBase {
     }, {})
   }
 
-  private async handle(input: unknown | undefined, componentMeta: IComponentMeta): Promise<THandlerReturnType> {
+  private handle(input: unknown | undefined, componentMeta: IComponentMeta): THandlerReturnType {
     if (input === undefined)
       return
 

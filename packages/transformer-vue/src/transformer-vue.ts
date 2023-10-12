@@ -25,12 +25,12 @@ type ISchemaHandlers = {
     : never
   ]:
   (data: z.infer<typeof schemas[`kaz${TUppercaseFirst<key>}Schema`]>, { handle, addImport, checkIsComponent, componentMeta }: {
-    handle: (input: unknown | undefined) => Promise<THandlerReturnType>
+    handle: (input: unknown | undefined) => THandlerReturnType
     addImport: (...importInfos: ImportInfos[]) => void
-    checkIsComponent: (componentName: string) => Promise<boolean>
+    checkIsComponent: (componentName: string) => boolean
     importComponent: (componentName: string) => void
     componentMeta: IComponentMeta
-  }) => Promise<THandlerReturnType>
+  }) => THandlerReturnType
 }
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
@@ -60,9 +60,12 @@ export class TransformerVue extends TransformerBase {
   private generatedComponents: { [key: string]: string } = {}
   private imports: { [key: string]: ImportInfos[] } = {}
 
-  async transform() {
-    await Promise.all(Object.entries(this.input).map(async ([componentName, component]) => {
-      const result = await this.handle(component, { name: componentName })
+  transform() {
+    for (const componentName in this.input) {
+      const component = this.input[componentName]
+
+      const result = this.handle(component, { name: componentName })
+
       this.generatedComponents[componentName] = `
         <script lang="ts">\n${prettier.format(
         `
@@ -77,7 +80,7 @@ export class TransformerVue extends TransformerBase {
       )
         }</script>
       `.trim()
-    }))
+    }
 
     return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
       output[id] = Object.assign(
@@ -88,7 +91,7 @@ export class TransformerVue extends TransformerBase {
     }, {})
   }
 
-  private async handle(input: unknown | undefined, componentMeta: IComponentMeta): Promise<THandlerReturnType> {
+  private handle(input: unknown | undefined, componentMeta: IComponentMeta): THandlerReturnType {
     if (input === undefined)
       return ''
 
@@ -119,7 +122,7 @@ export class TransformerVue extends TransformerBase {
     throw new Error(`No handler found for input ${inputString}`)
   }
 
-  private async checkIsComponent(componentName: string): Promise<boolean> {
+  private checkIsComponent(componentName: string): boolean {
     return Object.keys(this.input).includes(componentName)
   }
 

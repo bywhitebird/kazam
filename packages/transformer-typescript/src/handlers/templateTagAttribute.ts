@@ -1,6 +1,6 @@
 import type { IHandler } from '../transformer-typescript'
 
-export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = async (templateTagAttribute, { addGeneratedContent }) => {
+export const handleTemplateTagAttribute: IHandler<'templateTagAttribute'> = (templateTagAttribute, { addGeneratedContent }) => {
   addGeneratedContent(templateTagAttribute.name)
   addGeneratedContent(': ')
 
