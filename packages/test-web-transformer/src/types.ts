@@ -6,7 +6,9 @@ import type * as fixtures from './fixtures'
 export type Transformer = new (...args: ConstructorParameters<typeof TransformerBase>) => TransformerBase
 
 export type RenderHtml = (
-  output: Awaited<ReturnType<TransformerBase['transform']>>
+  output: Awaited<ReturnType<TransformerBase<{
+    outputExtension: string
+  }>['transform']>>
 ) => Promise<string>
 
 export type Fixture = typeof fixtures[keyof typeof fixtures]
