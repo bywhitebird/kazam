@@ -4,7 +4,7 @@ import { Effect } from 'effect'
 import { transform } from './transform/transform'
 
 export class TransformerReact extends TransformerBase<{
-  outputExtension: 'tsx'
+  outputFileNameFormat: `${string}.tsx`
 }> {
   public transform() {
     return Effect.runSync(transform({

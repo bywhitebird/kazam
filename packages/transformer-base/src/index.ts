@@ -17,7 +17,7 @@ export type TransformerOutput<
 > = Map<
   string,
   {
-    filePath: `${string}.${Settings['outputExtension']}`
+    filePath: Settings['outputFileNameFormat']
     content: Blob
   }
 >
@@ -38,7 +38,7 @@ export abstract class TransformerBase<
 }
 
 interface TransformerSettings<
-  OutputExtension extends string = string,
+  OutputFileNameFormat extends string = string,
 > {
-  outputExtension: OutputExtension
+  outputFileNameFormat: OutputFileNameFormat | null
 }
