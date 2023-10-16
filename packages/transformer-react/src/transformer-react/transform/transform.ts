@@ -9,7 +9,7 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
   Effect.gen(function* (_) {
     const transformService = yield * _(TransformService)
 
-    const output = new Map<string, { filePath: `${string}.tsx`; content: Blob }>()
+    const output = new Map<string, { filePath: `${string}.tsx`; content: string }>()
 
     for (const filePath in input) {
       const file = input[filePath]
@@ -37,7 +37,7 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
 
       output.set(filePath, {
         filePath: `${filePath}.tsx`,
-        content: new Blob([transformed], { type: 'text/plain' }),
+        content: transformed,
       })
     }
 

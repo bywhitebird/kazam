@@ -18,7 +18,7 @@ export type TransformerOutput<
   string,
   {
     filePath: Settings['outputFileNameFormat']
-    content: Blob
+    content: string
   }
 >
 
