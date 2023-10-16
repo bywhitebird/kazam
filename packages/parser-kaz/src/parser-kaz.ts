@@ -1,19 +1,19 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import process from 'node:process'
 
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
+import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 import { glob } from 'glob'
 
 import { fixAstImportPaths } from './utils/fix-ast'
 
-export class ParserKaz extends ParserBase {
-  async load(config: Parameters<ParserBase['load']>[0]) {
-    const normalizedInput = config.input.map(input => path.normalize(
+export class ParserKaz extends ParserBase<string[]> {
+  async load({ input, configPath }: Parameters<ParserBase<string[]>['load']>[0]) {
+    const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
-        : path.join(process.cwd(), input),
+        : path.join(configPath, input),
     ))
 
     const kazFiles = await Promise.all(normalizedInput.map(input =>
@@ -25,34 +25,32 @@ export class ParserKaz extends ParserBase {
     return kazFiles.flat()
   }
 
-  async parse(kazFiles: Awaited<ReturnType<this['load']>>, config: Parameters<ParserBase['load']>[0]) {
-    return Object.fromEntries(
-      await Promise.all(kazFiles.map(async filePath =>
-        [
-          path.relative(
-            (config.input.length === 1 && config.input[0]) || process.cwd(),
-            filePath,
-          ),
-          await (async () => {
-            const fileContent = fs.readFileSync(filePath, 'utf-8')
+  async parse(
+    kazFiles: string[],
+    { input, output, configPath }: Parameters<ParserBase<string[]>['parse']>[1],
+  ) {
+    const kazAsts: TransformerInput = {}
 
-            const tokens = tokenize(fileContent)
-            const ast = parse(tokens)
+    for (const filePath of kazFiles) {
+      const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-            if (ast instanceof Error)
-              throw ast
+      const tokens = tokenize(fileContent)
+      const ast = parse(tokens)
 
-            if (ast === undefined)
-              throw new Error(`Could not parse file ${filePath}`)
+      if (ast instanceof Error)
+        throw ast
 
-            const fixedAst = fixAstImportPaths(
-              ast, filePath, config,
-            )
+      if (ast === undefined)
+        throw new Error(`Could not parse file ${filePath}`)
 
-            return fixedAst
-          })(),
-        ] as const,
-      )),
-    )
+      const fixedAst = fixAstImportPaths(
+        ast,
+        { filePath, input, output },
+      )
+
+      kazAsts[path.relative(configPath, filePath)] = fixedAst
+    }
+
+    return kazAsts
   }
 }
