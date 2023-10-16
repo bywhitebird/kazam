@@ -1,3 +1,6 @@
-export { defineConfig, type KazamConfig, type UserConfig } from './utils/define-config'
+import { runCli } from './adapters/cli/cli'
 
-export { generate } from './handlers/generate'
+export * from './adapters/lib'
+
+if (require.main === module)
+  runCli()

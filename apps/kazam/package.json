@@ -29,6 +29,7 @@
     "chalk": "^4",
     "commander": "^10.0.1",
     "glob": "10.1.0",
+    "just-kebab-case": "^4.2.0",
     "typescript": "^5.0.0",
     "zod": "^3.21.4"
   },

@@ -4,9 +4,9 @@ import process from 'node:process'
 import chalk from 'chalk'
 import { Command } from 'commander'
 
-import { generate } from '../handlers/generate.js'
-import { findConfigPath } from '../utils/find-config-path.js'
-import { loadConfig } from '../utils/load-config.js'
+import { generate } from '../../../application/usecases/generate'
+import { findConfigPath } from '../utils/find-config-path'
+import { loadConfig } from '../utils/load-config'
 
 export const generateCommand = new Command()
   .command('generate')
@@ -21,7 +21,7 @@ export const generateCommand = new Command()
     const configPath = options.config ?? await findConfigPath()
     const config = await loadConfig(configPath)
 
-    await generate(config)
+    await generate(config, configPath, fs)
       .then(() => {
         process.stdout.write(`\r\n${chalk.green('✔')} Generated code successfully\n`)
         process.exit(0)

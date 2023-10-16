@@ -5,7 +5,7 @@ import vm from 'node:vm'
 
 import typescript from 'typescript'
 
-import { defineConfig } from './define-config.js'
+import { defineConfig } from '../../../application/usecases/define-config'
 
 export const loadConfig = async (configPath: string) => {
   if (path.extname(configPath) === '.js') {
