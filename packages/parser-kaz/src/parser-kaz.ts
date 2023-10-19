@@ -13,7 +13,7 @@ export class ParserKaz extends ParserBase<string[]> {
     const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
-        : path.join(configPath, input),
+        : path.join(path.dirname(configPath), input),
     ))
 
     const kazFiles = await Promise.all(normalizedInput.map(input =>
