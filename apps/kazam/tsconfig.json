@@ -4,7 +4,8 @@
   "extends": "@whitebird/tsconfig/node.json",
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "jsx": "react",
+    "module": "ESNext",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
