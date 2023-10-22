@@ -1,7 +1,10 @@
+import path from 'node:path'
+
 import { type AppProps, Text, useApp } from 'ink'
 import React, { useEffect, useState } from 'react'
 
 import type { generate } from '../../../application/usecases/generate'
+import { generateEvents } from '../../../core/events/generate'
 import { Spinner } from '../components/spinner'
 
 export const GenerateView = (
@@ -15,6 +18,7 @@ export const GenerateView = (
     | { error: string }
     | { pending: true }
   >({ pending: true })
+  const [writtenPaths, setWrittenPaths] = useState<string[]>([])
 
   useEffect(() => {
     setExit?.(exit)
@@ -25,11 +29,18 @@ export const GenerateView = (
         setStatus({ error })
         console.error('ERROR', error)
       })
+
+    generateEvents.on('file-written', filePath =>
+      setWrittenPaths(writtenPaths => [...writtenPaths, filePath]),
+    )
   }, [])
 
   if ('success' in status) {
     return <>
-      <Text><Text color="green">✔</Text> Generated code successfully</Text>
+      <Text><Text color="green">✔</Text> Successfully generated components</Text>
+      {writtenPaths.map(writtenPath =>
+        <Text key={writtenPath} color='gray'>{'    '}{path.normalize(writtenPath)}</Text>,
+      )}
     </>
   }
 
@@ -44,7 +55,7 @@ export const GenerateView = (
       <Text color="blue">
         <Spinner />
       </Text>
-      {' Generating...'}
+      {' Generating components...'}
     </Text>
   </>
 }

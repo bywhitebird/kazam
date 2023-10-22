@@ -3,6 +3,7 @@ import type * as fs from 'node:fs'
 import type { TransformerOutput } from '@whitebird/kazam-transformer-base'
 import kebabCase from 'just-kebab-case'
 
+import { generateEvents } from '../../core/events/generate'
 import type { KazamConfig } from '../../types/kazam-config'
 import type { Transformer } from '../../types/transformer'
 
@@ -15,6 +16,8 @@ const writeResults = (
 
     fileSystem.mkdirSync(directoryPath, { recursive: true })
     fileSystem.writeFileSync(filePath, fileContents)
+
+    generateEvents.emit('file-written', filePath)
   })
 }
 
