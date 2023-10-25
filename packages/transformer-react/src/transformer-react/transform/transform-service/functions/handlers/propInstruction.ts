@@ -14,7 +14,7 @@ export const handlePropInstruction: Handle<'propInstruction', {
       declaration: String.prototype.concat(
         propInstruction.name.$value,
         propInstruction.defaultValue !== undefined
-          ? ` = ${transformService.transformExpression(propInstruction.defaultValue.expression)}`
+          ? ` = ${yield * _(transformService.transformExpression(propInstruction.defaultValue.expression))}`
           : '',
       ),
       type: String.prototype.concat(
