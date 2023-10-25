@@ -2,17 +2,13 @@ import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer/s
 import * as esbuild from 'esbuild'
 
 type RenderHtml = Parameters<typeof testWebTransformer>[1]
-type ITransformerOutput = Parameters<RenderHtml>[0]
-type FlattenedOutput = Record<string, string>
 
 export const renderTransformerReactOutputToHtml: RenderHtml = async (output) => {
-  const flattenedOutput = await flattenOutput(output)
-
-  const indexTsx = findOutput(flattenedOutput, 'Index.tsx')
+  const indexTsx = await findOutput(output, 'Index')
 
   const { outputFiles } = await buildTsx(
     formatTsxForClient(indexTsx),
-    flattenedOutput,
+    output,
   )
   const indexJs = outputFiles.find(({ path }) => path.endsWith('out.js'))?.text
 
@@ -24,41 +20,16 @@ export const renderTransformerReactOutputToHtml: RenderHtml = async (output) => 
   return html
 }
 
-async function flattenOutput(
-  output: ITransformerOutput,
-  parentPath = '',
-): Promise<FlattenedOutput> {
-  const flattenedOutput: FlattenedOutput = {}
-
-  if (output === undefined)
-    return flattenedOutput
-
-  for (const [key, value] of Object.entries(output)) {
-    if (value instanceof Blob) {
-      const blob = value as Blob
-      const blobText = await blob.text()
-      flattenedOutput[parentPath + value.name] = blobText
-    }
-    else {
-      const nestedOutput = value as ITransformerOutput
-      const nestedFlattenedOutput = await flattenOutput(nestedOutput, `${parentPath + key}/`)
-      Object.assign(flattenedOutput, nestedFlattenedOutput)
-    }
-  }
-
-  return flattenedOutput
-}
-
-function findOutput(
-  output: FlattenedOutput,
+async function findOutput(
+  output: Parameters<RenderHtml>[0],
   id: string,
-): string {
-  const foundOutput = output[id]
+): Promise<string> {
+  const foundOutput = output.get(id)
 
   if (foundOutput === undefined)
     throw new Error(`Output not found: ${id}`)
 
-  return foundOutput
+  return foundOutput.content
 }
 
 function formatTsxForClient(
@@ -78,7 +49,7 @@ function formatTsxForClient(
 
 function buildTsx(
   sourceTsx: string,
-  output: FlattenedOutput,
+  output: Parameters<RenderHtml>[0],
 ) {
   return esbuild.build({
     bundle: true,
@@ -95,28 +66,30 @@ function buildTsx(
 }
 
 function resolveOutputPlugin(
-  output: FlattenedOutput,
+  output: Parameters<RenderHtml>[0],
 ): esbuild.Plugin {
   return {
     name: 'resolveOutput',
-    setup(build) {
-      Object.entries(output).forEach(([id]) => {
+    async setup(build) {
+      Array.from(output.entries()).forEach(([id]) => {
         const resolveResult: esbuild.OnResolveResult = {
-          path: id,
+          path: `${id}`,
           namespace: 'resolveOutput',
         }
 
         build.onResolve(
-          { filter: new RegExp(`^\.\/${id}$`) },
+          { filter: new RegExp(`^\.\/${id}\.tsx$`) },
           () => resolveResult,
         )
       })
 
-      build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async args => ({
-        contents: output[args.path],
-        loader: 'tsx',
-        resolveDir: __dirname,
-      }))
+      build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async (args) => {
+        return {
+          contents: output.get(args.path)?.content ?? '',
+          loader: 'tsx',
+          resolveDir: __dirname,
+        }
+      })
     },
   }
 }

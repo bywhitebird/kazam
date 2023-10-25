@@ -1,58 +1,72 @@
 import * as fs from 'node:fs'
 import * as path from 'node:path'
-import process from 'node:process'
 
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
+import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 import { glob } from 'glob'
 
 import { fixAstImportPaths } from './utils/fix-ast'
 
-export class ParserKaz extends ParserBase {
-  async load(config: Parameters<ParserBase['load']>[0]) {
-    const normalizedInput = config.input.map(input => path.normalize(
+export class ParserKaz extends ParserBase<{
+  pathRelativeToInputPath: string
+  inputPath: string
+}[]> {
+  async load({ input, configPath }: Parameters<ParserBase<{
+    pathRelativeToInputPath: string
+    inputPath: string
+  }[]>['load']>[0]) {
+    const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
-        : path.join(process.cwd(), input),
+        : path.join(path.dirname(configPath), input),
     ))
 
-    const kazFiles = await Promise.all(normalizedInput.map(input =>
+    const kazFiles = normalizedInput.map(input => (
       input.endsWith('.kaz')
         ? [input]
-        : glob(path.join(input, '**/*.kaz'), { absolute: true }),
-    ))
+        : glob.sync(path.join(input, '**/*.kaz'), { absolute: true })
+    )
+      .map(kazFile => ({
+        pathRelativeToInputPath: path.relative(input.endsWith('.kaz') ? path.dirname(input) : input, kazFile),
+        inputPath: input.endsWith('.kaz') ? path.dirname(input) : input,
+      })),
+    )
 
     return kazFiles.flat()
   }
 
-  async parse(kazFiles: Awaited<ReturnType<this['load']>>, config: Parameters<ParserBase['load']>[0]) {
-    return Object.fromEntries(
-      await Promise.all(kazFiles.map(async filePath =>
-        [
-          path.relative(
-            (config.input.length === 1 && config.input[0]) || process.cwd(),
-            filePath,
-          ),
-          await (async () => {
-            const fileContent = fs.readFileSync(filePath, 'utf-8')
+  async parse(
+    kazFiles: {
+      pathRelativeToInputPath: string
+      inputPath: string
+    }[],
+    { input, output }: Parameters<ParserBase<string[]>['parse']>[1],
+  ) {
+    const kazAsts: TransformerInput = {}
 
-            const tokens = tokenize(fileContent)
-            const ast = parse(tokens)
+    for (const { inputPath, pathRelativeToInputPath } of kazFiles) {
+      const filePath = path.join(inputPath, pathRelativeToInputPath)
 
-            if (ast instanceof Error)
-              throw ast
+      const fileContent = fs.readFileSync(filePath, 'utf-8')
 
-            if (ast === undefined)
-              throw new Error(`Could not parse file ${filePath}`)
+      const tokens = tokenize(fileContent)
+      const ast = parse(tokens)
 
-            const fixedAst = fixAstImportPaths(
-              ast, filePath, config,
-            )
+      if (ast instanceof Error)
+        throw ast
 
-            return fixedAst
-          })(),
-        ] as const,
-      )),
-    )
+      if (ast === undefined)
+        throw new Error(`Could not parse file ${filePath}`)
+
+      const fixedAst = fixAstImportPaths(
+        ast,
+        { filePath, input, output },
+      )
+
+      kazAsts[pathRelativeToInputPath] = fixedAst
+    }
+
+    return kazAsts
   }
 }

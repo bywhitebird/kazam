@@ -1,5 +1,5 @@
 import * as schemas from '@whitebird/kaz-ast'
-import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
+import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import type { z } from 'zod'
 
 import * as handlers from './handlers'
@@ -37,7 +37,7 @@ type ISchemaHandlers = {
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
 
-export class TransformerTypescript extends TransformerBase {
+export class TransformerTypescript extends TransformerBase<{ outputFileNameFormat: `${string}.ts` }> {
   private handlers: ISchemaHandlers = {
     ast: handlers.handleKaz,
     computedInstruction: handlers.handleComputedInstruction,
@@ -65,7 +65,7 @@ export class TransformerTypescript extends TransformerBase {
   /**
    * @deprecated Use `transformAndGenerateMappings` instead.
    */
-  override transform(): void | ITransformerOutput {
+  override transform(): never {
     throw new Error('Method not implemented. Use `transformAndGenerateMappings` instead.')
   }
 

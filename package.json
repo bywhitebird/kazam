@@ -42,6 +42,9 @@
   "pnpm": {
     "overrides": {
       "@antfu/eslint-config": "0.43.1"
+    },
+    "patchedDependencies": {
+      "ink@4.4.1": "patches/ink@4.4.1.patch"
     }
   }
 }
