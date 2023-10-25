@@ -1,5 +1,3 @@
-import * as path from 'node:path'
-
 import { Effect, pipe } from 'effect'
 
 import { TransformService } from '../../transform-service'
@@ -34,14 +32,9 @@ export const handleKaz: Handle<'ast', string>
       Exclude<typeof kaz.instructions[number], { $type: 'ImportInstruction' | 'PropInstruction' }>[]
     )
 
-    const metadata = yield * _(transformService.getMetadata())
-    const componentName = path.basename(metadata.componentName, path.extname(metadata.componentName))
-
     return yield * _(pipe(
       String.prototype.concat(
-        'export const ',
-        componentName,
-        ' = (',
+        'export default (',
         props.length > 0
           ? `{ ${propsDeclaration} }: { ${propsType} }`
           : '',
