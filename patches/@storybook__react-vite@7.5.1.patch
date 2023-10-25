@@ -1,0 +1,16 @@
+diff --git a/package.json b/package.json
+index 53cb6051f09b624d4c54bfb4a6b388531b90ac88..4fcf4772164a0a2566f1677f1afe6fac4e6a30a9 100644
+--- a/package.json
++++ b/package.json
+@@ -32,6 +32,11 @@
+     },
+     "./package.json": "./package.json"
+   },
++  "typesVersions": {
++    "*": {
++      "preset": ["./dist/preset.d.ts"]
++    }
++  },
+   "main": "dist/index.js",
+   "module": "dist/index.mjs",
+   "types": "dist/index.d.ts",

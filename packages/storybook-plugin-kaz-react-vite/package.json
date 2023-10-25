@@ -1,0 +1,36 @@
+{
+  "name": "@whitebird/storybook-plugin-kaz-react-vite",
+  "type": "module",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./preset": {
+      "types": "./dist/preset.d.ts",
+      "require": "./dist/preset.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "dependencies": {
+    "@storybook/react-vite": "^7.5.1",
+    "@whitebird/kazam-parser-kaz": "workspace:*",
+    "@whitebird/kazam-transformer-react": "workspace:*",
+    "kazam": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9"
+  }
+}
