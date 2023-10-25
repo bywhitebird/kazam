@@ -5,24 +5,21 @@ import process from 'node:process'
 
 import vue from '@vitejs/plugin-vue'
 import type { testWebTransformer } from '@whitebird/kazam-test-web-transformer'
+import type { TransformerOutput } from '@whitebird/kazam-transformer-base'
 import tmp from 'tmp'
 import * as vite from 'vite'
 import { viteSingleFile } from 'vite-plugin-singlefile'
 
 type RenderHtml = Parameters<typeof testWebTransformer>[1]
-type ITransformerOutput = Parameters<RenderHtml>[0]
-type FlattenedOutput = Record<string, string>
 
 export const renderTransformerVueOutputToHtml: RenderHtml = async (output) => {
-  const flattenedOutput = await flattenOutput(output)
-
   const tmpProjectDir = tmp.dirSync({
     tmpdir: process.cwd(),
     unsafeCleanup: true,
   })
 
   try {
-    writeProjectFiles(tmpProjectDir.name, flattenedOutput)
+    writeProjectFiles(tmpProjectDir.name, output)
 
     let indexHtml = await getBundledIndexHtml(tmpProjectDir.name)
 
@@ -40,39 +37,18 @@ export const renderTransformerVueOutputToHtml: RenderHtml = async (output) => {
   }
 }
 
-async function flattenOutput(
-  output: ITransformerOutput,
-  parentPath = '',
-): Promise<FlattenedOutput> {
-  const flattenedOutput: FlattenedOutput = {}
-
-  if (output === undefined)
-    return flattenedOutput
-
-  for (const [key, value] of Object.entries(output)) {
-    if (value instanceof Blob) {
-      const blob = value as Blob
-      const blobText = await blob.text()
-      flattenedOutput[parentPath + value.name] = blobText
-    }
-    else {
-      const nestedOutput = value as ITransformerOutput
-      const nestedFlattenedOutput = await flattenOutput(nestedOutput, `${parentPath + key}/`)
-      Object.assign(flattenedOutput, nestedFlattenedOutput)
-    }
-  }
-
-  return flattenedOutput
-}
-
 function writeProjectFiles(
   projectDir: string,
-  output: FlattenedOutput,
+  output: TransformerOutput,
 ) {
-  for (const [id, content] of Object.entries(output)) {
-    const filePath = path.join(projectDir, id)
-    fs.mkdirSync(path.dirname(filePath), { recursive: true })
-    fs.writeFileSync(filePath, content)
+  for (const [, { filePath, content }] of output.entries()) {
+    if (filePath === null)
+      continue
+
+    const realFilePath = path.join(projectDir, filePath)
+
+    fs.mkdirSync(path.dirname(realFilePath), { recursive: true })
+    fs.writeFileSync(realFilePath, content)
   }
 
   fs.writeFileSync(path.join(projectDir, 'index.html'), `

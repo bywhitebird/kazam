@@ -8,30 +8,46 @@ import { glob } from 'glob'
 
 import { fixAstImportPaths } from './utils/fix-ast'
 
-export class ParserKaz extends ParserBase<string[]> {
-  async load({ input, configPath }: Parameters<ParserBase<string[]>['load']>[0]) {
+export class ParserKaz extends ParserBase<{
+  pathRelativeToInputPath: string
+  inputPath: string
+}[]> {
+  async load({ input, configPath }: Parameters<ParserBase<{
+    pathRelativeToInputPath: string
+    inputPath: string
+  }[]>['load']>[0]) {
     const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
         : path.join(path.dirname(configPath), input),
     ))
 
-    const kazFiles = await Promise.all(normalizedInput.map(input =>
+    const kazFiles = normalizedInput.map(input => (
       input.endsWith('.kaz')
         ? [input]
-        : glob(path.join(input, '**/*.kaz'), { absolute: true }),
-    ))
+        : glob.sync(path.join(input, '**/*.kaz'), { absolute: true })
+    )
+      .map(kazFile => ({
+        pathRelativeToInputPath: path.relative(input.endsWith('.kaz') ? path.dirname(input) : input, kazFile),
+        inputPath: input.endsWith('.kaz') ? path.dirname(input) : input,
+      })),
+    )
 
     return kazFiles.flat()
   }
 
   async parse(
-    kazFiles: string[],
-    { input, output, configPath }: Parameters<ParserBase<string[]>['parse']>[1],
+    kazFiles: {
+      pathRelativeToInputPath: string
+      inputPath: string
+    }[],
+    { input, output }: Parameters<ParserBase<string[]>['parse']>[1],
   ) {
     const kazAsts: TransformerInput = {}
 
-    for (const filePath of kazFiles) {
+    for (const { inputPath, pathRelativeToInputPath } of kazFiles) {
+      const filePath = path.join(inputPath, pathRelativeToInputPath)
+
       const fileContent = fs.readFileSync(filePath, 'utf-8')
 
       const tokens = tokenize(fileContent)
@@ -48,7 +64,7 @@ export class ParserKaz extends ParserBase<string[]> {
         { filePath, input, output },
       )
 
-      kazAsts[path.relative(configPath, filePath)] = fixedAst
+      kazAsts[pathRelativeToInputPath] = fixedAst
     }
 
     return kazAsts

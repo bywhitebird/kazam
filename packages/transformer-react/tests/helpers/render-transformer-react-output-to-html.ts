@@ -29,7 +29,7 @@ async function findOutput(
   if (foundOutput === undefined)
     throw new Error(`Output not found: ${id}`)
 
-  return foundOutput.content.text()
+  return foundOutput.content
 }
 
 function formatTsxForClient(
@@ -85,7 +85,7 @@ function resolveOutputPlugin(
 
       build.onLoad({ filter: /.*/, namespace: 'resolveOutput' }, async (args) => {
         return {
-          contents: await output.get(args.path)?.content.text() ?? '',
+          contents: output.get(args.path)?.content ?? '',
           loader: 'tsx',
           resolveDir: __dirname,
         }
