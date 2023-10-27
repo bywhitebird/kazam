@@ -38,7 +38,7 @@ function formatTsxForClient(
   return `
     import ReactDOM from 'react-dom/client';
 
-    ${tsx}
+    ${tsx.replace('export default', 'const Index =')}
 
     const root = ReactDOM.createRoot(
       document.getElementById('root')

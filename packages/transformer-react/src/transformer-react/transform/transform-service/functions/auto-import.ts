@@ -23,7 +23,7 @@ export const autoImport = (tagName: string) =>
     if (componentPath === undefined)
       return
 
-    yield * _(transformService.addImport('namedImport', {
+    yield * _(transformService.addImport('defaultImport', {
       name: tagName,
       path: `./${path.relative(
         path.dirname(metadata.filePath),

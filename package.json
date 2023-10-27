@@ -44,7 +44,8 @@
       "@antfu/eslint-config": "0.43.1"
     },
     "patchedDependencies": {
-      "ink@4.4.1": "patches/ink@4.4.1.patch"
+      "ink@4.4.1": "patches/ink@4.4.1.patch",
+      "@storybook/react-vite@7.5.1": "patches/@storybook__react-vite@7.5.1.patch"
     }
   }
 }
