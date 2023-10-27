@@ -20,6 +20,8 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
       yield * _(transformService.setMetadata({
         componentName: yield * _(transformService.getComponentName(filePath)),
         filePath,
+        sourceAbsoluteFilePath: file.sourceAbsoluteFilePath,
+        outputAbsoluteFilePath: file.getTransformedOutputFilePath(`${filePath}.tsx`),
         input,
       }))
 
