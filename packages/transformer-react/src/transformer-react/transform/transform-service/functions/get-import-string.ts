@@ -1,3 +1,5 @@
+import * as path from 'node:path'
+
 import { Effect, Ref } from 'effect'
 
 import { ImportStateService } from '../states/import-state'
@@ -18,6 +20,21 @@ export const getImportString = () =>
       return ''
 
     return imports.map((import_) => {
+      // The following block will fix the import path if it is a relative path
+      if (import_.path.startsWith('.')) {
+        const absoluteImportedFilePath = path.resolve(
+          path.dirname(metadata.sourceAbsoluteFilePath),
+          import_.path,
+        )
+
+        const relativeImportedFilePath = path.relative(
+          path.dirname(metadata.outputAbsoluteFilePath),
+          absoluteImportedFilePath,
+        )
+
+        import_.path = `./${relativeImportedFilePath}`
+      }
+
       if (import_.type === 'sideEffectImport')
         return `import '${import_.path}'`
 

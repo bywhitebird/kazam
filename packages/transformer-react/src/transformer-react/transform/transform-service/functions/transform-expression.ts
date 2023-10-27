@@ -161,7 +161,7 @@ const findAssignmentsToStateVariable = (
 
   const metadata = yield * _(transformService.getMetadata())
 
-  const kazAst = metadata.input[metadata.filePath]
+  const kazAst = metadata.input[metadata.filePath]?.ast
 
   if (kazAst === undefined)
     throw new Error(`No AST found for file ${metadata.filePath}`)

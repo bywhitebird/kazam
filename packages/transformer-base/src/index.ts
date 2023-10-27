@@ -9,7 +9,12 @@ export type TransformerInput<
   _Options extends TransformerSettings = TransformerSettings,
 > = Record<
   string,
-  zod.infer<typeof kazAstSchema>
+  {
+    ast: zod.infer<typeof kazAstSchema>
+    sourceAbsoluteFilePath: string
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars, unused-imports/no-unused-vars
+    getTransformedOutputFilePath: (filePath: string) => string
+  }
 >
 
 export type TransformerOutput<

@@ -7,6 +7,8 @@ import type { TransformerReact } from '../../../transformer-react'
 export interface MetadataState extends Ref.Ref<{
   componentName: string
   filePath: string
+  sourceAbsoluteFilePath: string
+  outputAbsoluteFilePath: string
   input: TransformerReact['input']
 }> { }
 

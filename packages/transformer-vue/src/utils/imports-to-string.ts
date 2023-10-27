@@ -1,3 +1,5 @@
+import path from 'node:path'
+
 export interface ImportInfo {
   name: string
   alias?: string
@@ -16,9 +18,28 @@ function generateImportName(importInfo: ImportInfo) {
   return `${importInfo.typeOnly ? 'type ' : ''}${importInfo.name}${importInfo.alias ? ` as ${importInfo.alias}` : ''}`
 }
 
-export function importsToString(importInfos: ImportInfos[]) {
+export function importsToString(
+  importInfos: ImportInfos[],
+  sourceAbsoluteFilePath: string,
+  outputAbsoluteFilePath: string,
+) {
   return importInfos.reduce<string>((acc, importInfo) => {
     let importString: string
+
+    // The following block will fix the import path if it is a relative path
+    if (importInfo.path.startsWith('.')) {
+      const absoluteImportedFilePath = path.resolve(
+        path.dirname(sourceAbsoluteFilePath),
+        importInfo.path,
+      )
+
+      const relativeImportedFilePath = path.relative(
+        path.dirname(outputAbsoluteFilePath),
+        absoluteImportedFilePath,
+      )
+
+      importInfo.path = `./${relativeImportedFilePath}`
+    }
 
     if ('wildcardImport' in importInfo) {
       importString = `* as ${importInfo.wildcardImport.alias}`
