@@ -1,15 +1,19 @@
 import { parse, tokenize } from '@whitebird/kaz-ast'
-import type { ITransformerInput } from '@whitebird/kazam-transformer-base'
+import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 import deepmerge from 'deepmerge'
 
-const defaultInput: ITransformerInput[string] = {
-  $type: 'Kaz',
-  instructions: [],
-  template: [],
+const defaultInput: TransformerInput[string] = {
+  ast: {
+    $type: 'Kaz',
+    instructions: [],
+    template: [],
+  },
+  sourceAbsoluteFilePath: '',
+  getTransformedOutputFilePath: (filePath: string) => filePath,
 }
 
 export class TransformerInputFactory {
-  static async create(input: Partial<ITransformerInput[number]> | string = {}) {
+  static async create(input: Partial<TransformerInput[number]> | string = {}) {
     if (typeof input === 'string') {
       const tokens = tokenize(input)
       const ast = parse(tokens)
@@ -23,7 +27,7 @@ export class TransformerInputFactory {
     return { Test: deepmerge(defaultInput, input) }
   }
 
-  static createMany(...inputs: Partial<ITransformerInput[number]>[]) {
+  static createMany(...inputs: Partial<TransformerInput[number]>[]) {
     return inputs.flatMap(input => TransformerInputFactory.create(input))
   }
 }

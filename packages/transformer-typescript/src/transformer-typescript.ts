@@ -76,7 +76,10 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
     for (const componentName in this.input) {
       const component = this.input[componentName]
 
-      this.handle(component, { name: componentName })
+      if (component === undefined)
+        continue
+
+      this.handle(component.ast, { name: componentName })
     }
 
     return Object.entries(this.generatedContent).reduce<{

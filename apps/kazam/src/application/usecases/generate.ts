@@ -21,6 +21,38 @@ const writeResults = (
   })
 }
 
+const getTransformerDirectory = (transformer: Transformer, config: Exclude<KazamConfig, unknown[]>) => {
+  const transformerDirectory = [
+    config.output,
+    kebabCase(transformer.name.replace(/^Transformer/, '')),
+  ].join('/')
+
+  return transformerDirectory
+}
+
+const getTransformedOutputFilePath = (
+  filePath: string,
+  sourceFilePath: string,
+  transformer: Transformer,
+  config: Exclude<KazamConfig, unknown[]>,
+) => {
+  const sourceExtension = `.${sourceFilePath.split('.').slice(-1)[0]}` ?? ''
+  const transformedExtension = `.${filePath.split('.').slice(-1)[0]}` ?? ''
+
+  const transformerDirectory = getTransformerDirectory(transformer, config)
+
+  const outputFilePath = [
+    transformerDirectory,
+    // The following line replaces `.kaz.tsx` with `.tsx` (for example)
+    filePath.replace(
+      new RegExp(`${sourceExtension.replace('.', '\\.')}${transformedExtension.replace('.', '\\.')}$`),
+      transformedExtension,
+    ),
+  ].join('/')
+
+  return outputFilePath
+}
+
 const formatResults = (
   transformerResult: TransformerOutput<{ outputFileNameFormat: string }>,
   transformer: Transformer,
@@ -28,23 +60,8 @@ const formatResults = (
 ): Parameters<typeof writeResults>[0] => {
   const formattedTransformerResult = new Map<string, string>()
 
-  const transformerDirectory = [
-    config.output,
-    kebabCase(transformer.name.replace(/^Transformer/, '')),
-  ].join('/')
-
   transformerResult.forEach(({ filePath, content }, sourceFilePath) => {
-    const sourceExtension = `.${sourceFilePath.split('.').slice(-1)[0]}` ?? ''
-    const transformedExtension = `.${filePath.split('.').slice(-1)[0]}` ?? ''
-
-    const outputFilePath = [
-      transformerDirectory,
-      // The following line replaces `.kaz.tsx` with `.tsx` (for example)
-      filePath.replace(
-        new RegExp(`${sourceExtension.replace('.', '\\.')}${transformedExtension.replace('.', '\\.')}$`),
-        transformedExtension,
-      ),
-    ].join('/')
+    const outputFilePath = getTransformedOutputFilePath(filePath, sourceFilePath, transformer, config)
 
     formattedTransformerResult.set(outputFilePath, content)
   })
@@ -61,12 +78,22 @@ const generateForConfig = async (
     config.parsers.map(async (ParserClass) => {
       const parser = new ParserClass()
 
-      const transformerInput = await parser.loadAndParse({
+      const parserOutput = await parser.loadAndParse({
         ...config,
         configPath,
       })
 
       return config.transformers.map((TransformerClass) => {
+        const transformerInput = Object.fromEntries(
+          Object.entries(parserOutput).map(([key, value]) => {
+            return [key, {
+              ...value,
+              getTransformedOutputFilePath: (filePath: string) =>
+                getTransformedOutputFilePath(filePath, value.sourceAbsoluteFilePath, TransformerClass, config),
+            }] as const
+          }),
+        )
+
         const transformer = new TransformerClass(transformerInput, {})
 
         const transformerResult = transformer.transform()

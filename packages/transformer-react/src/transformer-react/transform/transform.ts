@@ -25,7 +25,7 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
 
       const transformed = yield * _(
         pipe(
-          transformService.handle(file),
+          transformService.handle(file.ast),
           Effect.map(transformed =>
             prettier.format(transformed, {
               parser: 'babel-ts',
