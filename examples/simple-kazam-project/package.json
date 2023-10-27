@@ -2,9 +2,26 @@
   "name": "simple-kazam-project",
   "version": "0.0.0",
   "private": true,
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
   "devDependencies": {
-    "kazam": "workspace:*",
+    "@storybook/addon-essentials": "^7.5.1",
+    "@storybook/addon-interactions": "^7.5.1",
+    "@storybook/addon-links": "^7.5.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.1",
+    "@storybook/react": "^7.5.1",
+    "@storybook/react-vite": "^7.5.1",
+    "@storybook/testing-library": "^0.2.2",
+    "@whitebird/kazam-parser-kaz": "workspace:*",
     "@whitebird/kazam-transformer-react": "workspace:*",
-    "@whitebird/kazam-parser-kaz": "workspace:*"
+    "@whitebird/storybook-plugin-kaz-react-vite": "workspace:*",
+    "kazam": "workspace:*",
+    "prop-types": "^15.8.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "storybook": "^7.5.1"
   }
 }

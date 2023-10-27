@@ -1,0 +1,12 @@
+diff --git a/package.json b/package.json
+index 39f8da78cdd80034ff530b0bed822e872b9305bb..018166148fd7575e642180df0255f45a0100f98a 100644
+--- a/package.json
++++ b/package.json
+@@ -14,6 +14,7 @@
+ 		"types": "./build/index.d.ts",
+ 		"default": "./build/index.js"
+ 	},
++	"types": "./build/index.d.ts",
+ 	"engines": {
+ 		"node": ">=14.16"
+ 	},

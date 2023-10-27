@@ -1,7 +1,7 @@
 import * as path from 'node:path'
 
 import * as schemas from '@whitebird/kaz-ast'
-import { type ITransformerOutput, TransformerBase } from '@whitebird/kazam-transformer-base'
+import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import prettier from 'prettier'
 import type { z } from 'zod'
 
@@ -35,7 +35,9 @@ type ISchemaHandlers = {
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
 
-export class TransformerVue extends TransformerBase {
+export class TransformerVue extends TransformerBase<{
+  outputFileNameFormat: `${string}.vue`
+}> {
   private handlers: ISchemaHandlers = {
     ast: handlers.handleKaz,
     computedInstruction: handlers.handleComputedInstruction,
@@ -46,6 +48,7 @@ export class TransformerVue extends TransformerBase {
     propInstruction: handlers.handlePropInstruction,
     stateInstruction: handlers.handleStateInstruction,
     watchInstruction: handlers.handleWatchInstruction,
+    lifecycleEventInstruction: handlers.handleLifecycleEventInstruction,
     templateTagAttribute: handlers.handleTemplateTagAttribute,
     templateTagEventAttribute: handlers.handleTemplateTagEventAttribute,
     templateTag: handlers.handleTemplateTag,
@@ -82,13 +85,17 @@ export class TransformerVue extends TransformerBase {
       `.trim()
     }
 
-    return Object.entries(this.generatedComponents).reduce<ITransformerOutput>((output, [id, content]) => {
-      output[id] = Object.assign(
-        new Blob([content], { type: 'text/plain' }),
-        { name: `${id}.vue` },
-      )
-      return output
-    }, {})
+    return Object.entries(this.generatedComponents).reduce(
+      (output, [id, content]) =>
+        output.set(id, {
+          content,
+          filePath: `${id}.vue`,
+        }),
+      new Map<string, {
+        filePath: `${string}.vue`
+        content: string
+      }>(),
+    )
   }
 
   private handle(input: unknown | undefined, componentMeta: IComponentMeta): THandlerReturnType {

@@ -149,6 +149,12 @@ export const kazImportInstructionSchema = zod.object({
   ).optional(),
 })
 
+export const kazLifecycleEventInstructionSchema = zod.object({
+  $type: zod.literal('LifecycleEventInstruction'),
+  event: valueSchema(zod.literal('mount')),
+  callbackExpression: valueSchema(zod.string()),
+})
+
 export const kazWatchedVariableSchema = zod.object({
   name: valueSchema(zod.string()),
   type: valueSchema(zod.string()).optional(),
@@ -196,6 +202,7 @@ export const kazAstSchema = zod.object({
       kazComputedInstructionSchema,
       kazPropInstructionSchema,
       kazStateInstructionSchema,
+      kazLifecycleEventInstructionSchema,
     ]),
   ),
   template: zod.array(kazTemplateSchema),
