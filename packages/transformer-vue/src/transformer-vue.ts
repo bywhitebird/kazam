@@ -75,7 +75,11 @@ export class TransformerVue extends TransformerBase<{
       this.generatedComponents[componentName] = `
         <script lang="ts">\n${prettier.format(
         `
-            ${importsToString(mergeImports(this.imports[componentName] ?? []))}
+            ${importsToString(
+          mergeImports(this.imports[componentName] ?? []),
+          component.sourceAbsoluteFilePath,
+          component.getTransformedOutputFilePath(`${componentName}.vue`),
+        )}
 
             ${result}
             `,
