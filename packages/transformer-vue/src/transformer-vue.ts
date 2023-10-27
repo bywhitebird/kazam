@@ -48,6 +48,7 @@ export class TransformerVue extends TransformerBase<{
     propInstruction: handlers.handlePropInstruction,
     stateInstruction: handlers.handleStateInstruction,
     watchInstruction: handlers.handleWatchInstruction,
+    lifecycleEventInstruction: handlers.handleLifecycleEventInstruction,
     templateTagAttribute: handlers.handleTemplateTagAttribute,
     templateTagEventAttribute: handlers.handleTemplateTagEventAttribute,
     templateTag: handlers.handleTemplateTag,

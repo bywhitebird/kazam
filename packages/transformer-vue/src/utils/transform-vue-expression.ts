@@ -30,12 +30,15 @@ export const transformVueExpression = (expression: string) => {
         return
 
       if (isReference(node, parent)) {
-        if (parent.type === 'AssignmentExpression' && node === parent.left) {
+        if (
+          (parent.type === 'AssignmentExpression' && node === parent.left)
+          || (parent.type === 'UpdateExpression' && node === parent.argument)
+        ) {
           replace(start, end, substring => `${substring}.value`)
           return
         }
 
-        replace(start, end, substring => `ref(${substring}).value`)
+        replace(start, end, substring => `((() => ref(${substring}).value)())`)
       }
     },
   })

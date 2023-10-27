@@ -40,6 +40,7 @@ const handlers = {
   propInstruction: importedHandlers.handlePropInstruction,
   stateInstruction: importedHandlers.handleStateInstruction,
   watchInstruction: importedHandlers.handleWatchInstruction,
+  lifecycleEventInstruction: importedHandlers.handleLifecycleEventInstruction,
   templateTagAttribute: importedHandlers.handleTemplateTagAttribute,
   templateTagEventAttribute: importedHandlers.handleTemplateTagEventAttribute,
   templateTag: importedHandlers.handleTemplateTag,

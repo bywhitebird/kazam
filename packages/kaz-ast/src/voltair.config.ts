@@ -4,6 +4,7 @@ import { ForLeftParenthesisToken, ForLogicalToken, ForParametersToken, ForRightP
 import { AliasKeywordToken, FromKeywordToken, ImportInstructionToken, WildcardCharacterToken } from './features/import-instruction'
 import { EndInstructionToken, StartInstructionToken } from './features/instruction'
 import { KazSequence } from './features/kaz'
+import { LifecycleInstructionToken } from './features/lifecycle-instruction'
 import { PropInstructionToken } from './features/prop-instruction'
 import { StateInstructionToken } from './features/state-instruction'
 import { TagAttributeEqualToken, TagAttributeLeftCurlyBracketToken, TagAttributeNameToken, TagAttributeRightCurlyBracketToken, TagAttributeSeparatorToken, TagEventAttributeNameToken, TagLeftParenthesisToken, TagNameOrTextToken, TagRightParenthesisToken } from './features/tag'
@@ -45,6 +46,11 @@ export default {
       [
         // Watch instruction
         WatchInstructionToken,
+      ],
+
+      [
+        // Lifecycle instruction
+        LifecycleInstructionToken,
       ],
 
       EndInstructionToken,
