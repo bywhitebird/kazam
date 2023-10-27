@@ -1,1 +1,1 @@
-export { TransformerReact } from './transformer-react'
+export { TransformerReact } from './transformer-react/transformer-react'

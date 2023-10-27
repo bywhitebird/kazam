@@ -19,14 +19,17 @@ describe('kazam', () => {
       fs.rmSync(baseKazamConfig.output, { recursive: true, force: true })
     })
 
-    test('should build the .kaz files', async () => {
+    test('should build the .kaz files in transformer specific directories', async () => {
       await generate({
         ...baseKazamConfig,
         input: [path.join(__dirname, 'fixtures')],
-      })
+        rootDir: __dirname,
+      }, fs)
 
-      expect(path.join(baseKazamConfig.output, 'Button.tsx')).toSatisfy(fs.existsSync)
-      expect(path.join(baseKazamConfig.output, 'Input.tsx')).toSatisfy(fs.existsSync)
+      expect(path.join(baseKazamConfig.output, 'react', 'Button.tsx')).toSatisfy(fs.existsSync)
+      expect(path.join(baseKazamConfig.output, 'react', 'Input.tsx')).toSatisfy(fs.existsSync)
+    }, {
+      timeout: 30000, // This should not take as long as 30 seconds, but in CI it is very slow
     })
   })
 })

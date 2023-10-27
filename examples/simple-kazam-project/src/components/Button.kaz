@@ -1,10 +1,14 @@
 - prop buttonText: string = "Button"
-- prop callback: () => void = () => console.log('Button clicked')
+- prop callback: () => void = () => {
+    console.log('Button clicked')
+}
+- prop color: string = "red"
 
 div() {
     button(
         type="submit",
-        on:click={callback}
+        on:click={callback},
+        style={`background-color: ${color}; color: white`}
     ) {
         ${buttonText}
     }

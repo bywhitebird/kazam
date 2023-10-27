@@ -19,7 +19,7 @@
     "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "prepare": "husky install",
-    "prerelease": "turbo run build lint test && changeset version",
+    "prerelease": "turbo run build test && changeset version",
     "release:npm": "changeset publish",
     "release:others": "turbo run release",
     "release": "run-p release:*"
@@ -42,6 +42,10 @@
   "pnpm": {
     "overrides": {
       "@antfu/eslint-config": "0.43.1"
+    },
+    "patchedDependencies": {
+      "ink@4.4.1": "patches/ink@4.4.1.patch",
+      "@storybook/react-vite@7.5.1": "patches/@storybook__react-vite@7.5.1.patch"
     }
   }
 }

@@ -2,7 +2,7 @@
   "publisher": "Whitebird",
   "name": "kaz-vscode",
   "displayName": "Kaz",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Language support for Kaz",
   "author": "Arthur Fontaine",
@@ -85,8 +85,8 @@
     "prepackage": "pnpm build",
     "package": "vsce package --no-dependencies",
     "prerelease": "pnpm package",
-    "release:vsce": "vsce publish --no-dependencies --skip-duplicate",
-    "release:openvsx": "ovsx publish --no-dependencies --skip-duplicate",
+    "release:vsce": "vsce publish --no-dependencies --skip-duplicate -p $VSCE_PAT",
+    "release:openvsx": "ovsx publish --no-dependencies --skip-duplicate -p $OVSX_PAT",
     "release": "run-s release:*"
   },
   "devDependencies": {
