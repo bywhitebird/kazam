@@ -1,15 +1,14 @@
 import path from 'node:path'
 
 import { type AppProps, Text, useApp } from 'ink'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 
-import type { generate } from '../../../application/usecases/generate'
 import { generateEvents } from '../../../core/events/generate'
 import { Spinner } from '../components/spinner'
 
 export const GenerateView = (
-  { generatePromise, setExit }:
-  { generatePromise: ReturnType<typeof generate>; setExit?: (exit: AppProps['exit']) => void },
+  { setExit }:
+  { setExit?: (exit: AppProps['exit']) => void },
 ) => {
   const { exit } = useApp()
 
@@ -17,22 +16,37 @@ export const GenerateView = (
     | { success: true }
     | { error: string }
     | { pending: true }
-  >({ pending: true })
+  >(
+    generateEvents.hasReceived('success')
+      ? { success: true }
+      : generateEvents.hasReceived('error')
+        ? { error: generateEvents.getLatestReceived('error')!.message }
+        : { pending: true },
+  )
   const [writtenPaths, setWrittenPaths] = useState<string[]>([])
 
-  useEffect(() => {
-    setExit?.(exit)
+  useLayoutEffect(() => {
+    generateEvents.on('pending', () => {
+      setStatus({ pending: true })
+      setWrittenPaths([])
+    })
 
-    generatePromise
-      .then(() => setStatus({ success: true }))
-      .catch((error) => {
-        setStatus({ error })
-        console.error('ERROR', error)
-      })
+    generateEvents.on('success', () => {
+      setStatus({ success: true })
+    })
+
+    generateEvents.on('error', (error) => {
+      setStatus({ error: error.message })
+      console.error('ERROR', error)
+    })
 
     generateEvents.on('file-written', filePath =>
       setWrittenPaths(writtenPaths => [...writtenPaths, filePath]),
     )
+  }, [])
+
+  useEffect(() => {
+    setExit?.(exit)
   }, [])
 
   if ('success' in status) {

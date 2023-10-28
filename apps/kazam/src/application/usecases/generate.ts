@@ -120,6 +120,8 @@ export const generate = async (
   configPath: string,
   fileSystem?: typeof fs | undefined,
 ) => {
+  generateEvents.emit('pending', undefined)
+
   if (!Array.isArray(config))
     config = [config]
 
@@ -127,6 +129,14 @@ export const generate = async (
     config.map(config => generateForConfig(config, configPath, fileSystem)),
   )
     .then(results => results.flat())
+    .then((results) => {
+      generateEvents.emit('success', undefined)
+      return results
+    })
+    .catch((error) => {
+      generateEvents.emit('error', error)
+      throw error
+    })
 
   return results
 }
