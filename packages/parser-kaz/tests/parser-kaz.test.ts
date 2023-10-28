@@ -21,11 +21,13 @@ describe('parser-kaz', () => {
   const parser = new ParserKaz()
 
   describe('loadAndParse', () => {
-    test('should return an object of ASTs with keys relative to the input path', async () => {
+    test('should return an object of objects with AST and absolute input path with keys relative to the input path', async () => {
       const result = await parser.loadAndParse(config)
 
-      Object.values(result).forEach((ast) => {
+      Object.values(result).forEach(({ ast, sourceAbsoluteFilePath }) => {
         expect(ast.$type).toBe('Kaz')
+        expect(sourceAbsoluteFilePath).toSatisfy(path.isAbsolute)
+        expect(sourceAbsoluteFilePath).toMatch(/^\/.+fixtures\/(Input|buttons\/PrimaryButton|buttons\/SecondaryButton)\.kaz$/)
       })
 
       expect(result).toMatchObject({

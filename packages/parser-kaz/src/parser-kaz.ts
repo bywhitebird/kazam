@@ -3,10 +3,7 @@ import * as path from 'node:path'
 
 import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
-import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 import { glob } from 'glob'
-
-import { fixAstImportPaths } from './utils/fix-ast'
 
 export class ParserKaz extends ParserBase<{
   pathRelativeToInputPath: string
@@ -41,9 +38,11 @@ export class ParserKaz extends ParserBase<{
       pathRelativeToInputPath: string
       inputPath: string
     }[],
-    { input, output }: Parameters<ParserBase<string[]>['parse']>[1],
   ) {
-    const kazAsts: TransformerInput = {}
+    const kazAsts: Awaited<ReturnType<ParserBase<{
+      pathRelativeToInputPath: string
+      inputPath: string
+    }[]>['parse']>> = {}
 
     for (const { inputPath, pathRelativeToInputPath } of kazFiles) {
       const filePath = path.join(inputPath, pathRelativeToInputPath)
@@ -59,12 +58,10 @@ export class ParserKaz extends ParserBase<{
       if (ast === undefined)
         throw new Error(`Could not parse file ${filePath}`)
 
-      const fixedAst = fixAstImportPaths(
+      kazAsts[pathRelativeToInputPath] = {
         ast,
-        { filePath, input, output },
-      )
-
-      kazAsts[pathRelativeToInputPath] = fixedAst
+        sourceAbsoluteFilePath: filePath,
+      }
     }
 
     return kazAsts

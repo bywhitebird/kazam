@@ -6,6 +6,7 @@ import { type AppProps, render } from 'ink'
 import React from 'react'
 
 import { generate } from '../../../application/usecases/generate'
+import { generateWatch } from '../../../application/usecases/generate-watch'
 import type { KazamConfig } from '../../../types/kazam-config'
 import { GenerateView } from '../views/generate'
 
@@ -18,6 +19,7 @@ export const generateCommand = new Command()
 
     return path
   })
+  .option('-w, --watch', 'Watch for changes and regenerate code')
   .action(async (options) => {
     let exit: AppProps['exit'] | undefined
     const setExit = (_exit: AppProps['exit']) => exit = _exit
@@ -30,11 +32,12 @@ export const generateCommand = new Command()
     if (config === null || configFile === undefined)
       throw new Error('Could not load config')
 
-    const generatePromise = generate(config, configFile, fs)
+    const generatePromise = options.watch === true
+      ? generateWatch(config, configFile, fs)
+      : generate(config, configFile, fs)
 
     render(
       <GenerateView
-        generatePromise={generatePromise}
         setExit={setExit}
       />,
     )

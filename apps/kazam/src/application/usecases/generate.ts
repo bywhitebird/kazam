@@ -1,4 +1,5 @@
 import type * as fs from 'node:fs'
+import * as path from 'node:path'
 
 import type { TransformerOutput } from '@whitebird/kazam-transformer-base'
 import kebabCase from 'just-kebab-case'
@@ -21,30 +22,49 @@ const writeResults = (
   })
 }
 
-const formatResults = (
-  transformerResult: TransformerOutput<{ outputFileNameFormat: string }>,
-  transformer: Transformer,
-  config: Exclude<KazamConfig, unknown[]>,
-): Parameters<typeof writeResults>[0] => {
-  const formattedTransformerResult = new Map<string, string>()
-
+const getTransformerDirectory = (transformer: Transformer, config: Exclude<KazamConfig, unknown[]>) => {
   const transformerDirectory = [
     config.output,
     kebabCase(transformer.name.replace(/^Transformer/, '')),
   ].join('/')
 
-  transformerResult.forEach(({ filePath, content }, sourceFilePath) => {
-    const sourceExtension = `.${sourceFilePath.split('.').slice(-1)[0]}` ?? ''
-    const transformedExtension = `.${filePath.split('.').slice(-1)[0]}` ?? ''
+  return transformerDirectory
+}
 
-    const outputFilePath = [
-      transformerDirectory,
-      // The following line replaces `.kaz.tsx` with `.tsx` (for example)
-      filePath.replace(
-        new RegExp(`${sourceExtension.replace('.', '\\.')}${transformedExtension.replace('.', '\\.')}$`),
-        transformedExtension,
-      ),
-    ].join('/')
+const getTransformedOutputFilePath = (
+  filePath: string,
+  sourceFilePath: string,
+  transformer: Transformer,
+  config: Exclude<KazamConfig, unknown[]>,
+  configPath: string,
+) => {
+  const sourceExtension = `.${sourceFilePath.split('.').slice(-1)[0]}` ?? ''
+  const transformedExtension = `.${filePath.split('.').slice(-1)[0]}` ?? ''
+
+  const transformerDirectory = getTransformerDirectory(transformer, config)
+
+  const outputFilePath = path.resolve(
+    path.dirname(configPath),
+    transformerDirectory,
+    filePath.replace(
+      new RegExp(`${sourceExtension.replace('.', '\\.')}${transformedExtension.replace('.', '\\.')}$`),
+      transformedExtension,
+    ),
+  )
+
+  return outputFilePath
+}
+
+const formatResults = (
+  transformerResult: TransformerOutput<{ outputFileNameFormat: string }>,
+  transformer: Transformer,
+  config: Exclude<KazamConfig, unknown[]>,
+  configPath: string,
+): Parameters<typeof writeResults>[0] => {
+  const formattedTransformerResult = new Map<string, string>()
+
+  transformerResult.forEach(({ filePath, content }, sourceFilePath) => {
+    const outputFilePath = getTransformedOutputFilePath(filePath, sourceFilePath, transformer, config, configPath)
 
     formattedTransformerResult.set(outputFilePath, content)
   })
@@ -61,19 +81,29 @@ const generateForConfig = async (
     config.parsers.map(async (ParserClass) => {
       const parser = new ParserClass()
 
-      const transformerInput = await parser.loadAndParse({
+      const parserOutput = await parser.loadAndParse({
         ...config,
         configPath,
       })
 
       return config.transformers.map((TransformerClass) => {
+        const transformerInput = Object.fromEntries(
+          Object.entries(parserOutput).map(([key, value]) => {
+            return [key, {
+              ...value,
+              getTransformedOutputFilePath: (filePath: string) =>
+                getTransformedOutputFilePath(filePath, value.sourceAbsoluteFilePath, TransformerClass, config, configPath),
+            }] as const
+          }),
+        )
+
         const transformer = new TransformerClass(transformerInput, {})
 
         const transformerResult = transformer.transform()
 
         if (fileSystem) {
           writeResults(
-            formatResults(transformerResult, TransformerClass, config),
+            formatResults(transformerResult, TransformerClass, config, configPath),
             fileSystem,
           )
         }
@@ -90,6 +120,8 @@ export const generate = async (
   configPath: string,
   fileSystem?: typeof fs | undefined,
 ) => {
+  generateEvents.emit('pending', undefined)
+
   if (!Array.isArray(config))
     config = [config]
 
@@ -97,6 +129,14 @@ export const generate = async (
     config.map(config => generateForConfig(config, configPath, fileSystem)),
   )
     .then(results => results.flat())
+    .then((results) => {
+      generateEvents.emit('success', undefined)
+      return results
+    })
+    .catch((error) => {
+      generateEvents.emit('error', error)
+      throw error
+    })
 
   return results
 }

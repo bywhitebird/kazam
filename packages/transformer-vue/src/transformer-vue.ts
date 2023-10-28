@@ -67,12 +67,19 @@ export class TransformerVue extends TransformerBase<{
     for (const componentName in this.input) {
       const component = this.input[componentName]
 
-      const result = this.handle(component, { name: componentName })
+      if (component === undefined)
+        continue
+
+      const result = this.handle(component.ast, { name: componentName })
 
       this.generatedComponents[componentName] = `
         <script lang="ts">\n${prettier.format(
         `
-            ${importsToString(mergeImports(this.imports[componentName] ?? []))}
+            ${importsToString(
+          mergeImports(this.imports[componentName] ?? []),
+          component.sourceAbsoluteFilePath,
+          component.getTransformedOutputFilePath(`${componentName}.vue`),
+        )}
 
             ${result}
             `,

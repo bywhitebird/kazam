@@ -20,12 +20,14 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
       yield * _(transformService.setMetadata({
         componentName: yield * _(transformService.getComponentName(filePath)),
         filePath,
+        sourceAbsoluteFilePath: file.sourceAbsoluteFilePath,
+        outputAbsoluteFilePath: file.getTransformedOutputFilePath(`${filePath}.tsx`),
         input,
       }))
 
       const transformed = yield * _(
         pipe(
-          transformService.handle(file),
+          transformService.handle(file.ast),
           Effect.map(transformed =>
             prettier.format(transformed, {
               parser: 'babel-ts',

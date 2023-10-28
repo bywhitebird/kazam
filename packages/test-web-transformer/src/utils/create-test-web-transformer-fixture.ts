@@ -1,10 +1,10 @@
 import { parse, tokenize } from '@whitebird/kaz-ast'
-import type { ITransformerInput } from '@whitebird/kazam-transformer-base'
+import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 import type { Page } from 'playwright'
 
 export interface TestWebTransformerFixture {
   fixtureDirectory: string
-  input: ITransformerInput & { 'Index': ITransformerInput['Index'] }
+  input: TransformerInput & { 'Index': TransformerInput['Index'] }
   scenario: (page: Page) => Promise<void>
 }
 
@@ -25,7 +25,11 @@ export const createTestWebTransformerFixture = async (fixture: TestWebTransforme
         if (ast instanceof Error || ast === undefined)
           throw new Error(`Failed to parse ${key} in ${fixture.fixtureDirectory}`)
 
-        return [key, ast] as const
+        return [key, {
+          ast,
+          sourceAbsoluteFilePath: '',
+          getTransformedOutputFilePath: (filePath: string) => filePath,
+        }] as const
       }),
     ) as TestWebTransformerFixture['input'],
   }
