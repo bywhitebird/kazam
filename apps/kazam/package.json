@@ -28,6 +28,7 @@
     "@whitebird/kazam-transformer-base": "workspace:*",
     "c12": "^1.4.2",
     "chalk": "^4",
+    "chokidar": "^3.5.3",
     "commander": "^10.0.1",
     "glob": "10.1.0",
     "ink": "^4.4.1",
