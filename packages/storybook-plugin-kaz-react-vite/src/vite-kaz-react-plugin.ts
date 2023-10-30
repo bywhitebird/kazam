@@ -40,7 +40,7 @@ export const viteKazReactPlugin = (): Plugin => {
         kazamGenerationResult ??= await kazam.generate({
           rootDir,
           input: kazComponents,
-          output: rootDir,
+          output: `${rootDir}/dist`,
           parsers: [ParserKaz],
           transformers: [TransformerReact],
         }).then(([output]) => output)
