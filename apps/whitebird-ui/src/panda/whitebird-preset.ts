@@ -81,5 +81,59 @@ export const whitebirdPreset = definePreset({
         },
       },
     },
+    textStyles: {
+      heading1: {
+        value: {
+          fontFamily: 'Space Mono',
+          fontSize: '2.5rem',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '1.2',
+          letterSpacing: '-0.06em',
+          textTransform: 'uppercase',
+        },
+      },
+      heading2: {
+        value: {
+          fontFamily: 'Space Mono',
+          fontSize: '2rem',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '1.2',
+          letterSpacing: '-0.06em',
+          textTransform: 'uppercase',
+        },
+      },
+      heading3: {
+        value: {
+          fontFamily: 'Space Grotesk',
+          fontSize: '1.5rem',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '1.2',
+          letterSpacing: '-0.06em',
+        },
+      },
+      body: {
+        value: {
+          fontFamily: 'Space Grotesk',
+          fontSize: '1rem',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '1.5',
+        },
+      },
+      label: {
+        value: {
+          fontFamily: 'Space Mono',
+          fontSize: '1rem',
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: '1',
+          letterSpacing: '-0.06em',
+          textTransform: 'uppercase',
+        },
+      },
+    },
   },
 })
