@@ -14,6 +14,7 @@
   ],
   "scripts": {
     "prepare": "panda codegen",
+    "prebuild": "panda cssgen --outfile dist/whitebird.css",
     "build": "kazam generate",
     "build:watch": "kazam generate --watch",
     "lint": "eslint .",

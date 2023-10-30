@@ -1,5 +1,7 @@
 import { defineConfig } from '@pandacss/dev'
 
+import { whitebirdPreset } from './src/panda/whitebird-preset'
+
 export default defineConfig({
   // Whether to use css reset
   preflight: true,
@@ -16,6 +18,10 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
+  presets: [whitebirdPreset],
+
   // The output directory for your css system
   outdir: 'styled-system',
+
+  prefix: 'wb',
 })
