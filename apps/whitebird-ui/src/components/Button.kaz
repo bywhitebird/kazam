@@ -1,0 +1,21 @@
+- import '../index.css'
+- import { css } from '../../styled-system/css'
+
+- prop text: string
+- prop variant: ('primary' | 'secondary' | 'tertiary') = 'primary'
+- prop size: ('small' | 'normal') = 'normal'
+- prop onClick: () => void = () => {}
+
+button(
+  class={css({
+    bg: variant === 'primary' ? 'highContrastForeground' : variant === 'secondary' ? 'uiElementBackground' : 'transparent',
+    color: variant === 'primary' ? 'appBackground' : 'highContrastForeground',
+    textStyle: 'label',
+    paddingX: size === 'small' ? 'xsmall' : 'medium',
+    paddingY: size === 'small' ? 'xxsmall' : 'medium',
+    cursor: 'pointer',
+  })},
+  on:click={onClick}
+) {
+  ${text}
+}

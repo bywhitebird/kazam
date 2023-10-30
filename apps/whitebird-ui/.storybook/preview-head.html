@@ -1,6 +1,12 @@
 <script type="module">
   import { token } from '../styled-system/tokens'
 
-  console.log(`${token.var('colors.appBackground')} !important`)
-  document.body.style.cssText = `background-color: ${token.var('colors.appBackground')} !important`
+  document.head.insertAdjacentHTML(
+    'beforeend',
+    `<style>
+      body, .docs-story {
+        background-color: ${token.var('colors.appBackground')} !important;
+      }
+    </style>`
+  )
 </script>

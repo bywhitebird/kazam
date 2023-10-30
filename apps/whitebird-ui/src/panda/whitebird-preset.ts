@@ -39,6 +39,8 @@ export const whitebirdPreset = definePreset({
         },
       },
       spacing: {
+        xxsmall: { value: '0.375rem' },
+        xsmall: { value: '0.75rem' },
         small: { value: '0.5rem' },
         medium: { value: '1rem' },
         large: { value: '2rem' },
