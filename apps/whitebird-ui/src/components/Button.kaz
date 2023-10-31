@@ -6,9 +6,10 @@
 - prop size: ('small' | 'normal') = 'normal'
 - prop iconName: (string | undefined) = undefined
 - prop onClick: () => void = () => {}
+- prop className: string = ''
 
 button(
-  class={css({
+  class={`${className} ${css({
     bg: variant === 'primary' ? 'highContrastForeground' : variant === 'secondary' ? 'uiElementBackground' : 'transparent',
     color: variant === 'primary' ? 'appBackground' : 'highContrastForeground',
     textStyle: 'label',
@@ -27,7 +28,7 @@ button(
     _hover: {
       outlineColor: 'borderHover',
     },
-  })},
+  })}`},
   on:click={onClick}
 ) {
   @if (iconName) {

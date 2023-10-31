@@ -8,6 +8,12 @@ const preview = {
       },
     },
   },
+  argTypes: {
+    className: {
+      type: 'string',
+      control: 'text',
+    },
+  },
 };
 
 export default preview;
