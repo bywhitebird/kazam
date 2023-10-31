@@ -1,4 +1,5 @@
 import { definePreset } from '@pandacss/dev'
+import pandaPreset from '@pandacss/preset-base'
 
 export const whitebirdPreset = definePreset({
   theme: {
@@ -137,5 +138,12 @@ export const whitebirdPreset = definePreset({
         },
       },
     },
+  },
+  conditions: {
+    extend: Object.fromEntries(
+      Object.entries(pandaPreset.conditions).map(([conditionName, condition]) =>
+        [conditionName, `${condition}, &.${conditionName}`] as const,
+      ),
+    ),
   },
 })

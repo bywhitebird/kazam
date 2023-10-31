@@ -17,7 +17,16 @@ button(
     cursor: 'pointer',
     display: 'inline-flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    outlineColor: 'transparent',
+    outlineStyle: 'solid',
+    outlineWidth: '2px',
+    outlineOffset: '2px',
+    _active: {
+      outlineColor: 'border',
+    },
+    _hover: {
+      outlineColor: 'borderHover',
+    },
   })},
   on:click={onClick}
 ) {
@@ -33,7 +42,7 @@ button(
         fontSize: size === 'small' ? '0.75em' : '1em',
       })}
     ) {
-      Icon(name={iconName}, size="1.5em")
+      Icon(name={iconName}, size="1.5em", fill={false})
     }
   }
   ${text}
