@@ -32,6 +32,7 @@
   "dependencies": {
     "@whitebird/kazam-parser-kaz": "workspace:*",
     "@whitebird/kazam-transformer-react": "workspace:*",
+    "c12": "^1.4.2",
     "kazam": "workspace:*"
   },
   "devDependencies": {

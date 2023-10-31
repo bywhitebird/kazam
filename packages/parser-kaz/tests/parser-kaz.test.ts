@@ -15,7 +15,7 @@ describe('parser-kaz', () => {
       path.join(__dirname, 'fixtures', 'Input.kaz'),
     ],
     output: 'dist',
-    configPath: __filename,
+    rootDir: __dirname,
   }
 
   const parser = new ParserKaz()
