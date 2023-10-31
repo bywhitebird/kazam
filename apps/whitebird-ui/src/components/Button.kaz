@@ -4,6 +4,7 @@
 - prop text: string
 - prop variant: ('primary' | 'secondary' | 'tertiary') = 'primary'
 - prop size: ('small' | 'normal') = 'normal'
+- prop iconName: (string | undefined) = undefined
 - prop onClick: () => void = () => {}
 
 button(
@@ -14,8 +15,26 @@ button(
     paddingX: size === 'small' ? 'xsmall' : 'medium',
     paddingY: size === 'small' ? 'xxsmall' : 'medium',
     cursor: 'pointer',
+    display: 'inline-flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   })},
   on:click={onClick}
 ) {
+  @if (iconName) {
+    div(
+      class={css({
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: size === 'small' ? 'small' : 'medium',
+        width: '1em',
+        height: '1em',
+        fontSize: size === 'small' ? '0.75em' : '1em',
+      })}
+    ) {
+      Icon(name={iconName}, size="1.5em")
+    }
+  }
   ${text}
 }

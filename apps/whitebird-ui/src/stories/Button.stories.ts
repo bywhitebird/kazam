@@ -26,6 +26,10 @@ export default {
       type: 'select',
       options: ['small', 'normal'],
     },
+    iconName: {
+      type: 'string',
+      control: 'text',
+    },
     onClick: { action: 'clicked' },
   },
 }
