@@ -1,0 +1,9 @@
+- prop name: string
+- prop fill: boolean = true
+- prop color: (string | undefined) = undefined
+- prop size: (string | number | undefined) = undefined
+
+i(
+  class={`ri-${name}-${fill ? 'fill' : 'line'}`},
+  style={[(color && `color: ${color}`), (size && `font-size: ${Number.isNaN(Number(size)) ? size : `${size}px`}`)].filter(Boolean).join(';')}
+)
