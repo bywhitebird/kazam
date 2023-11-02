@@ -12,6 +12,10 @@ export const handleTemplateTagAttribute: Handle<'templateTagAttribute', string> 
         templateTagAttribute.name.$value = 'className'
         break
       }
+      case 'for': {
+        templateTagAttribute.name.$value = 'htmlFor'
+        break
+      }
     }
 
     const wrapValue = (value: string) => Effect.gen(function* () {
