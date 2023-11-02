@@ -140,10 +140,14 @@ export const whitebirdPreset = definePreset({
     },
   },
   conditions: {
-    extend: Object.fromEntries(
-      Object.entries(pandaPreset.conditions).map(([conditionName, condition]) =>
-        [conditionName, `${condition}, &.${conditionName}`] as const,
+    extend: {
+      ...Object.fromEntries(
+        Object.entries(pandaPreset.conditions).map(([conditionName, condition]) =>
+          [conditionName, `${condition}, &.${conditionName}`] as const,
+        ),
       ),
-    ),
+      checked: 'input:checked + &',
+      selfChecked: '&:checked',
+    },
   },
 })
