@@ -7,7 +7,7 @@
 - prop className: string = ''
 
 - state checked = value
-- state id = name ?? Math.random().toString(36).substring(2, 9)
+- state id = name ?? `checkbox-${Math.random().toString(36).substr(2, 9)}`
 
 - watch (value) => checked = value
 
