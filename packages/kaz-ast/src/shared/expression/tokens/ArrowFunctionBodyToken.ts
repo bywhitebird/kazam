@@ -1,10 +1,12 @@
-import { parse } from '@typescript-eslint/parser'
+import { parse } from '@babel/parser'
 
 import { ExpressionToken } from '..'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`() => ${rawValue}`, { warnOnUnsupportedTypeScriptVersion: false })
-  const arrowFunctionExpression = parsed.body[0]
+  const parsed = parse(`() => ${rawValue}`, {
+    plugins: ['typescript'],
+  })
+  const arrowFunctionExpression = parsed.program.body[0]
 
   if (
     arrowFunctionExpression?.type !== 'ExpressionStatement'

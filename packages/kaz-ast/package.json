@@ -24,7 +24,7 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@typescript-eslint/parser": "^5.50.0",
+    "@babel/parser": "^7.22.5",
     "eslint": "8.46.0",
     "typescript": "^5.0.0",
     "zod": "^3.21.4"
