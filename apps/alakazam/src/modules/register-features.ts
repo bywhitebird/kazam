@@ -1,27 +1,35 @@
-import * as path from 'node:path'
-
-import { addComponentsDir, addImportsDir, defineNuxtModule, extendPages } from '@nuxt/kit'
+import {
+  addComponentsDir, addImportsDir, defineNuxtModule, extendPages,
+  createResolver, loadNuxtConfig, resolveFiles,
+} from '@nuxt/kit'
 import type { NuxtPage } from '@nuxt/schema'
-import { glob } from 'glob'
+import jiti from 'jiti'
+
+const { resolve } = createResolver(import.meta.url)
 
 export default defineNuxtModule({
   async setup() {
-    const featurePaths = await glob(path.resolve(__dirname, '../features/**/routes.ts'))
+    const getRoutes = jiti(__filename, {
+      alias: await loadNuxtConfig({}).then(c => c.alias),
+    })
+
+    const featurePaths = await resolveFiles(__dirname, '../features/**/routes.ts')
 
     for (const file of featurePaths) {
-      const routes = await import(/* @vite-ignore */ file).then(m => m.default)
-
-      defineNuxtFeature(path.dirname(file), routes)
+      const routes = getRoutes(file).default
+      defineNuxtFeature(resolve(file, '..'), routes)
     }
   },
 })
 
 function defineNuxtFeature(dirname: string, routes: NuxtPage[]) {
+  const { resolve } = createResolver(dirname)
+
   addComponentsDir({
-    path: path.join(dirname, 'components'),
+    path: resolve('components'),
   })
 
-  addImportsDir(path.resolve(dirname, './composables'))
+  addImportsDir(resolve('./composables'))
 
   extendPages((pages) => {
     pages.push(...routes)
