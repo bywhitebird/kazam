@@ -1,0 +1,166 @@
+- import '../index.css'
+- import { css } from '../../styled-system/css'
+- import { token } from '../../styled-system/tokens'
+
+- prop values: ({ value: any; label: string; selected?: boolean }[]) = ''
+- prop placeholder: string = ''
+- prop onChange: (value: string) => void = () => {}
+- prop className: string = ''
+
+- state _values: ({ value: any; label: string; selected?: boolean }[]) = values
+- state open: boolean = false
+- state id: string = `select-${Math.random().toString(36).substr(2, 9)}`
+
+- computed selectedValue = _values.find((v) => v.selected)?.value
+
+- watch (values) => {
+  _values = values
+  onChange(selectedValue)
+}
+
+- onMount () => {
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#' + id)) {
+      return
+    }
+    open = false
+  })
+}
+
+div(
+  class={`${className} ${css({
+    position: 'relative',
+    userSelect: 'none',
+  })}`},
+  id={id}
+) {
+  select(
+    value={selectedValue},
+    class={css({
+      display: 'none',
+    })}
+  ) {
+    @for (const { value, label } of _values) {
+      option(
+        value={value}
+      ) {
+        ${label}
+      }
+    }
+  }
+
+  div(
+    class={css({
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      background: open ? 'uiElementBackgroundHover' : 'uiElementBackground',
+      color: 'highContrastForeground',
+      padding: 'medium',
+      textStyle: 'body',
+      outline: 'none',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderColor: open ? 'borderHover' : 'border',
+      cursor: 'pointer',
+      _hover: {
+        background: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+    })},
+    style={`height: calc(1em + ${token('spacing.medium')} * 2)`},
+    on:click={() => {
+      open = !open
+    }}
+  ) {
+    span(
+      class={css({
+        display: 'block',
+        overflowX: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        marginRight: 'medium',
+      })}
+    ) {
+      @if (selectedValue) {
+        ${values.find((v) => v.value === selectedValue)?.label}
+      } @else {
+        span(
+          class={css({
+            color: 'lowContrastForeground',
+            textStyle: 'label',
+          })}
+        ) {
+          ${placeholder}
+        }
+      }
+    }
+
+    Icon(
+      className={css({
+        color: 'lowContrastForeground',
+        transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+      })},
+      name='arrow-drop-down',
+      size='1.5em',
+      fill={false}
+    )
+  }
+
+  div(
+    class={css({
+      position: 'absolute',
+      top: '100%',
+      left: 0,
+      right: 0,
+      width: '100%',
+      background: 'uiElementBackground',
+      color: 'highContrastForeground',
+      padding: 'medium',
+      display: open ? 'flex' : 'none',
+      flexDirection: 'column',
+      gap: 'small',
+      textStyle: 'body',
+      outline: 'none',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderColor: 'border',
+      borderTop: 'none!',
+      overflowY: 'auto',
+    })}
+  ) {
+    @for (const { value, label, selected } of _values) {
+      div(
+        class={css({
+          display: 'flex',
+          alignItems: 'center',
+          padding: 'small',
+          background: selected ? 'uiElementBackgroundHover' : 'transparent',
+          cursor: 'pointer',
+          _hover: {
+            background: 'uiElementBackgroundHover',
+          },
+        })},
+        on:click={() => {
+          _values = _values.map((v) => ({
+            ...v,
+            selected: v.value === value,
+          }))
+          onChange(value)
+          open = false
+        }}
+      ) {
+        span(
+          class={css({
+            display: 'block',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          })}
+        ) {
+          ${label}
+        }
+      }
+    }
+  }
+}
