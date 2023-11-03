@@ -1,11 +1,13 @@
-import { parse } from '@typescript-eslint/parser'
+import { parse } from '@babel/parser'
 
 import { ForParametersContext } from '..'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`for (${rawValue}) {}`, { warnOnUnsupportedTypeScriptVersion: false })
-  const forExpression = parsed.body[0]
+  const parsed = parse(`for (${rawValue}) {}`, {
+    plugins: ['typescript'],
+  })
+  const forExpression = parsed.program.body[0]
 
   if (
     forExpression?.type !== 'ForStatement'
