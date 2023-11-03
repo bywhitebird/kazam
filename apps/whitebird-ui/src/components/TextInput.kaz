@@ -1,0 +1,74 @@
+- import '../index.css'
+- import { css } from '../../styled-system/css'
+- import { token } from '../../styled-system/tokens'
+
+- prop value: string = ''
+- prop placeholder: string = ''
+- prop onChange: (value: string) => void = () => {}
+- prop iconName: (string | undefined) = undefined
+- prop className: string = ''
+
+- state _value: string = value
+
+- watch (value) => {
+  _value = value
+  onChange(value)
+}
+
+div(
+  class={`${className} ${css({
+    position: 'relative',
+  })}`}
+) {
+  input(
+    type='text',
+    value={_value},
+    placeholder={placeholder},
+    on:change={(e) => {
+      _value = e.target.value
+      onChange(e.target.value)
+    }},
+    style={`height: calc(1em + ${token('spacing.medium')} * 2)`},
+    class={css({
+      background: 'uiElementBackground',
+      color: 'highContrastForeground',
+      padding: 'medium',
+      textStyle: 'body',
+      outline: 'none',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderColor: 'border',
+      _active: {
+        background: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+      _hover: {
+        background: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+      _focus: {
+        background: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+      _placeholder: {
+        color: 'lowContrastForeground',
+        textStyle: 'label',
+      },
+    })}
+  )
+
+  @if (iconName) {
+    Icon(
+      className={css({
+        position: 'absolute',
+        top: '50%',
+        right: 'medium',
+        transform: 'translateY(-50%)',
+        color: 'lowContrastForeground',
+      })},
+      name={iconName},
+      size='1.5em',
+      fill={false}
+    )
+  }
+}
