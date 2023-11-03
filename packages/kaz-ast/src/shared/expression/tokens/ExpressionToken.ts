@@ -1,4 +1,4 @@
-import { parse } from '@typescript-eslint/parser'
+import { parse } from '@babel/parser'
 
 import { ExpressionContext } from '..'
 import { TagAttributeValueExpressionContext } from '../../../features/tag'
@@ -6,8 +6,10 @@ import { TemplateExpressionContext } from '../../../features/template'
 import { Token } from '../../../lib/voltair'
 
 const getExpression = (rawValue: string) => {
-  const parsed = parse(`const _ = ${rawValue}`, { warnOnUnsupportedTypeScriptVersion: false, range: true })
-  const variable = parsed.body[0]
+  const parsed = parse(`const _ = ${rawValue}`, {
+    plugins: ['typescript'],
+  })
+  const variable = parsed.program.body[0]
 
   if (variable?.type !== 'VariableDeclaration' || variable.declarations[0] === undefined)
     throw new Error(`Invalid expression: ${rawValue}`)

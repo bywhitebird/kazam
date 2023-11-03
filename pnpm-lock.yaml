@@ -317,9 +317,9 @@ importers:
 
   packages/kaz-ast:
     dependencies:
-      '@typescript-eslint/parser':
-        specifier: ^5.50.0
-        version: 5.62.0(eslint@8.46.0)(typescript@5.2.2)
+      '@babel/parser':
+        specifier: ^7.22.5
+        version: 7.23.0
       eslint:
         specifier: 8.46.0
         version: 8.46.0
@@ -5465,6 +5465,7 @@ packages:
       typescript: 5.2.2
     transitivePeerDependencies:
       - supports-color
+    dev: true
 
   /@typescript-eslint/parser@6.7.5(eslint@8.46.0)(typescript@5.2.2):
     resolution: {integrity: sha512-bIZVSGx2UME/lmhLcjdVc7ePBwn7CLqKarUBL4me1C5feOd663liTGjMBGVcGr+BhnSLeP4SgwdvNnnkbIdkCw==}
@@ -5493,6 +5494,7 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.62.0
       '@typescript-eslint/visitor-keys': 5.62.0
+    dev: true
 
   /@typescript-eslint/scope-manager@6.7.5:
     resolution: {integrity: sha512-GAlk3eQIwWOJeb9F7MKQ6Jbah/vx1zETSDw8likab/eFcqkjSD7BI75SDAeC5N2L0MmConMoPvTsmkrg71+B1A==}
