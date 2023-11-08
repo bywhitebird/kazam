@@ -14,3 +14,5 @@ export const parse = (tokens: Token[]) => {
 export const semanticTokensLegend = getSemanticTokensLegend(config.tokens)
 
 export * from './types/KazAst'
+
+export { traverse } from './lib/traverse'

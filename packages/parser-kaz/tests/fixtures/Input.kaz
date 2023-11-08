@@ -1,0 +1,19 @@
+- state value: string = ''
+- state old: string = ''
+- onMount () => {
+  console.log('Hello')
+  console.log('Mounted')
+}
+
+input(on:change={(event) => {
+  console.log('1', event.target.value)
+  let value2 = event.target.value
+  value3 = value
+  value = event.target.value
+  old = value
+  value3 = 'test'
+  value2 = 'yeya'
+  console.log('2', value)
+}})
+
+div(class={value})

@@ -32,12 +32,16 @@ type ISchemaHandlers = {
       $value: string
     }) => void
     componentMeta: IComponentMeta
+    options: typeof TransformerTypescript.prototype.options
   }) => THandlerReturnType
 }
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
 
-export class TransformerTypescript extends TransformerBase<{ outputFileNameFormat: `${string}.ts` }> {
+export class TransformerTypescript extends TransformerBase<
+  { outputFileNameFormat: `${string}.ts` },
+  { withKazamInternalJsDoc: boolean }
+> {
   private handlers: ISchemaHandlers = {
     ast: handlers.handleKaz,
     computedInstruction: handlers.handleComputedInstruction,
@@ -71,7 +75,7 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
   }
 
   transformAndGenerateMappings(): {
-    [key: string]: { content: string; mapping: Mapping[] }
+    [key: `${string}.ts`]: { content: string; mapping: Mapping[] }
   } {
     for (const componentName in this.input) {
       const component = this.input[componentName]
@@ -83,9 +87,9 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
     }
 
     return Object.entries(this.generatedContent).reduce<{
-      [key: string]: { content: string; mapping: Mapping[] }
+      [key: `${string}.ts`]: { content: string; mapping: Mapping[] }
     }>((acc, [componentName, content]) => {
-      acc[componentName] = {
+      acc[`${componentName}.ts`] = {
         content,
         mapping: this.mappings[componentName] ?? [],
       }
@@ -107,6 +111,7 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
           handle: input => this.handle(input, componentMeta),
           addGeneratedContent: content => this.addGeneratedContent(content, componentMeta),
           componentMeta,
+          options: this.options,
         })
       }
     }
