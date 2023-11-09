@@ -151,7 +151,7 @@ function replacePaths(
   typescriptFile: ReturnType<typeof generateTypescriptFileAndMappings>,
 ) {
   traverseKazAst(kazAst, {
-    $default(node) {
+    enter(node) {
       const expression = getKazExpression(node)
 
       if (expression === undefined)
@@ -178,7 +178,7 @@ function replacePaths(
 }
 
 function getKazExpression(
-  node: Parameters<NonNullable<Parameters<typeof traverseKazAst>[1]['$default']>>[0],
+  node: Parameters<NonNullable<Parameters<typeof traverseKazAst>[1]['enter']>>[0],
 ): { $range: [number, number]; $value: string } | undefined {
   const expressionKey = (
     Object.keys(node)

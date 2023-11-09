@@ -7,12 +7,12 @@ type AllInferedSchemas = z.infer<Extract<AllSchemas, z.ZodObject<{ $type: z.ZodL
 type Visitor = {
   [T in AllInferedSchemas['$type']]?: (node: Extract<AllInferedSchemas, { $type: T }>) => void
 } & {
-  $default?: (node: AllInferedSchemas) => void
+  enter?: (node: AllInferedSchemas) => void
 }
 
 export const traverse = (ast: AllInferedSchemas, visitor: Visitor) => {
   const traverse = (node: AllInferedSchemas) => {
-    (visitor[node.$type] ?? visitor.$default)?.(node as never)
+    (visitor[node.$type] ?? visitor.enter)?.(node as never)
 
     for (const key in node) {
       const value = node[key as keyof typeof node] as unknown
