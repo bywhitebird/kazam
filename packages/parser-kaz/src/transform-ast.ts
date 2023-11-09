@@ -6,37 +6,66 @@ import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 import StringManipulator from 'magic-string'
 
-export const transformAst = (astKaz: KazAst, options: {
-  fileName: string
-}): void => {
-  const transformerTypescript = new TransformerTypescript({
+type PathType = 'stateSetter' | 'computedGetter' | 'stateGetter'
+
+export const transformAst = (
+  kazAst: KazAst,
+  options: { fileName: string },
+): void => {
+  const typescriptFile = generateTypescriptFileAndMappings(kazAst, options)
+
+  const typescriptAst = parseTypescript(typescriptFile.content, {
+    sourceType: 'module',
+    plugins: ['typescript'],
+  })
+
+  const pathsToReplace = findPathsToReplace(typescriptAst)
+
+  replacePaths(
+    kazAst,
+    pathsToReplace,
+    typescriptFile,
+  )
+}
+
+function createTransformerTypescript(
+  kazAst: KazAst,
+  options: { fileName: string },
+) {
+  return new TransformerTypescript({
     [options.fileName]: {
-      ast: astKaz,
+      ast: kazAst,
       sourceAbsoluteFilePath: options.fileName,
       getTransformedOutputFilePath: (filePath: string) => filePath,
     },
   }, {
     withKazamInternalJsDoc: true,
   })
+}
 
-  const tsFiles = transformerTypescript.transformAndGenerateMappings()
-  const tsFile = tsFiles[`${options.fileName}.ts`]
+function generateTypescriptFileAndMappings(
+  kazAst: KazAst,
+  options: { fileName: string },
+) {
+  const transformerTypescript = createTransformerTypescript(kazAst, options)
 
-  if (tsFile === undefined)
+  const typescriptFiles = transformerTypescript.transformAndGenerateMappings()
+  const typescriptFile = typescriptFiles[`${options.fileName}.ts`]
+
+  if (typescriptFile === undefined)
     throw new Error('tsFile is undefined')
 
-  const astTypescript = parseTypescript(tsFile.content, {
-    sourceType: 'module',
-    plugins: [
-      'typescript',
-    ],
-  })
+  return typescriptFile
+}
 
-  const replacements: (
-    { type: 'stateSetter' | 'computedGetter' | 'stateGetter'; identifierPath: NodePath<Identifier>; pathToReplace?: NodePath }
-  )[] = []
+function findPathsToReplace(typescriptAst: ReturnType<typeof parseTypescript>) {
+  const pathsToReplace = new Set<{
+    type: PathType
+    identifierPath: NodePath<Identifier>
+    pathToReplace?: NodePath
+  }>()
 
-  traverseTypescriptAst(astTypescript, {
+  traverseTypescriptAst(typescriptAst, {
     Identifier(path) {
       if (path.parentPath.isVariableDeclarator())
         return
@@ -44,144 +73,239 @@ export const transformAst = (astKaz: KazAst, options: {
       if (path.parentPath.isMemberExpression() && path.parentPath.node.property === path.node)
         return
 
-      const binding = path.scope.getBinding(path.node.name)
+      const pathType = getPathType(path)
 
-      if (binding === undefined)
+      if (pathType === undefined)
         return
 
-      let type: 'state' | 'computed' | undefined
-      for (const comment of binding?.identifier.trailingComments ?? []) {
-        if (new RegExp(`^ *\\* *${kazamMagicStrings.kazStateJSDoc.regexp.source} *$`).test(comment.value))
-          type = 'state'
-        else if (new RegExp(`^ *\\* *${kazamMagicStrings.kazComputedJSDoc.regexp.source} *$`).test(comment.value))
-          type = 'computed'
-
-        if (type !== undefined)
-          break
-      }
-
-      if (type === undefined)
-        return
-
-      switch (type) {
-        case 'state': {
-          if (path.parentPath.isUpdateExpression())
-            replacements.push({ type: 'stateSetter', identifierPath: path, pathToReplace: path.parentPath })
-          else if (path.parentPath.isAssignmentExpression() && path.parentPath.node.left === path.node)
-            replacements.push({ type: 'stateSetter', identifierPath: path, pathToReplace: path.parentPath })
-          else
-            replacements.push({ type: 'stateGetter', identifierPath: path })
-          break
-        }
-        case 'computed': {
-          replacements.push({ type: 'computedGetter', identifierPath: path })
-          break
-        }
-      }
+      addPathToReplace(pathsToReplace, path, pathType)
     },
   })
 
-  traverseKazAst(astKaz, {
-    $default(node) {
-      const getExpression = (n: typeof node): { $range: [number, number]; $value: string } | undefined => {
-        const expressionKey = Object.keys(n).find(key => key.toLowerCase().includes('expression')) as keyof typeof n | undefined
+  return pathsToReplace
+}
 
-        if (expressionKey === undefined) {
-          for (const key in n) {
-            const value = n[key as keyof typeof n]
+function getPathType(path: NodePath<Identifier>) {
+  const binding = path.scope.getBinding(path.node.name)
 
-            if (Array.isArray(value)) {
-              for (const item of value) {
-                if ('$type' in item) {
-                  const expression = getExpression(item)
-                  if (expression !== undefined)
-                    return expression
-                }
-              }
-            }
-            else if (typeof value === 'object' && value !== null && '$type' in value) {
-              const expression = getExpression(value)
-              if (expression !== undefined)
-                return expression
-            }
-          }
+  if (binding === undefined)
+    return
 
-          return undefined
-        }
+  for (const comment of binding?.identifier.trailingComments ?? []) {
+    if (new RegExp(`^ *\\* *${kazamMagicStrings.kazStateJSDoc.regexp.source} *$`).test(comment.value))
+      return 'state'
 
-        const expression = node[expressionKey]
+    if (new RegExp(`^ *\\* *${kazamMagicStrings.kazComputedJSDoc.regexp.source} *$`).test(comment.value))
+      return 'computed'
+  }
 
-        if (expression === undefined || typeof expression !== 'object' || expression === null)
-          return undefined
+  return undefined
+}
 
-        return expression
+function addPathToReplace(
+  pathsToReplace: Set<{
+    type: PathType
+    identifierPath: NodePath<Identifier>
+    pathToReplace?: NodePath
+  }>,
+  path: NodePath<Identifier>,
+  type: NonNullable<ReturnType<typeof getPathType>>,
+) {
+  switch (type) {
+    case 'state': {
+      if (
+        path.parentPath.isUpdateExpression()
+        || (path.parentPath.isAssignmentExpression() && path.parentPath.node.left === path.node)
+      ) {
+        pathsToReplace.add({
+          type: 'stateSetter',
+          identifierPath: path,
+          pathToReplace: path.parentPath,
+        })
+        break
       }
 
-      const expression = getExpression(node)
+      pathsToReplace.add({
+        type: 'stateGetter',
+        identifierPath: path,
+      })
+      break
+    }
+    case 'computed': {
+      pathsToReplace.add({
+        type: 'computedGetter',
+        identifierPath: path,
+      })
+      break
+    }
+  }
+}
+
+function replacePaths(
+  kazAst: KazAst,
+  pathsToReplace: Set<{
+    type: PathType
+    identifierPath: NodePath<Identifier>
+    pathToReplace?: NodePath
+  }>,
+  typescriptFile: ReturnType<typeof generateTypescriptFileAndMappings>,
+) {
+  traverseKazAst(kazAst, {
+    $default(node) {
+      const expression = getKazExpression(node)
 
       if (expression === undefined)
         return
 
-      const matchedTypescriptExpressionNodePath = tsFile.mapping.find((mapping) => {
-        return mapping.sourceRange[0] === expression.$range[0] && mapping.sourceRange[1] === expression.$range[1]
-      })
+      const typescriptMappedRange = getTypescriptMappedRange(typescriptFile, expression)
 
-      if (matchedTypescriptExpressionNodePath === undefined)
-        return
-
-      const typescriptExpressionNodePaths = replacements.filter((replacement) => {
-        const { start, end } = (replacement.pathToReplace ?? replacement.identifierPath).node
-        if (start === undefined || end === undefined || start === null || end === null)
-          return false
-
-        return matchedTypescriptExpressionNodePath.generatedRange[0] <= start && end <= matchedTypescriptExpressionNodePath.generatedRange[1]
-      })
-
-      if (typescriptExpressionNodePaths === undefined)
-        return
+      const pathsInRange = sortPathsByType(
+        findPathsInRange(pathsToReplace, typescriptMappedRange),
+        ['stateGetter', 'computedGetter', 'stateSetter'],
+      )
 
       const expressionStringManipulator = new StringManipulator(expression.$value)
 
-      typescriptExpressionNodePaths.sort((a) => {
-        if (a.type.toLowerCase().endsWith('getter'))
-          return -1
-
-        return 1
-      })
-
-      for (const typescriptExpressionNodePath of typescriptExpressionNodePaths) {
-        const startExpressionSetter = (typescriptExpressionNodePath.pathToReplace ?? typescriptExpressionNodePath.identifierPath).node.start! - matchedTypescriptExpressionNodePath.generatedRange[0]
-        const endExpressionSetter = (typescriptExpressionNodePath.pathToReplace ?? typescriptExpressionNodePath.identifierPath).node.end! - matchedTypescriptExpressionNodePath.generatedRange[0]
-
-        let magicString: string | undefined
-        if (typescriptExpressionNodePath.type === 'stateSetter') {
-          magicString = kazamMagicStrings.setState.create(
-            typescriptExpressionNodePath.identifierPath.node.name,
-            expressionStringManipulator.slice(startExpressionSetter, endExpressionSetter),
-          )
-        }
-        else if (typescriptExpressionNodePath.type === 'stateGetter') {
-          magicString = kazamMagicStrings.getState.create(
-            typescriptExpressionNodePath.identifierPath.node.name,
-          )
-        }
-        else if (typescriptExpressionNodePath.type === 'computedGetter') {
-          magicString = kazamMagicStrings.getComputed.create(
-            typescriptExpressionNodePath.identifierPath.node.name,
-          )
-        }
-
-        if (magicString === undefined)
-          continue
-
-        expressionStringManipulator.update(
-          startExpressionSetter,
-          endExpressionSetter,
-          magicString,
-        )
-      }
+      applyPathsReplacements(
+        pathsInRange,
+        expressionStringManipulator,
+        typescriptMappedRange,
+      )
 
       expression.$value = expressionStringManipulator.toString()
     },
   })
+}
+
+function getKazExpression(
+  node: Parameters<NonNullable<Parameters<typeof traverseKazAst>[1]['$default']>>[0],
+): { $range: [number, number]; $value: string } | undefined {
+  const expressionKey = (
+    Object.keys(node)
+      .find(key => key.toLowerCase().includes('expression'))
+  ) as keyof typeof node | undefined
+
+  if (expressionKey !== undefined) {
+    const expression = node[expressionKey] as never
+
+    if (expression === undefined || typeof expression !== 'object' || expression === null)
+      return
+
+    return expression
+  }
+
+  for (const key in node) {
+    const subNode = node[key as keyof typeof node]
+
+    if (typeof subNode === 'object' && subNode !== null && '$type' in subNode) {
+      const expression = getKazExpression(subNode)
+      if (expression !== undefined)
+        return expression
+    }
+  }
+
+  return undefined
+}
+
+function getTypescriptMappedRange(
+  typescriptFile: ReturnType<typeof generateTypescriptFileAndMappings>,
+  expression: NonNullable<ReturnType<typeof getKazExpression>>,
+) {
+  const mappedRange = typescriptFile.mapping.find((mapping) => {
+    return (
+      mapping.sourceRange[0] === expression.$range[0]
+      && mapping.sourceRange[1] === expression.$range[1]
+    )
+  })
+
+  if (mappedRange === undefined)
+    throw new Error(`mappedRange === undefined for range: ${JSON.stringify(expression.$range)}`)
+
+  return mappedRange.generatedRange
+}
+
+function findPathsInRange(
+  pathsToReplace: Set<{
+    type: PathType
+    identifierPath: NodePath<Identifier>
+    pathToReplace?: NodePath
+  }>,
+  range: [number, number],
+) {
+  return Array.from(pathsToReplace).filter((path) => {
+    const { start, end } = (path.pathToReplace ?? path.identifierPath).node
+    if (start === undefined || end === undefined || start === null || end === null)
+      return false
+
+    return range[0] <= start && end <= range[1]
+  })
+}
+
+function sortPathsByType(
+  paths: ReturnType<typeof findPathsInRange>,
+  types: typeof paths[number]['type'][],
+) {
+  return [...paths].sort((a, b) => {
+    let aIndex = types.indexOf(a.type)
+    let bIndex = types.indexOf(b.type)
+
+    if (aIndex === -1)
+      aIndex = types.length
+
+    if (bIndex === -1)
+      bIndex = types.length
+
+    return aIndex - bIndex
+  })
+}
+
+function applyPathsReplacements(
+  paths: ReturnType<typeof sortPathsByType>,
+  expressionStringManipulator: StringManipulator,
+  range: [number, number],
+) {
+  for (const path of paths) {
+    const startExpressionSetter = (path.pathToReplace ?? path.identifierPath).node.start! - range[0]
+    const endExpressionSetter = (path.pathToReplace ?? path.identifierPath).node.end! - range[0]
+
+    const magicString = getMagicString(
+      path,
+      expressionStringManipulator.slice(startExpressionSetter, endExpressionSetter),
+    )
+
+    if (magicString === undefined)
+      continue
+
+    expressionStringManipulator.update(
+      startExpressionSetter,
+      endExpressionSetter,
+      magicString,
+    )
+  }
+}
+
+function getMagicString(
+  path: Parameters<typeof applyPathsReplacements>[0][number],
+  expression: string,
+) {
+  if (path.type === 'stateSetter') {
+    return kazamMagicStrings.setState.create(
+      path.identifierPath.node.name,
+      expression,
+    )
+  }
+
+  if (path.type === 'stateGetter') {
+    return kazamMagicStrings.getState.create(
+      path.identifierPath.node.name,
+    )
+  }
+
+  if (path.type === 'computedGetter') {
+    return kazamMagicStrings.getComputed.create(
+      path.identifierPath.node.name,
+    )
+  }
+
+  return undefined
 }
