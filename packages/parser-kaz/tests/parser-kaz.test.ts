@@ -57,7 +57,7 @@ describe('parser-kaz', () => {
 
       expect(setStateMagicStrings).toHaveLength(2)
       expect(kazamMagicStrings.setState.parse(setStateMagicStrings[0][0])).toEqual(['value', 'value = event.target.value'])
-      expect(kazamMagicStrings.setState.parse(setStateMagicStrings[1][0])).toEqual(['old', 'old = value'])
+      expect(kazamMagicStrings.setState.parse(setStateMagicStrings[1][0])).toEqual(['old', `old = ${kazamMagicStrings.getState.create('value')}`])
     })
   })
 })

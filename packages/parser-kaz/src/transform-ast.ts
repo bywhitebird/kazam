@@ -1,6 +1,6 @@
 import { parse as parseTypescript } from '@babel/parser'
 import traverseTypescriptAst, { type NodePath } from '@babel/traverse'
-import type { AssignmentExpression, UpdateExpression } from '@babel/types'
+import type { Identifier } from '@babel/types'
 import { type KazAst, traverse as traverseKazAst } from '@whitebird/kaz-ast'
 import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
@@ -32,19 +32,52 @@ export const transformAst = (astKaz: KazAst, options: {
     ],
   })
 
-  // TODO: Currently, we mark the state setters. We should also mark the state getters and computed getters.
-  // We could traverse all identifiers instead of AssignmentExpression and UpdateExpression.
-  // We could traverse identifiers, check if their binding has a trailing comment with the magic string,
-  // and then categorize them as state setters, state getters, or computed getters. (if they are state setters, we should categorize the AssignmentExpression or UpdateExpression as a state setter, not the identifier).
-  // To categorize them, we could check if the identifier's parent is an AssignmentExpression or UpdateExpression. If it is, we could categorize it as a state setter. Otherwise, we could categorize it as a state getter or computed getter according to the comment.
+  const replacements: (
+    { type: 'stateSetter' | 'computedGetter' | 'stateGetter'; identifierPath: NodePath<Identifier>; pathToReplace?: NodePath }
+  )[] = []
 
-  const updateAndAssignmentExpressions: NodePath<UpdateExpression | AssignmentExpression>[] = []
   traverseTypescriptAst(astTypescript, {
-    AssignmentExpression(path) {
-      updateAndAssignmentExpressions.push(path)
-    },
-    UpdateExpression(path) {
-      updateAndAssignmentExpressions.push(path)
+    Identifier(path) {
+      if (path.parentPath.isVariableDeclarator())
+        return
+
+      if (path.parentPath.isMemberExpression() && path.parentPath.node.property === path.node)
+        return
+
+      const binding = path.scope.getBinding(path.node.name)
+
+      if (binding === undefined)
+        return
+
+      let type: 'state' | 'computed' | undefined
+      for (const comment of binding?.identifier.trailingComments ?? []) {
+        if (new RegExp(`^ *\\* *${kazamMagicStrings.kazStateJSDoc.regexp.source} *$`).test(comment.value))
+          type = 'state'
+        else if (new RegExp(`^ *\\* *${kazamMagicStrings.kazComputedJSDoc.regexp.source} *$`).test(comment.value))
+          type = 'computed'
+
+        if (type !== undefined)
+          break
+      }
+
+      if (type === undefined)
+        return
+
+      switch (type) {
+        case 'state': {
+          if (path.parentPath.isUpdateExpression())
+            replacements.push({ type: 'stateSetter', identifierPath: path, pathToReplace: path.parentPath })
+          else if (path.parentPath.isAssignmentExpression() && path.parentPath.node.left === path.node)
+            replacements.push({ type: 'stateSetter', identifierPath: path, pathToReplace: path.parentPath })
+          else
+            replacements.push({ type: 'stateGetter', identifierPath: path })
+          break
+        }
+        case 'computed': {
+          replacements.push({ type: 'computedGetter', identifierPath: path })
+          break
+        }
+      }
     },
   })
 
@@ -96,8 +129,8 @@ export const transformAst = (astKaz: KazAst, options: {
       if (matchedTypescriptExpressionNodePath === undefined)
         return
 
-      const typescriptExpressionNodePaths = updateAndAssignmentExpressions.filter((updateOrAssignmentExpression) => {
-        const { start, end } = updateOrAssignmentExpression.node
+      const typescriptExpressionNodePaths = replacements.filter((replacement) => {
+        const { start, end } = (replacement.pathToReplace ?? replacement.identifierPath).node
         if (start === undefined || end === undefined || start === null || end === null)
           return false
 
@@ -109,31 +142,43 @@ export const transformAst = (astKaz: KazAst, options: {
 
       const expressionStringManipulator = new StringManipulator(expression.$value)
 
+      typescriptExpressionNodePaths.sort((a) => {
+        if (a.type.toLowerCase().endsWith('getter'))
+          return -1
+
+        return 1
+      })
+
       for (const typescriptExpressionNodePath of typescriptExpressionNodePaths) {
-        const identifier = typescriptExpressionNodePath.isAssignmentExpression()
-          ? typescriptExpressionNodePath.node.left
-          : (typescriptExpressionNodePath.isUpdateExpression() && typescriptExpressionNodePath.node.argument) || undefined
+        const startExpressionSetter = (typescriptExpressionNodePath.pathToReplace ?? typescriptExpressionNodePath.identifierPath).node.start! - matchedTypescriptExpressionNodePath.generatedRange[0]
+        const endExpressionSetter = (typescriptExpressionNodePath.pathToReplace ?? typescriptExpressionNodePath.identifierPath).node.end! - matchedTypescriptExpressionNodePath.generatedRange[0]
 
-        if (identifier === undefined || identifier.type !== 'Identifier')
-          return
-
-        const binding = typescriptExpressionNodePath.scope.getBinding(identifier.name)
-
-        if (binding?.identifier.trailingComments?.some((comment) => {
-          return new RegExp(`^ *\\* *${kazamMagicStrings.kazStateJSDoc.regexp.source} *$`).test(comment.value)
-        })) {
-          const startExpressionSetter = typescriptExpressionNodePath.node.start! - matchedTypescriptExpressionNodePath.generatedRange[0]
-          const endExpressionSetter = typescriptExpressionNodePath.node.end! - matchedTypescriptExpressionNodePath.generatedRange[0]
-
-          expressionStringManipulator.update(
-            startExpressionSetter,
-            endExpressionSetter,
-            kazamMagicStrings.setState.create(
-              identifier.name,
-              expression.$value.slice(startExpressionSetter, endExpressionSetter),
-            ),
+        let magicString: string | undefined
+        if (typescriptExpressionNodePath.type === 'stateSetter') {
+          magicString = kazamMagicStrings.setState.create(
+            typescriptExpressionNodePath.identifierPath.node.name,
+            expressionStringManipulator.slice(startExpressionSetter, endExpressionSetter),
           )
         }
+        else if (typescriptExpressionNodePath.type === 'stateGetter') {
+          magicString = kazamMagicStrings.getState.create(
+            typescriptExpressionNodePath.identifierPath.node.name,
+          )
+        }
+        else if (typescriptExpressionNodePath.type === 'computedGetter') {
+          magicString = kazamMagicStrings.getComputed.create(
+            typescriptExpressionNodePath.identifierPath.node.name,
+          )
+        }
+
+        if (magicString === undefined)
+          continue
+
+        expressionStringManipulator.update(
+          startExpressionSetter,
+          endExpressionSetter,
+          magicString,
+        )
       }
 
       expression.$value = expressionStringManipulator.toString()
