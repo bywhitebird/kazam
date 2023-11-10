@@ -275,6 +275,9 @@ importers:
       '@whitebird/kazam-transformer-react':
         specifier: workspace:*
         version: link:../../packages/transformer-react
+      '@whitebird/kazam-transformer-vue':
+        specifier: workspace:*
+        version: link:../../packages/transformer-vue
       kazam:
         specifier: workspace:*
         version: link:../kazam
