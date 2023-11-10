@@ -1,4 +1,5 @@
 import * as schemas from '@whitebird/kaz-ast'
+import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import type { z } from 'zod'
 
@@ -134,16 +135,29 @@ export class TransformerTypescript extends TransformerBase<
   }, componentMeta: IComponentMeta): void {
     const currentContent = this.generatedContent[componentMeta.name] ?? ''
 
+    const unformattedValue = typeof content === 'string' ? content : content.$value
+    const value = replaceKazamMagicStrings(unformattedValue, {
+      getComputed(_match, computedName) {
+        return computedName
+      },
+      getState(_match, stateName) {
+        return stateName
+      },
+      setState(_match, _stateName, setter) {
+        return setter
+      },
+    })
+
     if (typeof content === 'string') {
-      this.generatedContent[componentMeta.name] = `${currentContent}${content}`
+      this.generatedContent[componentMeta.name] = `${currentContent}${value}`
     }
     else {
-      this.generatedContent[componentMeta.name] = `${currentContent}${content.$value}`
+      this.generatedContent[componentMeta.name] = `${currentContent}${value}`
       this.mappings[componentMeta.name] = [
         ...(this.mappings[componentMeta.name] ?? []),
         {
           sourceRange: content.$range,
-          generatedRange: [currentContent.length, currentContent.length + content.$value.length],
+          generatedRange: [currentContent.length, currentContent.length + value.length],
         },
       ]
     }
