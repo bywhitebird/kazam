@@ -24,8 +24,8 @@
   "dependencies": {
     "@types/lodash": "^4.14.191",
     "@types/prettier": "^2.7.2",
-    "@typescript-eslint/typescript-estree": "^5.59.9",
     "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kazam-transform-utils": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
     "deepmerge": "^4.3.1",
     "estraverse": "^5.3.0",

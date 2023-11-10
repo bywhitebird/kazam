@@ -24,7 +24,7 @@ export const handleStateInstruction: Handle<'stateInstruction', string> = stateI
         : '',
       '(',
       stateInstruction.defaultValue !== undefined
-        ? yield * _(transformService.transformExpression(stateInstruction.defaultValue.expression))
+        ? stateInstruction.defaultValue.expression.$value
         : '',
       ')',
     )

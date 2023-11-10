@@ -1,10 +1,11 @@
 {
-  "name": "@whitebird/kazam-transformer-typescript",
+  "name": "@whitebird/kazam-transform-utils",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "license": "MIT",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
@@ -18,12 +19,6 @@
     "build": "unbuild",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
-  },
-  "dependencies": {
-    "@whitebird/kaz-ast": "workspace:*",
-    "@whitebird/kazam-transform-utils": "workspace:*",
-    "@whitebird/kazam-transformer-base": "workspace:*",
-    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^18.11.9"

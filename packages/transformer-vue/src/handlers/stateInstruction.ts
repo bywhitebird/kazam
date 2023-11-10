@@ -1,5 +1,4 @@
 import type { IHandler } from '../transformer-vue'
-import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstruction, { addImport }) => {
   addImport({
@@ -13,5 +12,5 @@ export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstru
     stateInstruction.type === undefined
       ? ''
       : `<${stateInstruction.type.$value}>`
-  }(${stateInstruction.defaultValue !== undefined ? transformVueExpression(stateInstruction.defaultValue.expression.$value) : ''})`
+  }(${stateInstruction.defaultValue !== undefined ? stateInstruction.defaultValue.expression.$value : ''})`
 }

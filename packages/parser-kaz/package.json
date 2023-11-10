@@ -22,11 +22,18 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@babel/parser": "^7.22.5",
+    "@babel/traverse": "^7.22.5",
     "@whitebird/kaz-ast": "workspace:*",
     "@whitebird/kazam-parser-base": "workspace:*",
-    "glob": "10.2.1"
+    "@whitebird/kazam-transform-utils": "workspace:*",
+    "@whitebird/kazam-transformer-typescript": "workspace:*",
+    "glob": "10.2.1",
+    "magic-string": "^0.30.5"
   },
   "devDependencies": {
+    "@babel/types": "^7.22.5",
+    "@types/babel__traverse": "^7.20.1",
     "@types/node": "^18.11.9",
     "@vitest/coverage-v8": "^0.34.1",
     "@whitebird/kazam-transformer-base": "workspace:*",

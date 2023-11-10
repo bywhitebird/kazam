@@ -15,7 +15,7 @@ export const handleLifecycleEventInstruction: Handle<'lifecycleEventInstruction'
       case 'mount': {
         return String.prototype.concat(
           'useEffect(() => {',
-          yield * _(transformService.transformExpression(callbackExpression)),
+          callbackExpression.$value,
           '}, [])',
         )
       }

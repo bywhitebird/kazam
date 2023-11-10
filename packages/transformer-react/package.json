@@ -27,6 +27,7 @@
     "@types/lodash": "^4.14.191",
     "@types/prettier": "^2.7.2",
     "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kazam-transform-utils": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
     "@whitebird/kazam-transformer-typescript": "workspace:*",
     "effect": "2.0.0-next.48",
