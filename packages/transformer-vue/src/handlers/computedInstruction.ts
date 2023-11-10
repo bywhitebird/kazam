@@ -1,5 +1,4 @@
 import type { IHandler } from '../transformer-vue'
-import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handleComputedInstruction: IHandler<'computedInstruction'> = (computedInstruction, { addImport }) => {
   addImport({
@@ -13,5 +12,5 @@ export const handleComputedInstruction: IHandler<'computedInstruction'> = (compu
     computedInstruction.type === undefined
       ? ''
       : `<${computedInstruction.type.$value}>`
-  }(() => ${transformVueExpression(computedInstruction.computeValue.expression.$value)})`
+  }(() => ${computedInstruction.computeValue.expression.$value})`
 }

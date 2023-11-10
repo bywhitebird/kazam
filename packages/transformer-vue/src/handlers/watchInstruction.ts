@@ -1,5 +1,4 @@
 import type { IHandler } from '../transformer-vue'
-import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handleWatchInstruction: IHandler<'watchInstruction'> = (watchInstruction, { addImport }) => {
   addImport({
@@ -14,7 +13,7 @@ export const handleWatchInstruction: IHandler<'watchInstruction'> = (watchInstru
       ${watchInstruction.watchedVariables.map(variable => variable.name.$value).join(', ')}
     ],
     ([${watchInstruction.watchedVariables.map(variable => variable.name.$value).join(', ')}]) => {
-      ${transformVueExpression(watchInstruction.callbackExpression.$value)}
+      ${watchInstruction.callbackExpression.$value}
     }
   )`
 }

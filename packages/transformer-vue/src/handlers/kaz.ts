@@ -42,7 +42,7 @@ export const handleKaz: IHandler<'ast'> = (kaz, { addImport, handle }) => {
               ],
             )
           )
-        })(toRefs(props))
+        })(props)
       },
     })
   `

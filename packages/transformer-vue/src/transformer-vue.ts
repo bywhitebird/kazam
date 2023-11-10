@@ -1,6 +1,7 @@
 import * as path from 'node:path'
 
 import * as schemas from '@whitebird/kaz-ast'
+import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import prettier from 'prettier'
 import type { z } from 'zod'
@@ -72,17 +73,29 @@ export class TransformerVue extends TransformerBase<{
 
       const result = this.handle(component.ast, { name: componentName })
 
+      const unformattedResult = `
+      ${importsToString(
+        mergeImports(this.imports[componentName] ?? []),
+        component.sourceAbsoluteFilePath,
+        component.getTransformedOutputFilePath(`${componentName}.vue`),
+      )}
+
+      ${result}
+      `
+
       this.generatedComponents[componentName] = `
         <script lang="ts">\n${prettier.format(
-        `
-            ${importsToString(
-          mergeImports(this.imports[componentName] ?? []),
-          component.sourceAbsoluteFilePath,
-          component.getTransformedOutputFilePath(`${componentName}.vue`),
-        )}
-
-            ${result}
-            `,
+        replaceKazamMagicStrings(unformattedResult, {
+          getComputed(_match, computedName) {
+            return `${computedName}.value`
+          },
+          getState(_match, stateName) {
+            return `${stateName}.value`
+          },
+          setState(_match, stateName, setter) {
+            return `${stateName}.value = ((${stateName}) => { ${setter}; return ${stateName} })(${stateName}.value)`
+          },
+        }),
         {
           parser: 'babel-ts',
           printWidth: Number.POSITIVE_INFINITY,
