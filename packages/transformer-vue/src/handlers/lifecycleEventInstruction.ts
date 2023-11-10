@@ -1,5 +1,4 @@
 import type { IHandler } from '../transformer-vue'
-import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handleLifecycleEventInstruction: IHandler<'lifecycleEventInstruction'> = (lifecycleEvent, { addImport }) => {
   addImport({
@@ -9,5 +8,5 @@ export const handleLifecycleEventInstruction: IHandler<'lifecycleEventInstructio
     path: 'vue',
   })
 
-  return `onMounted(() => {${transformVueExpression(lifecycleEvent.callbackExpression.$value)}})`
+  return `onMounted(() => {${lifecycleEvent.callbackExpression.$value}})`
 }

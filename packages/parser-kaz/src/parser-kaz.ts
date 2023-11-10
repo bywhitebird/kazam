@@ -5,6 +5,8 @@ import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
 import { glob } from 'glob'
 
+import { transformAst } from './transform-ast'
+
 export class ParserKaz extends ParserBase<{
   pathRelativeToInputPath: string
   inputPath: string
@@ -57,6 +59,8 @@ export class ParserKaz extends ParserBase<{
 
       if (ast === undefined)
         throw new Error(`Could not parse file ${filePath}`)
+
+      transformAst(ast, { fileName: filePath })
 
       kazAsts[pathRelativeToInputPath] = {
         ast,

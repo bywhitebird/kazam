@@ -1,4 +1,6 @@
+import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { Effect, pipe } from 'effect'
+import lodash from 'lodash'
 import * as prettier from 'prettier'
 
 import { createServices } from './create-services'
@@ -28,6 +30,17 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
       const transformed = yield * _(
         pipe(
           transformService.handle(file.ast),
+          Effect.map(transformed => replaceKazamMagicStrings(transformed, {
+            getComputed(_match, computedName) {
+              return computedName
+            },
+            getState(_match, stateName) {
+              return stateName
+            },
+            setState(_match, stateName, setter) {
+              return `set${lodash.upperFirst(stateName)}((${stateName}) => { ${setter}; return ${stateName} })`
+            },
+          })),
           Effect.map(transformed =>
             prettier.format(transformed, {
               parser: 'babel-ts',

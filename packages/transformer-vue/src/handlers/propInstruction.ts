@@ -1,5 +1,4 @@
 import type { IHandler } from '../transformer-vue'
-import { transformVueExpression } from '../utils/transform-vue-expression'
 
 export const handlePropInstruction: IHandler<'propInstruction'> = (propInstruction, { addImport }) => {
   addImport({
@@ -12,6 +11,6 @@ export const handlePropInstruction: IHandler<'propInstruction'> = (propInstructi
   return `${propInstruction.name.$value}: {
     type: undefined as unknown as PropType<${propInstruction.type?.$value ?? 'any'}>,
     skipCheck: true,
-    ${propInstruction.defaultValue !== undefined ? `default: ${transformVueExpression(propInstruction.defaultValue.expression.$value)},` : ''}
+    ${propInstruction.defaultValue !== undefined ? `default: ${propInstruction.defaultValue.expression.$value},` : ''}
   }`
 }
