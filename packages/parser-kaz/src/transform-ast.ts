@@ -180,6 +180,26 @@ function replacePaths(
 function getKazExpression(
   node: Parameters<NonNullable<Parameters<typeof traverseKazAst>[1]['enter']>>[0],
 ): { $range: [number, number]; $value: string } | undefined {
+  // Handle special cases (e.g. `IfLogical`, `ElseIfLogical`, `ForLogical`)
+
+  if (node.$type === 'IfLogical' || node.$type === 'ElseLogical') {
+    const condition = node.$type === 'IfLogical'
+      ? node.condition
+      : 'if' in node
+        ? node.if.condition
+        : undefined
+
+    if (condition === undefined)
+      return
+
+    return condition
+  }
+
+  if (node.$type === 'ForLogical')
+    return node.parameters
+
+  // Handle generic cases
+
   const expressionKey = (
     Object.keys(node)
       .find(key => key.toLowerCase().includes('expression'))
@@ -197,7 +217,7 @@ function getKazExpression(
   for (const key in node) {
     const subNode = node[key as keyof typeof node]
 
-    if (typeof subNode === 'object' && subNode !== null && '$type' in subNode) {
+    if (typeof subNode === 'object' && subNode !== null && !('$type' in subNode)) {
       const expression = getKazExpression(subNode)
       if (expression !== undefined)
         return expression
