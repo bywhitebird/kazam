@@ -58,7 +58,10 @@ export const replaceMagicStrings = (
     })
   }
 
-  const remainingMagicStrings = Object.keys(magicStrings).some(magicStringKey => magicStrings[magicStringKey as keyof typeof magicStrings].regexp.test(result))
+  const remainingMagicStrings = Object.keys(magicStrings).some(magicStringKey =>
+    magicStrings[magicStringKey as keyof typeof magicStrings].regexp.test(result)
+    && replacers[magicStringKey as keyof typeof magicStrings] !== undefined,
+  )
 
   if (remainingMagicStrings)
     replaceMagicStrings(result, replacers)
