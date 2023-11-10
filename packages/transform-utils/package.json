@@ -18,9 +18,7 @@
   "scripts": {
     "build": "unbuild",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
     "@types/node": "^18.11.9"
