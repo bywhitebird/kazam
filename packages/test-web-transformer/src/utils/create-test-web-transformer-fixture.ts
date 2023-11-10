@@ -36,7 +36,7 @@ export const createTestWebTransformerFixture = async (fixture: TestWebTransforme
               directoryPath,
             ],
             output: 'dist',
-            rootDir: directoryPath,
+            configPath: path.join(directoryPath, 'kazam.config.ts'),
           })
 
           await cleanupDirectory()
