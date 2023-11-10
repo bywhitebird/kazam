@@ -10,8 +10,6 @@ export const handleKaz: IHandler<'ast'> = (kaz, { addImport, handle }) => {
       { name: 'defineComponent' },
       { name: 'createVNode' },
       { name: 'Fragment' },
-      { name: 'toRefs' },
-      { name: 'ref' }, // import ref by default because it's used in transform-vue-expression.ts
     ],
     path: 'vue',
   })
