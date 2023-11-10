@@ -14,7 +14,7 @@ export const handleWatchInstruction: Handle<'watchInstruction', string> = watchI
 
     return String.prototype.concat(
       'useEffect(() => {',
-      yield * _(transformService.transformExpression(watchInstruction.callbackExpression)),
+      watchInstruction.callbackExpression.$value,
       '}, [',
       watchInstruction.watchedVariables.map(variable => variable.name.$value).join(', '),
       '])',

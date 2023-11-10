@@ -1,3 +1,4 @@
-export * from '@whitebird/kazam-test-web-transformer'
-
-export { magicStrings as kazamMagicStrings } from './magic-strings'
+export {
+  magicStrings as kazamMagicStrings,
+  replaceMagicStrings as replaceKazamMagicStrings,
+} from './magic-strings'

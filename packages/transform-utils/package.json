@@ -5,6 +5,7 @@
   "license": "MIT",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.cjs"
     }
@@ -20,9 +21,6 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage"
-  },
-  "dependencies": {
-    "@whitebird/kazam-test-web-transformer": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^18.11.9"

@@ -1,12 +1,9 @@
 import { Effect, pipe } from 'effect'
 
-import { TransformService } from '../../transform-service'
 import type { Handle } from '../handle'
 
 export const handleTemplateTagAttribute: Handle<'templateTagAttribute', string> = templateTagAttribute =>
   Effect.gen(function* (_) {
-    const transformService = yield * _(TransformService)
-
     switch (templateTagAttribute.name.$value) {
       case 'class': {
         templateTagAttribute.name.$value = 'className'
@@ -31,7 +28,7 @@ export const handleTemplateTagAttribute: Handle<'templateTagAttribute', string> 
       return `{${value}}`
     })
 
-    const getValue = () => Effect.gen(function* (_) {
+    const getValue = () => Effect.gen(function* () {
       if ('value' in templateTagAttribute) {
         if (typeof templateTagAttribute.value === 'boolean')
           return String(templateTagAttribute.value)
@@ -40,7 +37,7 @@ export const handleTemplateTagAttribute: Handle<'templateTagAttribute', string> 
       }
 
       if ('expression' in templateTagAttribute)
-        return yield * _(transformService.transformExpression(templateTagAttribute.expression))
+        return templateTagAttribute.expression.$value
 
       return 'true'
     })
