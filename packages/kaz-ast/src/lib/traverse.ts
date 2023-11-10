@@ -3,7 +3,7 @@ import type { z } from 'zod'
 import type * as schemas from '../types/KazAst'
 
 type AllSchemas = typeof schemas[keyof typeof schemas]
-type AllInferedSchemas = z.infer<Extract<AllSchemas, z.ZodObject<{ $type: z.ZodLiteral<string> }>>>
+type AllInferedSchemas = Extract<z.infer<AllSchemas>, { $type: string }>
 type Visitor = {
   [T in AllInferedSchemas['$type']]?: (node: Extract<AllInferedSchemas, { $type: T }>) => void
 } & {
