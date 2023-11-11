@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@pandacss/dev": "^0.14.0",
+    "@pandacss/preset-base": "^0.18.2",
     "@whitebird/kazam-parser-kaz": "workspace:*",
     "@whitebird/kazam-transformer-react": "workspace:*",
     "@whitebird/kazam-transformer-vue": "workspace:*",

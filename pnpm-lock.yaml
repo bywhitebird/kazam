@@ -269,6 +269,9 @@ importers:
       '@pandacss/dev':
         specifier: ^0.14.0
         version: 0.14.0(@internationalized/date@3.5.0)(@types/node@18.18.0)(@types/react-dom@18.2.7)(@types/react@18.2.22)(typescript@5.2.2)
+      '@pandacss/preset-base':
+        specifier: ^0.18.2
+        version: 0.18.2
       '@whitebird/kazam-parser-kaz':
         specifier: workspace:*
         version: link:../../packages/parser-kaz
@@ -3722,6 +3725,12 @@ packages:
       '@pandacss/types': 0.14.0
     dev: false
 
+  /@pandacss/preset-base@0.18.2:
+    resolution: {integrity: sha512-sOKxEGvEyEgIAOaqz8spUBl9UuHvZdOJbnWuaeyz1NjHv7pqwx/fIuCyz3+pS3VzwzOYlPgqaz+0pYHC10FBhQ==}
+    dependencies:
+      '@pandacss/types': 0.18.2
+    dev: false
+
   /@pandacss/preset-panda@0.14.0:
     resolution: {integrity: sha512-etzlceIphODXMyliQzqkNpdsmsdPTlDAAKZs3KhfeUpU27k+1ElJ19sYtgTZ9jesTRe0xSdgBRrj3jqq1qJdqA==}
     dependencies:
@@ -3775,6 +3784,10 @@ packages:
 
   /@pandacss/types@0.14.0:
     resolution: {integrity: sha512-AvCvonsQWxJD8viDt/Gif7zYZqvE363Rnhvv9nO6kAwxKCwEXp4CTDL93Kaf9h6OO0rZnmGcCr8VRdYfH62x+Q==}
+    dev: false
+
+  /@pandacss/types@0.18.2:
+    resolution: {integrity: sha512-u6rbb0HjjK2qm0Xf/0OETVPxwVD4nUbZYB3dkWLxGkwcZR0062qZYivIr7fYpBDO4WXPZ/f2tUrvfMXWGhDX1A==}
     dev: false
 
   /@pkgjs/parseargs@0.11.0:
