@@ -36,8 +36,10 @@ export const magicStrings = {
   setState: new MagicString<[stateName: string, setter: string]>('cb7c9a40-0971-4ecd-87c5-0572727d1a5b'),
   getState: new MagicString<[stateName: string]>('153c1b2d-d22f-439a-976c-20af6d7659b3'),
   getComputed: new MagicString<[computedName: string]>('28ddb00a-552b-4c53-98a4-54a8eebdaf43'),
+  getProp: new MagicString<[propName: string]>('04dc59ea-a12d-4cac-a278-8e5c92b66a50'),
   kazStateJSDoc: new MagicString('5c46e186-3ca8-45f5-9971-4012b174b715'),
   kazComputedJSDoc: new MagicString('d1216e22-94df-4b98-828a-87c53bc24b8a'),
+  kazPropJSDoc: new MagicString('a8600e91-0e91-463c-928a-b0f948b43e99'),
 }
 
 export const replaceMagicStrings = (

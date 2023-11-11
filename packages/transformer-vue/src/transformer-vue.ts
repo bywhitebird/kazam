@@ -104,6 +104,9 @@ export class TransformerVue extends TransformerBase<{
           setState(_match, stateName, setter) {
             return `${stateName}.value = ((${stateName}) => { ${setter}; return ${stateName} })(${stateName}.value)`
           },
+          getProp(_match, propName) {
+            return `${propName}.value`
+          },
         }),
         {
           parser: 'babel-ts',
