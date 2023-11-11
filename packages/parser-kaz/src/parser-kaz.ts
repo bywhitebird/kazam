@@ -11,14 +11,14 @@ export class ParserKaz extends ParserBase<{
   pathRelativeToInputPath: string
   inputPath: string
 }[]> {
-  async load({ input, configPath }: Parameters<ParserBase<{
+  async load({ input, rootDir }: Parameters<ParserBase<{
     pathRelativeToInputPath: string
     inputPath: string
   }[]>['load']>[0]) {
     const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
-        : path.join(path.dirname(configPath), input),
+        : path.join(rootDir, input),
     ))
 
     const kazFiles = normalizedInput.map(input => (

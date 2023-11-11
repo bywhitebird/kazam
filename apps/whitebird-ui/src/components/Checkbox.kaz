@@ -1,0 +1,67 @@
+- import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
+
+- prop value: boolean = false
+- prop onChange: (value: boolean) => void = () => {}
+- prop name: (string | undefined) = undefined
+- prop className: string = ''
+
+- state checked = value
+- state id = name ?? `checkbox-${Math.random().toString(36).substr(2, 9)}`
+
+- watch (value) => checked = value
+
+div(
+  class={cx(
+    css({ display: 'contents' }),
+    className,
+  )}
+) {
+  input(
+    id={id},
+    type='checkbox',
+    checked={checked},
+    on:change={e => {
+      onChange(e.target.checked)
+      checked = e.target.checked
+    }},
+    class={css({ display: 'none' })}
+  )
+
+  label(
+    for={id},
+    class={css({
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      width: '1.5rem',
+      height: '1.5rem',
+      cursor: 'pointer',
+      color: 'highContrastForeground',
+      backgroundColor: 'uiElementBackground',
+      borderWidth: '2px',
+      borderStyle: 'solid',
+      borderColor: 'border',
+      _hover: {
+        backgroundColor: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+      _checked: {
+        backgroundColor: 'uiElementBackgroundHover',
+        borderColor: 'borderHover',
+      },
+    })}
+  ) {
+    Icon(
+      name='check',
+      size='1.5em',
+      class={css({
+        visibility: 'hidden',
+        'input:checked + label > &': {
+          visibility: 'visible',
+        },
+      })}
+    )
+  }
+}

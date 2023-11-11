@@ -12,7 +12,7 @@ export type ImportInfos = (
     namedImports?: ImportInfo[]
   }
   | { wildcardImport?: Required<Pick<ImportInfo, 'alias'>> }
-) & { path: string }
+) & { path: string; relativizePath?: boolean }
 
 function generateImportName(importInfo: ImportInfo) {
   return `${importInfo.typeOnly ? 'type ' : ''}${importInfo.name}${importInfo.alias ? ` as ${importInfo.alias}` : ''}`
@@ -27,7 +27,10 @@ export function importsToString(
     let importString: string
 
     // The following block will fix the import path if it is a relative path
-    if (importInfo.path.startsWith('.')) {
+    if (
+      importInfo.path.startsWith('.')
+      && (importInfo.relativizePath === true || importInfo.relativizePath === undefined)
+    ) {
       const absoluteImportedFilePath = path.resolve(
         path.dirname(sourceAbsoluteFilePath),
         importInfo.path,

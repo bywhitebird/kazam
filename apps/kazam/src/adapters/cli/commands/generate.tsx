@@ -1,4 +1,5 @@
 import * as fs from 'node:fs'
+import path from 'node:path'
 
 import { loadConfig } from 'c12'
 import { Command } from 'commander'
@@ -32,9 +33,11 @@ export const generateCommand = new Command()
     if (config === null || configFile === undefined)
       throw new Error('Could not load config')
 
+    const rootDir = path.dirname(configFile)
+
     const generatePromise = options.watch === true
-      ? generateWatch(config, configFile, fs)
-      : generate(config, configFile, fs)
+      ? generateWatch(config, rootDir, fs)
+      : generate(config, rootDir, fs)
 
     render(
       <GenerateView

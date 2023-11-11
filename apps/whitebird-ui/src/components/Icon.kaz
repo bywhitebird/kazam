@@ -1,0 +1,12 @@
+- import { cx } from '../../styled-system/css'
+
+- prop name: string
+- prop fill: boolean = true
+- prop color: (string | undefined) = undefined
+- prop size: (string | number | undefined) = undefined
+- prop className: string = ''
+
+i(
+  class={cx(className, `ri-${name}-${fill ? 'fill' : 'line'}`)},
+  style={[(color && `color: ${color}`), (size && `font-size: ${Number.isNaN(Number(size)) ? size : `${size}px`}`)].filter(Boolean).join(';')}
+)

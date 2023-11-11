@@ -25,7 +25,7 @@ export const handleTemplateIf: Handle<'templateIf', string> = templateIf =>
         ? 'if' in templateIf.else
           ? ` : ${yield * _(transformService.handle(templateIf.else))}`
           : ` : <>${yield * _(transformService.handle(templateIf.else))}</>`
-        : '',
+        : ' : null',
       '}',
     )
   })

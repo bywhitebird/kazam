@@ -1,0 +1,53 @@
+- import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
+
+- prop text: string
+- prop variant: ('primary' | 'secondary' | 'tertiary') = 'primary'
+- prop size: ('small' | 'normal') = 'normal'
+- prop iconName: (string | undefined) = undefined
+- prop onClick: () => void = () => {}
+- prop className: string = ''
+
+button(
+  class={cx(
+    css({
+      bg: variant === 'primary' ? 'highContrastForeground' : variant === 'secondary' ? 'uiElementBackground' : 'transparent',
+      color: variant === 'primary' ? 'appBackground' : 'highContrastForeground',
+      textStyle: 'label',
+      paddingX: size === 'small' ? 'xsmall' : 'medium',
+      paddingY: size === 'small' ? 'xxsmall' : 'medium',
+      cursor: 'pointer',
+      display: 'inline-flex',
+      alignItems: 'center',
+      outlineColor: 'transparent',
+      outlineStyle: 'solid',
+      outlineWidth: '2px',
+      outlineOffset: '2px',
+      _active: {
+        outlineColor: 'border',
+      },
+      _hover: {
+        outlineColor: 'borderHover',
+      },
+    }),
+    className,
+  )},
+  on:click={onClick}
+) {
+  @if (iconName) {
+    div(
+      class={css({
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: size === 'small' ? 'small' : 'medium',
+        width: '1em',
+        height: '1em',
+        fontSize: size === 'small' ? '0.75em' : '1em',
+      })}
+    ) {
+      Icon(name={iconName}, size="1.5em", fill={false})
+    }
+  }
+  ${text}
+}

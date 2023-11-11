@@ -2,14 +2,11 @@ import chokidar from 'chokidar'
 
 import { generate } from './generate'
 
-const getFilesToWatch = ([config, configPath]: Parameters<typeof generate>): string[] => {
+const getFilesToWatch = ([config]: Parameters<typeof generate>): string[] => {
   if (!Array.isArray(config))
     config = [config]
 
-  return [
-    ...config.flatMap(config => config.input),
-    configPath,
-  ]
+  return config.flatMap(config => config.input)
 }
 
 export const generateWatch = (...argsGenerate: Parameters<typeof generate>) => {

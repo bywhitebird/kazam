@@ -1,0 +1,14 @@
+<script type="module">
+  import '../src/index.css'
+  import '../src/fonts.css'
+  import { token } from '../styled-system/tokens'
+
+  document.head.insertAdjacentHTML(
+    'beforeend',
+    `<style>
+      body, .docs-story {
+        background-color: ${token.var('colors.appBackground')} !important;
+      }
+    </style>`
+  )
+</script>
