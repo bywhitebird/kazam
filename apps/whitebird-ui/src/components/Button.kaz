@@ -1,4 +1,5 @@
 - import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
 
 - prop text: string
 - prop variant: ('primary' | 'secondary' | 'tertiary') = 'primary'
@@ -8,26 +9,29 @@
 - prop className: string = ''
 
 button(
-  class={`${className} ${css({
-    bg: variant === 'primary' ? 'highContrastForeground' : variant === 'secondary' ? 'uiElementBackground' : 'transparent',
-    color: variant === 'primary' ? 'appBackground' : 'highContrastForeground',
-    textStyle: 'label',
-    paddingX: size === 'small' ? 'xsmall' : 'medium',
-    paddingY: size === 'small' ? 'xxsmall' : 'medium',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    alignItems: 'center',
-    outlineColor: 'transparent',
-    outlineStyle: 'solid',
-    outlineWidth: '2px',
-    outlineOffset: '2px',
-    _active: {
-      outlineColor: 'border',
-    },
-    _hover: {
-      outlineColor: 'borderHover',
-    },
-  })}`},
+  class={cx(
+    css({
+      bg: variant === 'primary' ? 'highContrastForeground' : variant === 'secondary' ? 'uiElementBackground' : 'transparent',
+      color: variant === 'primary' ? 'appBackground' : 'highContrastForeground',
+      textStyle: 'label',
+      paddingX: size === 'small' ? 'xsmall' : 'medium',
+      paddingY: size === 'small' ? 'xxsmall' : 'medium',
+      cursor: 'pointer',
+      display: 'inline-flex',
+      alignItems: 'center',
+      outlineColor: 'transparent',
+      outlineStyle: 'solid',
+      outlineWidth: '2px',
+      outlineOffset: '2px',
+      _active: {
+        outlineColor: 'border',
+      },
+      _hover: {
+        outlineColor: 'borderHover',
+      },
+    }),
+    className,
+  )},
   on:click={onClick}
 ) {
   @if (iconName) {

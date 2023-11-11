@@ -1,4 +1,5 @@
 - import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
 - import { token } from '../../styled-system/tokens'
 
 - prop values: ({ value: any; label: string; selected?: boolean }[]) = ''
@@ -27,10 +28,13 @@
 }
 
 div(
-  class={`${className} ${css({
-    position: 'relative',
-    userSelect: 'none',
-  })}`},
+  class={cx(
+    css({
+      position: 'relative',
+      userSelect: 'none',
+    }),
+    className,
+  )},
   id={id}
 ) {
   select(

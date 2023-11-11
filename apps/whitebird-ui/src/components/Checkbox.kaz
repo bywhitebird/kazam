@@ -1,4 +1,5 @@
 - import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
 
 - prop value: boolean = false
 - prop onChange: (value: boolean) => void = () => {}
@@ -11,7 +12,10 @@
 - watch (value) => checked = value
 
 div(
-  class={`${className} ${css({ display: 'contents' })}`}
+  class={cx(
+    css({ display: 'contents' }),
+    className,
+  )}
 ) {
   input(
     id={id},

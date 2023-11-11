@@ -1,4 +1,5 @@
 - import { css } from '../../styled-system/css'
+- import { cx } from '../../styled-system/css'
 - import { token } from '../../styled-system/tokens'
 
 - prop value: string = ''
@@ -15,9 +16,12 @@
 }
 
 div(
-  class={`${className} ${css({
-    position: 'relative',
-  })}`}
+  class={cx(
+    css({
+      position: 'relative',
+    }),
+    className,
+  )}
 ) {
   input(
     type='text',
