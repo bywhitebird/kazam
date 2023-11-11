@@ -10,11 +10,17 @@
     "./vue/*": "./dist/vue/*.vue",
     "./vue/*.vue": "./dist/vue/*.vue",
     "./react/*": "./dist/react/*",
-    "./react/*.tsx": "./dist/react/*.tsx"
+    "./react/*.tsx": "./dist/react/*.tsx",
+    "./css": "./dist/whitebird.css",
+    "./css/whitebird": "./dist/whitebird.css",
+    "./css/whitebird.css": "./dist/whitebird.css",
+    "./css/fonts": "./src/fonts.css",
+    "./css/fonts.css": "./src/fonts.css"
   },
   "files": [
     "dist",
-    "src/panda/whitebird-preset.ts"
+    "src/panda/whitebird-preset.ts",
+    "src/fonts.css"
   ],
   "scripts": {
     "prepare": "panda codegen",

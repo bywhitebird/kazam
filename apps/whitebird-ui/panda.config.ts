@@ -6,7 +6,6 @@ export default defineConfig({
   // Whether to use css reset
   preflight: true,
 
-  // /src/components/**/*.tsx
   include: [
     './src/components/**/*.{js,jsx,ts,tsx,kaz}',
     './src/stories/**/*.{js,jsx,ts,tsx,kaz}',
