@@ -9,6 +9,9 @@
     "postinstall": "nuxt prepare",
     "prepare": "panda codegen"
   },
+  "dependencies": {
+    "@whitebird/ui": "workspace:*"
+  },
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "@pandacss/dev": "^0.14.0",
