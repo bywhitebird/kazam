@@ -6,7 +6,11 @@
   "exports": {
     "./panda-preset": {
       "default": "./src/panda/whitebird-preset.ts"
-    }
+    },
+    "./vue/*": "./dist/vue/*.vue",
+    "./vue/*.vue": "./dist/vue/*.vue",
+    "./react/*": "./dist/react/*",
+    "./react/*.tsx": "./dist/react/*.tsx"
   },
   "files": [
     "dist",
