@@ -5,18 +5,20 @@ import { parse, tokenize } from '@whitebird/kaz-ast'
 import { ParserBase } from '@whitebird/kazam-parser-base'
 import { glob } from 'glob'
 
+import { transformAst } from './transform-ast'
+
 export class ParserKaz extends ParserBase<{
   pathRelativeToInputPath: string
   inputPath: string
 }[]> {
-  async load({ input, configPath }: Parameters<ParserBase<{
+  async load({ input, rootDir }: Parameters<ParserBase<{
     pathRelativeToInputPath: string
     inputPath: string
   }[]>['load']>[0]) {
     const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
-        : path.join(path.dirname(configPath), input),
+        : path.join(rootDir, input),
     ))
 
     const kazFiles = normalizedInput.map(input => (
@@ -57,6 +59,8 @@ export class ParserKaz extends ParserBase<{
 
       if (ast === undefined)
         throw new Error(`Could not parse file ${filePath}`)
+
+      transformAst(ast, { fileName: filePath })
 
       kazAsts[pathRelativeToInputPath] = {
         ast,

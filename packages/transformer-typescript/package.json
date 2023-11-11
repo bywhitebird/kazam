@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@whitebird/kaz-ast": "workspace:*",
+    "@whitebird/kazam-transform-utils": "workspace:*",
     "@whitebird/kazam-transformer-base": "workspace:*",
     "zod": "^3.21.4"
   },

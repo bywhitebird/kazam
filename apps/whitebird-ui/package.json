@@ -1,0 +1,58 @@
+{
+  "name": "@whitebird/ui",
+  "type": "module",
+  "version": "0.0.0",
+  "license": "MIT",
+  "exports": {
+    "./panda-preset": {
+      "default": "./src/panda/whitebird-preset.ts"
+    },
+    "./vue/*": "./dist/vue/*.vue",
+    "./vue/*.vue": "./dist/vue/*.vue",
+    "./react/*": "./dist/react/*",
+    "./react/*.tsx": "./dist/react/*.tsx",
+    "./css": "./dist/whitebird.css",
+    "./css/whitebird": "./dist/whitebird.css",
+    "./css/whitebird.css": "./dist/whitebird.css",
+    "./css/fonts": "./src/fonts.css",
+    "./css/fonts.css": "./src/fonts.css"
+  },
+  "files": [
+    "dist",
+    "src/panda/whitebird-preset.ts",
+    "src/fonts.css"
+  ],
+  "scripts": {
+    "prepare": "panda codegen",
+    "prebuild": "panda cssgen --outfile dist/whitebird.css",
+    "build": "kazam generate",
+    "build:watch": "kazam generate --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "dev": "run-p build:watch start-storybook",
+    "start-storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@pandacss/dev": "^0.14.0",
+    "@pandacss/preset-base": "^0.18.2",
+    "@whitebird/kazam-parser-kaz": "workspace:*",
+    "@whitebird/kazam-transformer-react": "workspace:*",
+    "@whitebird/kazam-transformer-vue": "workspace:*",
+    "kazam": "workspace:*"
+  },
+  "devDependencies": {
+    "@storybook/addon-essentials": "^7.5.1",
+    "@storybook/addon-links": "^7.5.1",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.1",
+    "@storybook/builder-vite": "^7.5.1",
+    "@storybook/react": "^7.5.1",
+    "@storybook/react-vite": "^7.5.1",
+    "@storybook/testing-library": "^0.2.2",
+    "@types/node": "^18.11.9",
+    "@whitebird/storybook-plugin-kaz-react-vite": "workspace:*",
+    "npm-run-all": "^4.1.5",
+    "storybook": "^7.5.1"
+  }
+}

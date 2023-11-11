@@ -1,6 +1,7 @@
 import * as path from 'node:path'
 
 import * as schemas from '@whitebird/kaz-ast'
+import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import prettier from 'prettier'
 import type { z } from 'zod'
@@ -63,26 +64,47 @@ export class TransformerVue extends TransformerBase<{
   private generatedComponents: { [key: string]: string } = {}
   private imports: { [key: string]: ImportInfos[] } = {}
 
+  private getComponentName(componentId: string) {
+    const componentPath = this.getComponentOutputPath(componentId)
+
+    if (componentPath === undefined)
+      return
+
+    return path.basename(componentPath, path.extname(componentPath))
+  }
+
   transform() {
-    for (const componentName in this.input) {
-      const component = this.input[componentName]
+    for (const componentId in this.input) {
+      const component = this.input[componentId]
 
       if (component === undefined)
         continue
 
-      const result = this.handle(component.ast, { name: componentName })
+      const result = this.handle(component.ast, { name: componentId })
 
-      this.generatedComponents[componentName] = `
+      const unformattedResult = `
+      ${importsToString(
+        mergeImports(this.imports[componentId] ?? []),
+        component.sourceAbsoluteFilePath,
+        component.getTransformedOutputFilePath(`${componentId}.vue`),
+      )}
+
+      ${result}
+      `
+
+      this.generatedComponents[componentId] = `
         <script lang="ts">\n${prettier.format(
-        `
-            ${importsToString(
-          mergeImports(this.imports[componentName] ?? []),
-          component.sourceAbsoluteFilePath,
-          component.getTransformedOutputFilePath(`${componentName}.vue`),
-        )}
-
-            ${result}
-            `,
+        replaceKazamMagicStrings(unformattedResult, {
+          getComputed(_match, computedName) {
+            return `${computedName}.value`
+          },
+          getState(_match, stateName) {
+            return `${stateName}.value`
+          },
+          setState(_match, stateName, setter) {
+            return `${stateName}.value = ((${stateName}) => { ${setter}; return ${stateName} })(${stateName}.value)`
+          },
+        }),
         {
           parser: 'babel-ts',
           printWidth: Number.POSITIVE_INFINITY,
@@ -136,17 +158,29 @@ export class TransformerVue extends TransformerBase<{
     throw new Error(`No handler found for input ${inputString}`)
   }
 
+  private getComponentOutputPath(componentId: string) {
+    return this.input[componentId]?.getTransformedOutputFilePath(`${componentId}.vue`)
+  }
+
   private checkIsComponent(componentName: string): boolean {
-    return Object.keys(this.input).includes(componentName)
+    return Object.keys(this.input).some(componentId => this.getComponentName(componentId) === componentName)
   }
 
   private async importComponent(componentName: string, componentMeta: IComponentMeta) {
+    const sourceComponentPath = this.getComponentOutputPath(componentMeta.name)
+    const targetComponentPath = this.getComponentOutputPath(
+      Object.keys(this.input)
+        .find(componentId =>
+          path.basename(componentId, path.extname(componentId)) === componentName,
+        ) ?? '',
+    )
+
+    if (targetComponentPath === undefined || sourceComponentPath === undefined)
+      return
+
     const relativePath = path.relative(
-      path.dirname(componentMeta.name),
-      path.resolve(
-        path.dirname(componentMeta.name),
-        `${componentName}.vue`,
-      ),
+      path.dirname(sourceComponentPath),
+      targetComponentPath,
     )
 
     this.addImport(componentMeta.name, {
@@ -154,6 +188,7 @@ export class TransformerVue extends TransformerBase<{
         name: componentName,
       },
       path: `./${relativePath}`,
+      relativizePath: false,
     })
   }
 

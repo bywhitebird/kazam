@@ -3,7 +3,7 @@ import type { TransformerInput } from '@whitebird/kazam-transformer-base'
 interface ParserConfig {
   input: string[]
   output: string
-  configPath: string
+  rootDir: string
 }
 
 export abstract class ParserBase<LoadResult> {

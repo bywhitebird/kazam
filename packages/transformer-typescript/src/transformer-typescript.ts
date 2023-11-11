@@ -1,4 +1,5 @@
 import * as schemas from '@whitebird/kaz-ast'
+import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerBase } from '@whitebird/kazam-transformer-base'
 import type { z } from 'zod'
 
@@ -32,12 +33,16 @@ type ISchemaHandlers = {
       $value: string
     }) => void
     componentMeta: IComponentMeta
+    options: typeof TransformerTypescript.prototype.options
   }) => THandlerReturnType
 }
 
 export type IHandler<T extends keyof ISchemaHandlers> = ISchemaHandlers[T]
 
-export class TransformerTypescript extends TransformerBase<{ outputFileNameFormat: `${string}.ts` }> {
+export class TransformerTypescript extends TransformerBase<
+  { outputFileNameFormat: `${string}.ts` },
+  { withKazamInternalJsDoc: boolean }
+> {
   private handlers: ISchemaHandlers = {
     ast: handlers.handleKaz,
     computedInstruction: handlers.handleComputedInstruction,
@@ -71,7 +76,7 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
   }
 
   transformAndGenerateMappings(): {
-    [key: string]: { content: string; mapping: Mapping[] }
+    [key: `${string}.ts`]: { content: string; mapping: Mapping[] }
   } {
     for (const componentName in this.input) {
       const component = this.input[componentName]
@@ -83,9 +88,9 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
     }
 
     return Object.entries(this.generatedContent).reduce<{
-      [key: string]: { content: string; mapping: Mapping[] }
+      [key: `${string}.ts`]: { content: string; mapping: Mapping[] }
     }>((acc, [componentName, content]) => {
-      acc[componentName] = {
+      acc[`${componentName}.ts`] = {
         content,
         mapping: this.mappings[componentName] ?? [],
       }
@@ -107,6 +112,7 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
           handle: input => this.handle(input, componentMeta),
           addGeneratedContent: content => this.addGeneratedContent(content, componentMeta),
           componentMeta,
+          options: this.options,
         })
       }
     }
@@ -129,16 +135,29 @@ export class TransformerTypescript extends TransformerBase<{ outputFileNameForma
   }, componentMeta: IComponentMeta): void {
     const currentContent = this.generatedContent[componentMeta.name] ?? ''
 
+    const unformattedValue = typeof content === 'string' ? content : content.$value
+    const value = replaceKazamMagicStrings(unformattedValue, {
+      getComputed(_match, computedName) {
+        return computedName
+      },
+      getState(_match, stateName) {
+        return stateName
+      },
+      setState(_match, _stateName, setter) {
+        return setter
+      },
+    })
+
     if (typeof content === 'string') {
-      this.generatedContent[componentMeta.name] = `${currentContent}${content}`
+      this.generatedContent[componentMeta.name] = `${currentContent}${value}`
     }
     else {
-      this.generatedContent[componentMeta.name] = `${currentContent}${content.$value}`
+      this.generatedContent[componentMeta.name] = `${currentContent}${value}`
       this.mappings[componentMeta.name] = [
         ...(this.mappings[componentMeta.name] ?? []),
         {
           sourceRange: content.$range,
-          generatedRange: [currentContent.length, currentContent.length + content.$value.length],
+          generatedRange: [currentContent.length, currentContent.length + value.length],
         },
       ]
     }

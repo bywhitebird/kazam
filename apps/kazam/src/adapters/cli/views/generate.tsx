@@ -23,12 +23,12 @@ export const GenerateView = (
         ? { error: generateEvents.getLatestReceived('error')!.message }
         : { pending: true },
   )
-  const [writtenPaths, setWrittenPaths] = useState<string[]>([])
+  const [writtenPaths, setWrittenPaths] = useState(new Set<string>())
 
   useLayoutEffect(() => {
     generateEvents.on('pending', () => {
       setStatus({ pending: true })
-      setWrittenPaths([])
+      setWrittenPaths(new Set())
     })
 
     generateEvents.on('success', () => {
@@ -41,7 +41,7 @@ export const GenerateView = (
     })
 
     generateEvents.on('file-written', filePath =>
-      setWrittenPaths(writtenPaths => [...writtenPaths, filePath]),
+      setWrittenPaths(writtenPaths => writtenPaths.add(filePath)),
     )
   }, [])
 
@@ -52,7 +52,7 @@ export const GenerateView = (
   if ('success' in status) {
     return <>
       <Text><Text color="green">✔</Text> Successfully generated components</Text>
-      {writtenPaths.map(writtenPath =>
+      {Array.from(writtenPaths.values()).map(writtenPath =>
         <Text key={writtenPath} color='gray'>{'    '}{path.normalize(writtenPath)}</Text>,
       )}
     </>

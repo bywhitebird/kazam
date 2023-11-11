@@ -36,7 +36,7 @@ const getTransformedOutputFilePath = (
   sourceFilePath: string,
   transformer: Transformer,
   config: Exclude<KazamConfig, unknown[]>,
-  configPath: string,
+  rootDir: string,
 ) => {
   const sourceExtension = `.${sourceFilePath.split('.').slice(-1)[0]}` ?? ''
   const transformedExtension = `.${filePath.split('.').slice(-1)[0]}` ?? ''
@@ -44,7 +44,7 @@ const getTransformedOutputFilePath = (
   const transformerDirectory = getTransformerDirectory(transformer, config)
 
   const outputFilePath = path.resolve(
-    path.dirname(configPath),
+    rootDir,
     transformerDirectory,
     filePath.replace(
       new RegExp(`${sourceExtension.replace('.', '\\.')}${transformedExtension.replace('.', '\\.')}$`),
@@ -59,12 +59,12 @@ const formatResults = (
   transformerResult: TransformerOutput<{ outputFileNameFormat: string }>,
   transformer: Transformer,
   config: Exclude<KazamConfig, unknown[]>,
-  configPath: string,
+  rootDir: string,
 ): Parameters<typeof writeResults>[0] => {
   const formattedTransformerResult = new Map<string, string>()
 
   transformerResult.forEach(({ filePath, content }, sourceFilePath) => {
-    const outputFilePath = getTransformedOutputFilePath(filePath, sourceFilePath, transformer, config, configPath)
+    const outputFilePath = getTransformedOutputFilePath(filePath, sourceFilePath, transformer, config, rootDir)
 
     formattedTransformerResult.set(outputFilePath, content)
   })
@@ -74,7 +74,7 @@ const formatResults = (
 
 const generateForConfig = async (
   config: Exclude<KazamConfig, unknown[]>,
-  configPath: string,
+  rootDir: string,
   fileSystem?: typeof fs | undefined,
 ) => {
   return Promise.all(
@@ -83,7 +83,7 @@ const generateForConfig = async (
 
       const parserOutput = await parser.loadAndParse({
         ...config,
-        configPath,
+        rootDir,
       })
 
       return config.transformers.map((TransformerClass) => {
@@ -92,7 +92,7 @@ const generateForConfig = async (
             return [key, {
               ...value,
               getTransformedOutputFilePath: (filePath: string) =>
-                getTransformedOutputFilePath(filePath, value.sourceAbsoluteFilePath, TransformerClass, config, configPath),
+                getTransformedOutputFilePath(filePath, value.sourceAbsoluteFilePath, TransformerClass, config, rootDir),
             }] as const
           }),
         )
@@ -103,7 +103,7 @@ const generateForConfig = async (
 
         if (fileSystem) {
           writeResults(
-            formatResults(transformerResult, TransformerClass, config, configPath),
+            formatResults(transformerResult, TransformerClass, config, rootDir),
             fileSystem,
           )
         }
@@ -117,7 +117,7 @@ const generateForConfig = async (
 
 export const generate = async (
   config: KazamConfig,
-  configPath: string,
+  rootDir: string,
   fileSystem?: typeof fs | undefined,
 ) => {
   generateEvents.emit('pending', undefined)
@@ -126,7 +126,7 @@ export const generate = async (
     config = [config]
 
   const results = await Promise.all(
-    config.map(config => generateForConfig(config, configPath, fileSystem)),
+    config.map(config => generateForConfig(config, rootDir, fileSystem)),
   )
     .then(results => results.flat())
     .then((results) => {
