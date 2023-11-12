@@ -1,0 +1,15 @@
+diff --git a/package.json b/package.json
+index c28709733c4afc91eaf1597eaece5c16461f53de..b77c13a39e88cbaa12095b93b24b7f002e7c434a 100644
+--- a/package.json
++++ b/package.json
+@@ -16,7 +16,9 @@
+   "files": [
+     "/dist"
+   ],
+-  "bin": "dist/cli.js",
++  "bin": {
++    "edgedb-generate": "dist/cli.js"
++  },
+   "peerDependencies": {
+     "edgedb": "^1.4.0"
+   },
