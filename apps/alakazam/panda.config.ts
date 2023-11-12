@@ -1,4 +1,5 @@
 import { defineConfig } from '@pandacss/dev'
+import { whitebirdPreset } from '@whitebird/ui/panda-preset'
 
 export default defineConfig({
   // Whether to use css reset
@@ -10,25 +11,7 @@ export default defineConfig({
   // Files to exclude
   exclude: [],
 
-  // Useful for theme customization
-  theme: {
-    extend: {},
-
-    // 👇🏻 Define your tokens here
-    tokens: {
-      colors: {
-        primary: { value: '#0FEE0F' },
-        secondary: { value: '#EE0F0F' },
-      },
-      fonts: {
-        body: { value: 'system-ui, sans-serif' },
-      },
-      fontSizes: {
-        sm: { value: '12px' },
-        md: { value: '16px' },
-      },
-    },
-  },
+  presets: [whitebirdPreset],
 
   // The output directory for your css system
   outdir: './src/styled-system',

@@ -3,7 +3,14 @@ import Button from "@whitebird/ui/vue/button"
 </script>
 
 <template>
-  <div>
+  <div
+    :class="css({
+      bg: 'appBackground',
+      color: 'highContrastForeground',
+      height: '100dvh',
+      width: '100dvw',
+    })"
+  >
     test
     <Welcome />
     <NuxtLink :to="{ name: 'welcome-page' }">
