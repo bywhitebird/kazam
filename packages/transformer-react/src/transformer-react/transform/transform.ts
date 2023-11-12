@@ -40,6 +40,9 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
             setState(_match, stateName, setter) {
               return `set${lodash.upperFirst(stateName)}((${stateName}) => { ${setter}; return ${stateName} })`
             },
+            getProp(_match, propName) {
+              return propName
+            },
           })),
           Effect.map(transformed =>
             prettier.format(transformed, {

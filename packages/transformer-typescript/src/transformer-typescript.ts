@@ -146,6 +146,9 @@ export class TransformerTypescript extends TransformerBase<
       setState(_match, _stateName, setter) {
         return setter
       },
+      getProp(_match, propName) {
+        return propName
+      },
     })
 
     if (typeof content === 'string') {

@@ -6,7 +6,7 @@ import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 import StringManipulator from 'magic-string'
 
-type PathType = 'stateSetter' | 'computedGetter' | 'stateGetter'
+type PathType = 'stateSetter' | 'computedGetter' | 'stateGetter' | 'propGetter'
 
 export const transformAst = (
   kazAst: KazAst,
@@ -97,6 +97,9 @@ function getPathType(path: NodePath<Identifier>) {
 
     if (new RegExp(`^ *\\* *${kazamMagicStrings.kazComputedJSDoc.regexp.source} *$`).test(comment.value))
       return 'computed'
+
+    if (new RegExp(`^ *\\* *${kazamMagicStrings.kazPropJSDoc.regexp.source} *$`).test(comment.value))
+      return 'prop'
   }
 
   return undefined
@@ -138,6 +141,13 @@ function addPathToReplace(
       })
       break
     }
+    case 'prop': {
+      pathsToReplace.add({
+        type: 'propGetter',
+        identifierPath: path,
+      })
+      break
+    }
   }
 }
 
@@ -161,7 +171,7 @@ function replacePaths(
 
       const pathsInRange = sortPathsByType(
         findPathsInRange(pathsToReplace, typescriptMappedRange),
-        ['stateGetter', 'computedGetter', 'stateSetter'],
+        ['stateGetter', 'computedGetter', 'propGetter', 'stateSetter'],
       )
 
       const expressionStringManipulator = new StringManipulator(expression.$value)
@@ -323,6 +333,12 @@ function getMagicString(
 
   if (path.type === 'computedGetter') {
     return kazamMagicStrings.getComputed.create(
+      path.identifierPath.node.name,
+    )
+  }
+
+  if (path.type === 'propGetter') {
+    return kazamMagicStrings.getProp.create(
       path.identifierPath.node.name,
     )
   }
