@@ -10,7 +10,8 @@
     "prepare:nuxt": "nuxt prepare",
     "prepare:panda": "panda codegen",
     "prepare:edgedb": "edgedb-generate edgeql-js",
-    "prepare": "npm-run-all prepare:*"
+    "prepare": "npm-run-all prepare:*",
+    "migrate-db": "edgedb migration create && edgedb migrate"
   },
   "devDependencies": {
     "@edgedb/generate": "^0.4.1",
