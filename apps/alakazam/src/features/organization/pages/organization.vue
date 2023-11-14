@@ -43,6 +43,10 @@ async function createProject() {
   })
   await fetchOrganization()
 }
+
+async function openProject(project: { id: string }) {
+  await navigateTo(`/projects/${project.id}`)
+}
 </script>
 
 <template>
@@ -155,6 +159,7 @@ async function createProject() {
 
             cursor: 'pointer',
           })"
+          @click="openProject(project)"
         >
           <h5
             :class="css({
