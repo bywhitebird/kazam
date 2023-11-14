@@ -21,12 +21,24 @@ const editOrganizations = {
 }
 
 async function saveOrganization() {
-  console.log('saveOrganization', editOrganizations.name.value)
   await useFetch('/api/edit-organization', {
     method: 'POST',
     body: {
       organizationId: params.organizationId,
       name: editOrganizations.name.value,
+    },
+  })
+  await fetchOrganization()
+}
+
+async function createProject() {
+  await useFetch('/api/create-project', {
+    method: 'POST',
+    body: {
+      organizationId: params.organizationId,
+      project: {
+        name: 'My project',
+      },
     },
   })
   await fetchOrganization()
@@ -86,6 +98,73 @@ async function saveOrganization() {
         text="Save"
         @click="saveOrganization"
       />
+    </section>
+    <section
+      :class="css({
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'safe start',
+        alignItems: 'safe start',
+        gap: 'small',
+      })"
+    >
+      <header
+        :class="css({
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          width: '100%',
+        })"
+      >
+        <h2
+          :class="css({
+            textStyle: 'heading3',
+          })"
+        >
+          Projects
+        </h2>
+        <Button
+          text="Create project"
+          icon-name="add"
+          size="small"
+          @click="createProject"
+        />
+      </header>
+      <div
+        :class="css({
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          padding: 'medium',
+          gap: 'medium',
+        })"
+      >
+        <button
+          v-for="project in organization?.projects ?? []"
+          :key="project.id"
+          :class="css({
+            display: 'flex',
+            flexDirection: 'column',
+
+            bg: 'uiElementBackground',
+            color: 'highContrastForeground',
+
+            w: '300px',
+            padding: 'medium',
+
+            cursor: 'pointer',
+          })"
+        >
+          <h5
+            :class="css({
+              textStyle: 'label'
+            })"
+          >
+            {{ project.name }}
+          </h5>
+        </button>
+      </div>
     </section>
   </div>
 </template>

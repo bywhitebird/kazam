@@ -35,6 +35,16 @@ module default {
   type Organization {
     required name: str;
     
+    multi projects: Project {
+      constraint exclusive;
+    }
+    
     multi link members := .<organization[is OrganizationMember];
+  }
+
+  type Project {
+    required name: str;
+    
+    single link organization := .<projects[is Organization];
   }
 }
