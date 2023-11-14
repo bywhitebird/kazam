@@ -4,7 +4,7 @@ export const createUser = async (name: string, { github }: {
     login: string
   }
 }) => {
-  await database
+  return await database
     .insert(database.User, {
       name: name,
       ...(
