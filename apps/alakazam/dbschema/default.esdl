@@ -17,5 +17,24 @@ module default {
       readonly := true;
       constraint exclusive;
     }
+    
+    multi link organizations := .<user[is OrganizationMember];
+  }
+
+  type OrganizationMember {
+    required isAdministrator: bool {
+      default := false;
+    }
+    
+    required single user: User;
+    required single organization: Organization;
+
+    constraint exclusive on ((.organization, .user));
+  }
+
+  type Organization {
+    required name: str;
+    
+    multi link members := .<organization[is OrganizationMember];
   }
 }

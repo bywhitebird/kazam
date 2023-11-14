@@ -32,19 +32,12 @@ onMounted(() => {
 <template>
   <div
     :class="css({
-      bg: 'appBackground',
-      color: 'highContrastForeground',
-
-      height: '100dvh',
-      width: '100dvw',
+      height: '100%',
 
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'safe center',
-
-      overflow: 'auto',
-      scrollbarGutter: 'stable',
     })"
   >
     <Button
