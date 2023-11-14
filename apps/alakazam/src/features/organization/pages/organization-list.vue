@@ -35,14 +35,14 @@ async function openOrganization(organization: { id: string }) {
       :class="css({
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        justifyContent: 'safe center',
         padding: 'medium',
       })"
     >
       <h1
         :class="css({
-          textStyle: 'heading3'
+          textStyle: 'heading2'
         })"
       >
         Organizations
@@ -50,9 +50,7 @@ async function openOrganization(organization: { id: string }) {
       <Button
         text="Create organization"
         icon-name="add"
-        :class-name="css({
-          marginLeft: 'auto',
-        })"
+        size="small"
         @click="createOrganization"
       />
     </header>

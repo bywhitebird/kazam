@@ -6,4 +6,9 @@ export default defineNuxtRoutes(__dirname, [
     path: '/organizations',
     file: './pages/organization-list.vue',
   },
+  {
+    name: 'organization-page',
+    path: '/organizations/:organizationId',
+    file: './pages/organization.vue',
+  },
 ])
