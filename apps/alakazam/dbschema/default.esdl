@@ -45,6 +45,40 @@ module default {
   type Project {
     required name: str;
     
+    # multi parsers: Parser;
+    # multi transformers: Transformer;
+    multi sources: ProjectSource {
+      constraint exclusive;
+    };
+    
     single link organization := .<projects[is Organization];
+  }
+
+  # scalar type ParserName extending enum<kaz>;
+  # type Parser {
+  #   required parserName: ParserName;
+  #   parserParameters: json;
+  # }
+
+  # scalar type TransformerName extending enum<react, vue>;
+  # type Transformer {
+  #   required transformerName: TransformerName;
+  #   transformerParameters: json;
+  # }
+
+  type ProjectSource {
+    single githubRepository: GitHubRepository {
+      constraint exclusive;
+    }
+
+    single link project := .<sources[is Project];
+  }
+
+  type GitHubRepository {
+    required url: str {
+      constraint regexp(r'^https:\/\/github\.com.*$');
+    };
+    
+    single link projectSource := .<githubRepository[is ProjectSource];
   }
 }

@@ -16,6 +16,7 @@
   "devDependencies": {
     "@edgedb/generate": "^0.4.1",
     "@nuxt/devtools": "latest",
+    "@octokit/rest": "^20.0.2",
     "@pandacss/dev": "^0.14.0",
     "@whitebird/ui": "workspace:*",
     "edgedb": "^1.4.1",
