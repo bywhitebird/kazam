@@ -1,6 +1,6 @@
 import { getOrganization } from "../organization/get-organization"
 
-export const createNewProject = async (
+export const createProject = async (
   { organization, project, user }:
     {
       project: { name: string }

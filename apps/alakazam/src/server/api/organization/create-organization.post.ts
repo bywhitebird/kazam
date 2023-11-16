@@ -1,8 +1,10 @@
-import { createNewOrganizations } from "~/server/handlers/organization/create-new-organization"
+import { createOrganization } from "~/server/handlers/organization/create-organization"
 import * as valibot from 'valibot'
 
 const CreateNewOrganizationsSchema = valibot.object({
-  name: valibot.string(),
+  organization: valibot.object({
+    name: valibot.string(),
+  }),
 })
 
 export default defineEventHandler(async (event) => {
@@ -11,8 +13,8 @@ export default defineEventHandler(async (event) => {
 
   const parsedBody = valibot.parse(CreateNewOrganizationsSchema, body)
 
-  return createNewOrganizations({
-    organization: { name: parsedBody.name },
+  return createOrganization({
+    organization: { name: parsedBody.organization.name },
     user: { id: session.user.id },
   })
 })

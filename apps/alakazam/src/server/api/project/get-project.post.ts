@@ -3,7 +3,9 @@ import * as valibot from "valibot"
 import { getProject } from "~/server/handlers/project/get-project"
 
 const GetProjectSchema = valibot.object({
-  projectId: valibot.string(),
+  project: valibot.object({
+    id: valibot.string(),
+  }),
 })
 
 export default defineEventHandler(async (event) => {
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const parsedBody = valibot.parse(GetProjectSchema, body)
 
   return await getProject({
-    projectId: parsedBody.projectId,
+    projectId: parsedBody.project.id,
     userId: session.user.id,
   })
 })

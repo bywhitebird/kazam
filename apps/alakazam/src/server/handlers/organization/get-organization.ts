@@ -1,5 +1,5 @@
-export const getOrganization = ({ userId, organizationId }: { userId: string, organizationId: string }) => {
-  return database
+export const getOrganization = ({ userId, organizationId }: { userId: string, organizationId: string }) =>
+  database
     .select(
       database.Organization,
       (databaseOrganization) => ({
@@ -17,4 +17,3 @@ export const getOrganization = ({ userId, organizationId }: { userId: string, or
     )
     .run(database.client)
     .then((organizations) => organizations[0] ?? null)
-}

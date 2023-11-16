@@ -3,8 +3,10 @@ import * as valibot from "valibot"
 import { editOrganization } from "~/server/handlers/organization/edit-organization"
 
 const EditOrganizationSchema = valibot.object({
-  organizationId: valibot.string(),
-  name: valibot.string(),
+  organization: valibot.object({
+    id: valibot.string(),
+    name: valibot.optional(valibot.string()),
+  }),
 })
 
 export default defineEventHandler(async (event) => {
@@ -14,8 +16,8 @@ export default defineEventHandler(async (event) => {
   const parsedBody = valibot.parse(EditOrganizationSchema, body)
 
   return await editOrganization({
-    organizationId: parsedBody.organizationId,
-    organizationName: parsedBody.name,
+    organizationId: parsedBody.organization.id,
+    organizationName: parsedBody.organization.name,
     userId: session.user.id
   })
 })

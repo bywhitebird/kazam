@@ -30,6 +30,12 @@ export default defineNuxtModule({
         path: middlewarePath,
       })
     }
+
+    addComponentsDir({
+      path: resolve('../shared/components'),
+    })
+
+    addImportsDir(resolve('../shared/composables'))
   },
 })
 

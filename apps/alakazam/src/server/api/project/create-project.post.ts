@@ -1,8 +1,10 @@
 import * as valibot from "valibot"
-import { createNewProject } from "~/server/handlers/project/create-project"
+import { createProject } from "~/server/handlers/project/create-project"
 
 const CreateProjectSchema = valibot.object({
-  organizationId: valibot.string(),
+  organization: valibot.object({
+    id: valibot.string(),
+  }),
   project: valibot.object({
     name: valibot.string(),
   }),
@@ -14,8 +16,8 @@ export default defineEventHandler(async (event) => {
 
   const parsedBody = valibot.parse(CreateProjectSchema, body)
 
-  return await createNewProject({
-    organization: { id: parsedBody.organizationId },
+  return await createProject({
+    organization: { id: parsedBody.organization.id },
     project: { name: parsedBody.project.name },
     user: { id: session.user.id },
   })

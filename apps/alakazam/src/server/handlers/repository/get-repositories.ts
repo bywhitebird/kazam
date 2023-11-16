@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/rest';
 
-export const getAvailableRepository = async (
+export const getRepositoriesByToken = async (
   githubAccessToken: string,
 ) => {
   const octokit = new Octokit({

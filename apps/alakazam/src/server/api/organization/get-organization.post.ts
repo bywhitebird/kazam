@@ -3,7 +3,9 @@ import * as valibot from "valibot"
 import { getOrganization } from "~/server/handlers/organization/get-organization"
 
 const GetOrganizationSchema = valibot.object({
-  organizationId: valibot.string(),
+  organization: valibot.object({
+    id: valibot.string(),
+  }),
 })
 
 export default defineEventHandler(async (event) => {
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
   const parsedBody = valibot.parse(GetOrganizationSchema, body)
 
   return await getOrganization({
-    organizationId: parsedBody.organizationId,
+    organizationId: parsedBody.organization.id,
     userId: session.user.id
   })
 })

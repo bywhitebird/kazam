@@ -2,9 +2,11 @@ import * as valibot from "valibot"
 import { editProject } from "~/server/handlers/project/edit-project"
 
 const EditProjectSchema = valibot.object({
-  projectId: valibot.string(),
-  name: valibot.string(),
-  repositoryUrl: valibot.string(),
+  project: valibot.object({
+    id: valibot.string(),
+    name: valibot.optional(valibot.string()),
+    repositoryUrl: valibot.optional(valibot.string()),
+  }),
 })
 
 export default defineEventHandler(async (event) => {
@@ -15,8 +17,8 @@ export default defineEventHandler(async (event) => {
 
   return await editProject({
     userId: session.user.id,
-    projectId: parsedBody.projectId,
-    projectName: parsedBody.name,
-    repositoryUrl: parsedBody.repositoryUrl,
+    projectId: parsedBody.project.id,
+    projectName: parsedBody.project.name,
+    repositoryUrl: parsedBody.project.repositoryUrl,
   })
 })
