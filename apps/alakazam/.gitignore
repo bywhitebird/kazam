@@ -26,3 +26,6 @@ logs
 # Panda
 styled-system
 styled-system-static
+
+# EdgeDB
+dbschema/edgeql-js

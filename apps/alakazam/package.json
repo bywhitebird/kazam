@@ -6,19 +6,27 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "prepare": "panda codegen"
-  },
-  "dependencies": {
-    "@whitebird/ui": "workspace:*"
+    "postinstall": "pnpm prepare",
+    "prepare:nuxt": "nuxt prepare",
+    "prepare:panda": "panda codegen",
+    "prepare:edgedb": "edgedb-generate edgeql-js",
+    "prepare": "npm-run-all prepare:*",
+    "migrate-db": "edgedb migration create && edgedb migrate && pnpm prepare:edgedb"
   },
   "devDependencies": {
+    "@edgedb/generate": "^0.4.1",
     "@nuxt/devtools": "latest",
+    "@octokit/rest": "^20.0.2",
     "@pandacss/dev": "^0.14.0",
+    "@whitebird/ui": "workspace:*",
+    "edgedb": "^1.4.1",
     "eslint-plugin-vue": "^9.17.0",
     "glob": "^10.3.4",
+    "npm-run-all": "^4.1.5",
     "nuxt": "^3.7.1",
     "nuxt-auth-utils": "^0.0.5",
-    "nuxt-typed-router": "^3.3.1"
+    "nuxt-typed-router": "^3.3.1",
+    "valibot": "^0.20.1",
+    "vue": "^3.3.8"
   }
 }

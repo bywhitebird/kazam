@@ -5,7 +5,8 @@ declare module '#auth-utils' {
       | {
         provider: 'github'
         token: string
-        id: number
+        githubId: number
+        id: string
         login: string
         name: string
         avatarUrl: string

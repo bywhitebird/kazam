@@ -45,7 +45,8 @@
     },
     "patchedDependencies": {
       "ink@4.4.1": "patches/ink@4.4.1.patch",
-      "@storybook/react-vite@7.5.1": "patches/@storybook__react-vite@7.5.1.patch"
+      "@storybook/react-vite@7.5.1": "patches/@storybook__react-vite@7.5.1.patch",
+      "@edgedb/generate@0.4.1": "patches/@edgedb__generate@0.4.1.patch"
     }
   }
 }

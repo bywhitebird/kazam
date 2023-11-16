@@ -1,6 +1,6 @@
 import {
   addComponentsDir, addImportsDir, defineNuxtModule, extendPages,
-  createResolver, loadNuxtConfig, resolveFiles,
+  createResolver, loadNuxtConfig, resolveFiles, addRouteMiddleware,
 } from '@nuxt/kit'
 import type { NuxtPage } from '@nuxt/schema'
 import jiti from 'jiti'
@@ -19,6 +19,23 @@ export default defineNuxtModule({
       const routes = getRoutes(file).default
       defineNuxtFeature(resolve(file, '..'), routes)
     }
+
+    const sharedMiddlewarePaths = await resolveFiles(__dirname, '../shared/middlewares/**/*.ts')
+
+    for (const middlewarePath of sharedMiddlewarePaths) {
+      const middlewareName = middlewarePath.match(/\/middlewares\/([^\/]+)\.ts$/)![1]
+
+      addRouteMiddleware({
+        name: middlewareName,
+        path: middlewarePath,
+      })
+    }
+
+    addComponentsDir({
+      path: resolve('../shared/components'),
+    })
+
+    addImportsDir(resolve('../shared/composables'))
   },
 })
 

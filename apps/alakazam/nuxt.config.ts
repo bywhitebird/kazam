@@ -33,7 +33,22 @@ export default defineNuxtConfig({
         from: '~/styled-system/css',
         imports: ['css'],
       },
+      {
+        from: '~/shared/utils/database',
+        imports: ['database'],
+      },
     ],
+  },
+
+  nitro: {
+    imports: {
+      presets: [
+        {
+          from: '~/shared/utils/database',
+          imports: ['database'],
+        },
+      ]
+    },
   },
 
   build: {
