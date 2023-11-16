@@ -4,6 +4,7 @@ export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstru
   addImport({
     namedImports: [
       { name: 'ref' },
+      { name: 'unref' },
     ],
     path: 'vue',
   })
@@ -12,5 +13,5 @@ export const handleStateInstruction: IHandler<'stateInstruction'> = (stateInstru
     stateInstruction.type === undefined
       ? ''
       : `<${stateInstruction.type.$value}>`
-  }(${stateInstruction.defaultValue !== undefined ? stateInstruction.defaultValue.expression.$value : ''})`
+  }(unref(${stateInstruction.defaultValue !== undefined ? stateInstruction.defaultValue.expression.$value : ''}))`
 }

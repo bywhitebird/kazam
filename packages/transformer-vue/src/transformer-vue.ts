@@ -102,7 +102,7 @@ export class TransformerVue extends TransformerBase<{
             return `${stateName}.value`
           },
           setState(_match, stateName, setter) {
-            return `${stateName}.value = ((${stateName}) => { ${setter}; return ${stateName} })(${stateName}.value)`
+            return `${stateName}.value = ((${stateName}) => { ${setter}; return ${stateName} })(ref(unref(${stateName})))`
           },
           getProp(_match, propName) {
             return `${propName}.value`
