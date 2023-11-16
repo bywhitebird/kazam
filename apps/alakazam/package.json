@@ -26,6 +26,7 @@
     "nuxt": "^3.7.1",
     "nuxt-auth-utils": "^0.0.5",
     "nuxt-typed-router": "^3.3.1",
-    "valibot": "^0.20.1"
+    "valibot": "^0.20.1",
+    "vue": "^3.3.8"
   }
 }
