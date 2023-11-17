@@ -60,7 +60,13 @@ export default defineNuxtConfig({
       github: {
         clientId: process.env.NUXT_OAUTH_GITHUB_CLIENT_ID,
         clientSecret: process.env.NUXT_OAUTH_GITHUB_CLIENT_SECRET,
-      }
-    }
-  }
+      },
+    },
+    github: {
+      webhookSecret: process.env.NUXT_GITHUB_WEBHOOK_SECRET,
+      webhookUrl: process.env.NODE_ENV === 'development'
+        ? undefined
+        : process.env.NUXT_GITHUB_WEBHOOK_URL,
+    },
+  },
 })
