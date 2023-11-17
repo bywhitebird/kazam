@@ -11,14 +11,41 @@ const EditProjectSchema = valibot.object({
 
 export default defineEventHandler(async (event) => {
   const session = await getUserSession(event)
+  const configuration = useRuntimeConfig()
+
   const body = await readBody(event)
 
   const parsedBody = valibot.parse(EditProjectSchema, body)
 
-  return await editProject({
-    userId: session.user.id,
-    projectId: parsedBody.project.id,
-    projectName: parsedBody.project.name,
-    repositoryUrl: parsedBody.project.repositoryUrl,
-  })
+  const url = new URL(
+    configuration.github.webhookUrl !== undefined && configuration.github.webhookUrl !== ''
+      ? configuration.github.webhookUrl
+      : configuration.ngrok.url
+  )
+  const webhookUrl = `${url.origin}/api/handle-github-webhook`
+
+  let editProjectParameters: Parameters<typeof editProject>[0] = {
+    user: { id: session.user.id },
+    project: {
+      id: parsedBody.project.id,
+      name: parsedBody.project.name,
+    },
+  }
+
+  if (parsedBody.project.repositoryUrl) {
+    editProjectParameters = {
+      ...editProjectParameters,
+      repository: {
+        url: parsedBody.project.repositoryUrl,
+      },
+      webhook: {
+        url: webhookUrl,
+        secret: configuration.github.webhookSecret,
+        events: ['push'],
+      },
+      githubAccessToken: session.user.token,
+    }
+  }
+
+  return await editProject(editProjectParameters)
 })
