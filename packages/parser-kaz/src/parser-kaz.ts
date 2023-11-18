@@ -7,14 +7,18 @@ import { glob } from 'glob'
 
 import { transformAst } from './transform-ast'
 
-export class ParserKaz extends ParserBase<{
-  pathRelativeToInputPath: string
-  inputPath: string
-}[]> {
-  async load({ input, rootDir }: Parameters<ParserBase<{
+const _ParserKaz = ParserBase<
+  {
     pathRelativeToInputPath: string
     inputPath: string
-  }[]>['load']>[0]) {
+  }[],
+  { extension: '.kaz' }
+>
+
+export class ParserKaz extends _ParserKaz {
+  public metadata = { extension: '.kaz' as const }
+
+  async load({ input, rootDir }: Parameters<InstanceType<typeof _ParserKaz>['load']>[0]) {
     const normalizedInput = input.map(input => path.normalize(
       path.isAbsolute(input)
         ? input
@@ -41,10 +45,7 @@ export class ParserKaz extends ParserBase<{
       inputPath: string
     }[],
   ) {
-    const kazAsts: Awaited<ReturnType<ParserBase<{
-      pathRelativeToInputPath: string
-      inputPath: string
-    }[]>['parse']>> = {}
+    const kazAsts: Awaited<ReturnType<InstanceType<typeof _ParserKaz>['parse']>> = {}
 
     for (const { inputPath, pathRelativeToInputPath } of kazFiles) {
       const filePath = path.join(inputPath, pathRelativeToInputPath)

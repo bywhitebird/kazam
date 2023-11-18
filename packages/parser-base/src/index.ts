@@ -6,11 +6,17 @@ interface ParserConfig {
   rootDir: string
 }
 
-export abstract class ParserBase<LoadResult> {
+interface BaseMetadata {
+  extension: `.${string}`
+}
+
+export abstract class ParserBase<LoadResult, Metadata extends BaseMetadata> {
+  abstract metadata: Metadata
+
   abstract load(config: ParserConfig): Promise<LoadResult>
   abstract parse(loadResult: LoadResult, config: ParserConfig): Promise<Record<string, Omit<TransformerInput[string], 'getTransformedOutputFilePath'>>>
 
-  async loadAndParse(config: ParserConfig): ReturnType<ParserBase<LoadResult>['parse']> {
+  async loadAndParse(config: ParserConfig): ReturnType<ParserBase<LoadResult, Metadata>['parse']> {
     return this.load(config).then(loadResult => this.parse(loadResult, config))
   }
 }
