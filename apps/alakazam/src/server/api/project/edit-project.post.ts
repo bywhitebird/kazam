@@ -5,7 +5,10 @@ const EditProjectSchema = valibot.object({
   project: valibot.object({
     id: valibot.string(),
     name: valibot.optional(valibot.string()),
-    repositoryUrl: valibot.optional(valibot.string()),
+    repository: valibot.optional(valibot.object({
+      url: valibot.string(),
+      rootDir: valibot.optional(valibot.string()),
+    })),
   }),
 })
 
@@ -32,11 +35,12 @@ export default defineEventHandler(async (event) => {
     },
   }
 
-  if (parsedBody.project.repositoryUrl) {
+  if (parsedBody.project.repository?.url) {
     editProjectParameters = {
       ...editProjectParameters,
       repository: {
-        url: parsedBody.project.repositoryUrl,
+        ...parsedBody.project.repository,
+        url: parsedBody.project.repository.url,
       },
       webhook: {
         url: webhookUrl,

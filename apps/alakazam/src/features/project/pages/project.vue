@@ -19,12 +19,16 @@ const { repositories } = useGitHubRepositories()
 
 const editProject = {
   repositoryUrl: ref<string>(),
+  rootDir: ref<string>(),
   projectName: ref<string>(),
 }
 
 const saveProject = () => _saveProject({
   name: editProject.projectName.value,
-  repositoryUrl: editProject.repositoryUrl.value,
+  repository: editProject.repositoryUrl.value ? {
+    url: editProject.repositoryUrl.value,
+    rootDir: editProject.rootDir.value,
+  } : undefined,
 })
 </script>
 
@@ -61,6 +65,15 @@ const saveProject = () => _saveProject({
         })) ?? []"
         placeholder="Select a repository"
         @change="(value: string) => editProject.repositoryUrl.value = value"
+      />
+
+      <label :class="css({ textStyle: 'label' })">
+        Root directory
+      </label>
+      <TextInput
+        placeholder="Root directory"
+        :value="project?.sources.at(-1)?.githubRepository?.rootDir"
+        @change="(value: string) => editProject.rootDir.value = value"
       />
 
       <Button

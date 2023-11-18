@@ -78,6 +78,9 @@ module default {
     required url: str {
       constraint regexp(r'^https:\/\/github\.com.*$');
     };
+    required rootDir: str {
+      default := '/';
+    };
     
     single link projectSource := .<githubRepository[is ProjectSource];
   }

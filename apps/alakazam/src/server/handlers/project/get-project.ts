@@ -16,6 +16,7 @@ export const getProject = (
         sources: {
           githubRepository: {
             url: true,
+            rootDir: true,
           },
         },
         filter_single: database.op(databaseProject.id, '=', database.uuid(projectId)),

@@ -13,7 +13,10 @@ export const useProject = ({ id: projectId }: { id: string }) => {
 
   async function saveProject(data: {
     name?: string
-    repositoryUrl?: string
+    repository?: {
+      url: string
+      rootDir?: string
+    }
   }) {
     await useFetch('/api/edit-project', {
       method: 'POST',
@@ -21,7 +24,10 @@ export const useProject = ({ id: projectId }: { id: string }) => {
         project: {
           id: projectId,
           name: data.name,
-          repositoryUrl: data.repositoryUrl,
+          repository: data.repository ? {
+            url: data.repository.url,
+            rootDir: data.repository.rootDir,
+          } : undefined,
         },
       },
     })
