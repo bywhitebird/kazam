@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
       const body = await readBody(event)
       const parsedBody = valibot.parse(valibot.object({
         repository: valibot.object({
-          id: valibot.string(),
+          id: valibot.number(),
           full_name: valibot.string(),
           html_url: valibot.string(),
         }),
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
       return await updateComponents({
         repository: {
-          id: parsedBody.repository.id,
+          id: parsedBody.repository.id.toString(),
           name: parsedBody.repository.full_name,
           url: parsedBody.repository.html_url,
         },

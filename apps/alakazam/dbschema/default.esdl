@@ -45,8 +45,11 @@ module default {
   type Project {
     required name: str;
     
-    # multi parsers: Parser;
-    # multi transformers: Transformer;
+    multi generatedComponents: File {
+      constraint exclusive;
+    }
+    multi parsers: Parser;
+    multi transformers: Transformer;
     multi sources: ProjectSource {
       constraint exclusive;
     };
@@ -54,17 +57,22 @@ module default {
     single link organization := .<projects[is Organization];
   }
 
-  # scalar type ParserName extending enum<kaz>;
-  # type Parser {
-  #   required parserName: ParserName;
-  #   parserParameters: json;
-  # }
+  type File {
+    required path: str;
+    required content: str;
+  }
 
-  # scalar type TransformerName extending enum<react, vue>;
-  # type Transformer {
-  #   required transformerName: TransformerName;
-  #   transformerParameters: json;
-  # }
+  scalar type ParserName extending enum<kaz>;
+  type Parser {
+    required parserName: ParserName;
+    parserParameters: json;
+  }
+
+  scalar type TransformerName extending enum<react, vue>;
+  type Transformer {
+    required transformerName: TransformerName;
+    transformerParameters: json;
+  }
 
   type ProjectSource {
     single githubRepository: GitHubRepository {
