@@ -1,9 +1,9 @@
 import * as schemas from '@whitebird/kaz-ast'
 import type { Effect } from 'effect'
-import { upperFirst } from 'lodash'
 import type { z } from 'zod'
 
 import * as importedHandlers from './handlers'
+import { upperFirst } from '../../../utils/upperFirst'
 import type { ImportState } from '../states/import-state'
 import type { MetadataState } from '../states/metadata-state'
 import type { TransformService } from '../transform-service'

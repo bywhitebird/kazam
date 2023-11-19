@@ -1,6 +1,6 @@
 import { Effect } from 'effect'
-import { upperFirst } from 'lodash'
 
+import { upperFirst } from '../../../../utils/upperFirst'
 import type { Handle } from '../handle'
 
 export const handleTemplateTagEventAttribute: Handle<'templateTagEventAttribute', string> = templateTagEventAttribute =>
