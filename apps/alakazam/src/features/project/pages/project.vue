@@ -11,7 +11,7 @@ definePageMeta({
 
 const route = useRoute('project-page')
 
-const { project, saveProject: _saveProject } = useProject({
+const { project, saveProject: _saveProject, downloadComponents } = useProject({
   id: route.params.projectId,
 })
 
@@ -80,6 +80,19 @@ const saveProject = () => _saveProject({
         variant="secondary"
         text="Save"
         @click="saveProject()"
+      />
+    </section>
+
+    <section>
+      <h3 :class="css({ textStyle: 'heading3' })">
+        Components
+      </h3>
+
+      <Button
+        variant="secondary"
+        text="Download components"
+        icon-name="download"
+        @click="downloadComponents()"
       />
     </section>
   </div>
