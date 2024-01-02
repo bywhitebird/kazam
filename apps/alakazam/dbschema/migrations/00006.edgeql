@@ -1,20 +1,9 @@
-CREATE MIGRATION m1k4tktpmvqymbey3y2ijm44i4s7hzjhkn66vott33qgc4rjcrgs4q
-    ONTO m1vtia3ndouaa5lznte3irn4gztu34wxl2ceqqmyie4wksjsfvgk3a
+CREATE MIGRATION m13sgpaddg6ajliirqdy2lnma5csyktt2d2bgv7ydvmcxu2tlsghwa
+    ONTO m1iuvwwqmcni6ghyokeqli7ybesq7aih6j57upscxcqxsbnhkcozzq
 {
-  CREATE SCALAR TYPE default::ParserName EXTENDING enum<kaz>;
-  CREATE TYPE default::Parser {
-      CREATE REQUIRED PROPERTY parserName: default::ParserName;
-      CREATE PROPERTY parserParameters: std::json;
-  };
-  ALTER TYPE default::Project {
-      CREATE MULTI LINK parsers: default::Parser;
-  };
-  CREATE SCALAR TYPE default::TransformerName EXTENDING enum<react, vue>;
-  CREATE TYPE default::Transformer {
-      CREATE REQUIRED PROPERTY transformerName: default::TransformerName;
-      CREATE PROPERTY transformerParameters: std::json;
-  };
-  ALTER TYPE default::Project {
-      CREATE MULTI LINK transformers: default::Transformer;
+  ALTER TYPE projects::GitHubRepository {
+      CREATE REQUIRED PROPERTY installationId: std::str {
+          SET REQUIRED USING (<std::str>'1');
+      };
   };
 };

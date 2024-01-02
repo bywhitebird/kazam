@@ -24,10 +24,10 @@ export const useProject = ({ id: projectId }: { id: string }) => {
         project: {
           id: projectId,
           name: data.name,
-          repository: data.repository ? {
+          repositories: data.repository ? [{
             url: data.repository.url,
             rootDir: data.repository.rootDir,
-          } : undefined,
+          }] : undefined,
         },
       },
     })

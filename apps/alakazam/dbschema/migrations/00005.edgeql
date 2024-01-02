@@ -1,9 +1,9 @@
-CREATE MIGRATION m1vtia3ndouaa5lznte3irn4gztu34wxl2ceqqmyie4wksjsfvgk3a
-    ONTO m13upjhjcylvj2xg6tkbukfqbqzmwst2awsnnbreevejh5wkzhv3ja
+CREATE MIGRATION m1iuvwwqmcni6ghyokeqli7ybesq7aih6j57upscxcqxsbnhkcozzq
+    ONTO m1vvb2mc53ktpxioq6kad57atda5il2yoskyu3jhutvbrqgcohzccq
 {
-  ALTER TYPE default::GitHubRepository {
-      CREATE REQUIRED PROPERTY rootDir: std::str {
-          SET default := '/';
+  ALTER TYPE organizations::Organization {
+      ALTER LINK users {
+          DROP CONSTRAINT std::exclusive;
       };
   };
 };

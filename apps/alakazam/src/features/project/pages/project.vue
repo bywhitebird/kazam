@@ -61,7 +61,7 @@ const saveProject = () => _saveProject({
         :values="repositories?.map(repository => ({
           value: repository.url,
           label: repository.full_name ?? repository.name,
-          selected: repository.url === project?.sources.at(-1)?.githubRepository?.url,
+          selected: repository.url === project?.sources.at(-1)?.url,
         })) ?? []"
         placeholder="Select a repository"
         @change="(value: string) => editProject.repositoryUrl.value = value"

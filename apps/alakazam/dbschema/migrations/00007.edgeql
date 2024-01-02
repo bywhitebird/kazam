@@ -1,13 +1,7 @@
-CREATE MIGRATION m1qszpl7nzfg7jxok5to4rdevznswvq7zyk3cpjw5ayz6ihyoz7bva
-    ONTO m1k4tktpmvqymbey3y2ijm44i4s7hzjhkn66vott33qgc4rjcrgs4q
+CREATE MIGRATION m13ihmvxx6c3hup65iv5y5q6pli3y6t5gjzm4bgemvgultjexr2tnq
+    ONTO m13sgpaddg6ajliirqdy2lnma5csyktt2d2bgv7ydvmcxu2tlsghwa
 {
-  CREATE TYPE default::File {
-      CREATE REQUIRED PROPERTY content: std::str;
-      CREATE REQUIRED PROPERTY path: std::str;
-  };
-  ALTER TYPE default::Project {
-      CREATE MULTI LINK generatedComponents: default::File {
-          CREATE CONSTRAINT std::exclusive;
-      };
+  ALTER TYPE projects::GitHubRepository {
+      DROP PROPERTY installationId;
   };
 };
