@@ -14,9 +14,8 @@ export const handleTemplateTag: Handle<'templateTag', string> = templateTag =>
     return String.prototype.concat(
       '<',
       isComponent
-        ? `${templateTag.tagName.$value} `
-        :
-      ' ',
+        ? `${templateTag.tagName.$value} ` // TODO: We may need to perform some operations to get this to work
+        : `${templateTag.tagName.$value} `,
       yield * _(
         pipe(
           templateTag.attributes,

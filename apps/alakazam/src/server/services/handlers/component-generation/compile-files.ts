@@ -1,8 +1,9 @@
-import path from 'node:path';
 import FS from 'memfs';
 import * as kazam from "kazam"
 import { findParsersByNames } from './find-parsers';
 import { findNameByTransformer, findTransformersByNames } from './find-transformers';
+import { TransformerAlakazam } from '../../transformers/transformer-alakazam/transformer-alakazam';
+import { compileAlakazamClientFiles } from './compile-alakazam-client-files';
 
 export const compileFiles = async ({
   folders,
@@ -19,19 +20,16 @@ export const compileFiles = async ({
   }[] | undefined> = {} as any
 
   for (const files of folders) {
-    const fsId = Math.random().toString(36).substring(7)
-    const fs = FS.fs
-
-    for (let { path: filePath, content } of files) {
-      if (!filePath.startsWith('/')) {
-        filePath = '/' + filePath
-      }
-
-      await fs.promises.mkdir(path.dirname(filePath), { recursive: true })
-      await fs.promises.writeFile(filePath, content, {
-        encoding: 'base64',
-      })
-    }
+    const fs = FS.Volume.fromJSON(
+      Object.fromEntries(
+        files.map(file => 
+          [
+            `${!file.path.startsWith('/') ? '/' : ''}${file.path}`,
+            Buffer.from(file.content, 'base64'),
+          ] as const
+        )
+      )
+    )
 
     for (const transformer of transformers) {
       const transformerName = findNameByTransformer(transformer)
@@ -40,27 +38,35 @@ export const compileFiles = async ({
         throw new Error('Transformer not found')
       }
 
-      console.log({
-        parsers,
-        transformers: [transformer],
-        input: files.map(({ path }) => path),
-        output: `output-${fsId}`,
-        rootDir: '/',
-      })
-
       const components = await kazam.generate({
         parsers,
         transformers: [transformer],
         input: files.map(({ path }) => path),
-        output: `output-${fsId}`,
+        output: 'output',
         rootDir: '/',
-      // @ts-expect-error LightningFS is not compatible with NodeFS, but it's good enough for our purposes
+      // @ts-expect-error MemFS is not compatible with NodeFS, but it's good enough for our purposes
       }, fs)
 
       generatedComponents[transformerName] ??= []
 
       generatedComponents[transformerName]!.push(
         ...components.flatMap(component => Array.from(component.values()))
+      )
+    }
+  }
+
+  if (transformers.includes(TransformerAlakazam)) {
+    const alakazamClientComponents = await compileAlakazamClientFiles({
+      folders,
+      parsers,
+      transformers,
+    })
+
+    for (const [transformerName, components] of Object.entries(alakazamClientComponents)) {
+      generatedComponents[transformerName as keyof typeof generatedComponents] ??= []
+
+      generatedComponents[transformerName as keyof typeof generatedComponents]!.push(
+        ...components ?? [],
       )
     }
   }

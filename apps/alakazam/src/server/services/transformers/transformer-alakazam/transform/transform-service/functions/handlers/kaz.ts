@@ -70,7 +70,7 @@ export const handleKaz: Handle<'ast', string>
           ),
         ),
         '</>\`)',
-        '}',
+        '}\n',
         'render(',
         'h(() => Component(PROPS_ACCESSOR)),',
         'document.querySelector(SELECTOR)',
