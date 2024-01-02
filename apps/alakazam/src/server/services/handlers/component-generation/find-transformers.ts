@@ -1,11 +1,13 @@
 import type { TransformerBase } from "@whitebird/kazam-transformer-base"
 import { TransformerReact } from "@whitebird/kazam-transformer-react"
 import { TransformerVue } from "@whitebird/kazam-transformer-vue"
+import { TransformerAlakazam } from "../../transformers/transformer-alakazam/transformer-alakazam"
 
 const availableTransformerNames = db.transformations.TransformerName.__values__
 const transformers = {
   react: TransformerReact,
   vue: TransformerVue,
+  alakazam: TransformerAlakazam,
 } satisfies Record<typeof availableTransformerNames[number], typeof TransformerBase<any, any>>
 
 export const findTransformersByNames = (names: (keyof typeof transformers)[]) => {

@@ -6,7 +6,7 @@ module transformations {
     optional parserParameters: json;
   }
 
-  scalar type TransformerName extending enum<react, vue>;
+  scalar type TransformerName extending enum<react, vue, alakazam>;
   type Transformer {
     # Properties
     required transformerName: TransformerName;
