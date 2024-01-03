@@ -21,15 +21,15 @@ export const handleTemplateTagAttribute: Handle<'templateTagAttribute', string> 
 
       if (templateTagAttribute.name.$value === 'style') {
         if (isStringValue)
-          return `{{ cssText: "${value}" }}`
+          return `\${{ cssText: "${value}" }}`
 
-        return `{{ cssText: ${value} }}`
+        return `\${{ cssText: ${value} }}`
       }
 
       if (isStringValue)
         return `"${value}"`
 
-      return `{${value}}`
+      return `\${${value}}`
     })
 
     const getValue = () => Effect.gen(function* () {

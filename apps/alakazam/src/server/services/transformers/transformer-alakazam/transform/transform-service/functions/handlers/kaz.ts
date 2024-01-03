@@ -2,19 +2,25 @@ import { Effect, pipe } from 'effect'
 
 import { TransformService } from '../../transform-service'
 import type { Handle } from '../handle'
+import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
 
 export const handleKaz: Handle<'ast', string>
   = kaz => Effect.gen(function* (_) {
     const transformService = yield * _(TransformService)
 
     yield * _(transformService.addImport(
-      'namespaceImport',
-      { path: 'https://esm.sh/preact', alias: 'h' },
+      'namedImport',
+      { path: 'https://esm.sh/preact', name: 'h' },
     ))
 
     yield * _(transformService.addImport(
-      'namespaceImport',
-      { path: 'https://esm.sh/preact', alias: 'render' },
+      'namedImport',
+      { path: 'https://esm.sh/preact', name: 'render' },
+    ))
+
+    yield * _(transformService.addImport(
+      'namedImport',
+      { path: 'https://esm.sh/preact', name: 'Fragment' },
     ))
 
     yield * _(transformService.addImport(
@@ -35,7 +41,6 @@ export const handleKaz: Handle<'ast', string>
       transformService.handle,
     ))
     const propsDeclaration = props.map(prop => prop.declaration).join(', ')
-    const propsType = props.map(prop => prop.type).join(', ')
 
     const otherInstructions = (
       kaz.instructions.filter(instruction => instruction.$type !== 'ImportInstruction' && instruction.$type !== 'PropInstruction') as
@@ -47,7 +52,7 @@ export const handleKaz: Handle<'ast', string>
         'const html = htm.bind(h);',
         'const Component = (',
         props.length > 0
-          ? `{ ${propsDeclaration} }: { ${propsType} }`
+          ? `{ ${propsDeclaration} }`
           : '',
         ') => {',
         yield * _(
@@ -59,7 +64,7 @@ export const handleKaz: Handle<'ast', string>
             Effect.map(instructions => instructions.join(';\n')),
           ),
         ),
-        '\nreturn (html\`<>',
+        '\nreturn (html\`<Fragment>',
         yield * _(
           pipe(
             kaz.template,
@@ -69,11 +74,11 @@ export const handleKaz: Handle<'ast', string>
             Effect.map(template => template.join('\n')),
           ),
         ),
-        '</>\`)',
+        '</Fragment>\`)',
         '}\n',
         'render(',
-        'h(() => Component(PROPS_ACCESSOR)),',
-        'document.querySelector(SELECTOR)',
+        `h(() => Component(${kazamMagicStrings.alakazamLiveComponentsPropsAccessor.create()})),`,
+        `document.querySelector(${kazamMagicStrings.alakazamLiveComponentsSelector.create()})`,
         ')',
       ),
       // TODO: remove 

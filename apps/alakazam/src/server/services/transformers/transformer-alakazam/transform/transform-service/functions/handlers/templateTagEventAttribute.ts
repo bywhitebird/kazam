@@ -9,7 +9,7 @@ export const handleTemplateTagEventAttribute: Handle<'templateTagEventAttribute'
       'on',
       upperFirst(templateTagEventAttribute.name.$value),
       '=',
-      '{',
+      '\${',
       templateTagEventAttribute.expression.$value,
       '}',
     )

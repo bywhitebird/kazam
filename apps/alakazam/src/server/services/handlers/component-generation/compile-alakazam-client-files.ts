@@ -4,15 +4,18 @@ import { findNameByTransformer, findTransformersByNames } from "./find-transform
 import { KazAst } from '@whitebird/kaz-ast';
 import { compileFiles } from "./compile-files";
 import { ParserKaz } from "@whitebird/kazam-parser-kaz";
+import { createLiveComponentKey } from '../live-components/create-and-parse-live-component-key';
 
 export const compileAlakazamClientFiles = async ({
   folders,
   parsers,
   transformers,
+  projectId,
 }: {
   folders: { path: string, content: string }[][]
   parsers: ReturnType<typeof findParsersByNames>
   transformers: ReturnType<typeof findTransformersByNames>
+  projectId: string
 }) => {
   const alakazamFolders: typeof folders = await Promise.all(folders.map(files =>
     Promise.all(files.map(async file => {
@@ -70,17 +73,23 @@ export const compileAlakazamClientFiles = async ({
               ${props.map(prop => `${prop.name.$value}: ${prop.name.$value},`).join('\n')}
             }
 
-            const fetchComponent = async (componentId: string, propsAccessor: string, selector: string, signal: AbortSignal) => {
+            const fetchComponent = async (componentKey: string, propsAccessor: string, selector: string, signal: AbortSignal) => {
               const componentUrl = new URL(${JSON.stringify(process.env.ALAKAZAM_URL)})
-              componentUrl.pathname = \`/get-component\`
-              componentUrl.searchParams.set('componentId', componentId)
-              componentUrl.searchParams.set('propsAccessor', propsAccessor)
-              componentUrl.searchParams.set('selector', selector)
+              componentUrl.pathname = ${JSON.stringify(process.env.ALAKAZAM_GET_LIVE_COMPONENT_PATH)}
 
               const response = await fetch(
                 componentUrl.toString(),
                 {
+                  method: 'POST',
                   signal,
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                    componentKey,
+                    propsAccessor,
+                    selector,
+                  }),
                 }
               )
 
@@ -91,8 +100,8 @@ export const compileAlakazamClientFiles = async ({
             const abortController = new AbortController()
 
             fetchComponent(
-              0, // TODO: Get component ID
-              \`window[\${JSON.stringify(ALAKAZAM_PROPS_KEY)}][\${JSON.stringify(id)}]\`,
+              ${JSON.stringify(createLiveComponentKey(file.path.startsWith('/') ? file.path : `/${file.path}`, projectId))},
+              \`window[\${JSON.stringify(ALAKAZAM_PROPS_KEY)}][\${JSON.stringify(id${idReference})}]\`,
               componentSelector,
               abortController.signal,
             ).then(preactSource => {
@@ -113,5 +122,6 @@ export const compileAlakazamClientFiles = async ({
     folders: alakazamFolders,
     parsers: [ParserKaz],
     transformers: transformers.filter(transformer => findNameByTransformer(transformer) !== 'alakazam'),
+    projectId,
   })
 }

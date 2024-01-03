@@ -18,10 +18,6 @@ export const updateComponents = async (params: {
     const parsers = findParsersByNames(project.parsers.map(({ parserName }) => parserName))
     const transformers = findTransformersByNames(project.transformers.map(({ transformerName }) => transformerName))
 
-    console.log({
-      parsers, transformers, project
-    })
-
     await updateComponentsForProject({
       projectId: project.id,
       userId: project.organization.users[0].id,

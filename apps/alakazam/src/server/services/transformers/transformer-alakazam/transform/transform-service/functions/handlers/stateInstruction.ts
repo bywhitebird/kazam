@@ -19,9 +19,6 @@ export const handleStateInstruction: Handle<'stateInstruction', string> = stateI
       ', set',
       upperFirst(stateInstruction.name.$value),
       '] = useState',
-      stateInstruction.type?.$value
-        ? `<${stateInstruction.type.$value}>`
-        : '',
       '(',
       stateInstruction.defaultValue !== undefined
         ? stateInstruction.defaultValue.expression.$value

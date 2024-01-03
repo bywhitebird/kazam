@@ -38,6 +38,7 @@ export const getProjectComponents = async (
     folders: [uncompiledFiles],
     parsers,
     transformers,
+    projectId,
   })
 
   return compiledFiles

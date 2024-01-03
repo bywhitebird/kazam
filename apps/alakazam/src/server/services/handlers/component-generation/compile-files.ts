@@ -9,10 +9,12 @@ export const compileFiles = async ({
   folders,
   parsers,
   transformers,
+  projectId,
 }: {
   folders: { path: string, content: string }[][]
   parsers: ReturnType<typeof findParsersByNames>
   transformers: ReturnType<typeof findTransformersByNames>
+  projectId: string
 }) => {
   const generatedComponents: Record<typeof db.transformations.TransformerName.__values__[number], {
     filePath: string
@@ -60,6 +62,7 @@ export const compileFiles = async ({
       folders,
       parsers,
       transformers,
+      projectId,
     })
 
     for (const [transformerName, components] of Object.entries(alakazamClientComponents)) {

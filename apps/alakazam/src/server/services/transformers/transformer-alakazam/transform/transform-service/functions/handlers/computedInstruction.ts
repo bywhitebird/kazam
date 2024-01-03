@@ -7,7 +7,6 @@ export const handleComputedInstruction: Handle<'computedInstruction', string> = 
     return String.prototype.concat(
       'const ',
       computedInstruction.name.$value,
-      computedInstruction.type !== undefined ? `: ${computedInstruction.type.$value}` : '',
       ' = ',
       computedInstruction.computeValue.expression.$value,
     )

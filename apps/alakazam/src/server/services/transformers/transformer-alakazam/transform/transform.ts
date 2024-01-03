@@ -11,7 +11,7 @@ export const transform = ({ input }: Pick<TransformerAlakazam, 'input' | 'option
   Effect.gen(function* (_) {
     const transformService = yield * _(TransformService)
 
-    const output = new Map<string, { filePath: `${string}.tsx`; content: string }>()
+    const output = new Map<string, { filePath: string; content: string }>()
 
     for (const filePath in input) {
       const file = input[filePath]
@@ -23,7 +23,7 @@ export const transform = ({ input }: Pick<TransformerAlakazam, 'input' | 'option
         componentName: yield * _(transformService.getComponentName(filePath)),
         filePath,
         sourceAbsoluteFilePath: file.sourceAbsoluteFilePath,
-        outputAbsoluteFilePath: file.getTransformedOutputFilePath(`${filePath}.tsx`),
+        outputAbsoluteFilePath: file.getTransformedOutputFilePath(filePath),
         input,
       }))
 
@@ -54,7 +54,7 @@ export const transform = ({ input }: Pick<TransformerAlakazam, 'input' | 'option
       )
 
       output.set(filePath, {
-        filePath: `${filePath}.tsx`,
+        filePath: file.sourceAbsoluteFilePath,
         content: transformed,
       })
     }

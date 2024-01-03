@@ -40,6 +40,8 @@ export const magicStrings = {
   kazStateJSDoc: new MagicString('5c46e186-3ca8-45f5-9971-4012b174b715'),
   kazComputedJSDoc: new MagicString('d1216e22-94df-4b98-828a-87c53bc24b8a'),
   kazPropJSDoc: new MagicString('a8600e91-0e91-463c-928a-b0f948b43e99'),
+  alakazamLiveComponentsPropsAccessor: new MagicString('e1ff97b4eb9f478b9a620448d2d41b64'),
+  alakazamLiveComponentsSelector: new MagicString('d85608c2aeaa4e8f9f3838784eb8e8a2'),
 }
 
 export const replaceMagicStrings = (

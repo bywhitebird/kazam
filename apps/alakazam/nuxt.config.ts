@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   modules: [
     'nuxt-typed-router',
     'nuxt-auth-utils',
+    'nuxt-security',
   ],
 
   alias: {
@@ -63,4 +64,17 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  routeRules: {
+    ...process.env.ALAKAZAM_GET_LIVE_COMPONENT_PATH !== undefined && {
+      [process.env.ALAKAZAM_GET_LIVE_COMPONENT_PATH]: {
+        security: {
+          corsHandler: {
+            origin: '*',
+            methods: ['POST'],
+          },
+        },
+      },
+    },
+  }
 })
