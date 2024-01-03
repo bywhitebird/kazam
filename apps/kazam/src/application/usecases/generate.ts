@@ -8,18 +8,22 @@ import { generateEvents } from '../../core/events/generate'
 import type { KazamConfig } from '../../types/kazam-config'
 import type { Transformer } from '../../types/transformer'
 
-const writeResults = (
+export interface KazamFS {
+  promises: Pick<typeof fs.promises, 'mkdir' | 'writeFile' | 'readFile' | 'readdir'>
+}
+
+const writeResults = async (
   files: Map<string, string>,
-  fileSystem: typeof fs,
+  fileSystem: KazamFS,
 ) => {
-  files.forEach((fileContents, filePath) => {
+  for (const [filePath, fileContents] of files) {
     const directoryPath = filePath.split('/').slice(0, -1).join('/')
 
-    fileSystem.mkdirSync(directoryPath, { recursive: true })
-    fileSystem.writeFileSync(filePath, fileContents)
+    await fileSystem.promises.mkdir(directoryPath, { recursive: true })
+    await fileSystem.promises.writeFile(filePath, fileContents)
 
     generateEvents.emit('file-written', filePath)
-  })
+  }
 }
 
 const getTransformerDirectory = (transformer: Transformer, config: Exclude<KazamConfig, unknown[]>) => {
@@ -75,7 +79,7 @@ const formatResults = (
 const generateForConfig = async (
   config: Exclude<KazamConfig, unknown[]>,
   rootDir: string,
-  fileSystem?: typeof fs | undefined,
+  fileSystem: KazamFS,
 ) => {
   return Promise.all(
     config.parsers.map(async (ParserClass) => {
@@ -84,9 +88,10 @@ const generateForConfig = async (
       const parserOutput = await parser.loadAndParse({
         ...config,
         rootDir,
+        fs: fileSystem,
       })
 
-      return config.transformers.map((TransformerClass) => {
+      return await Promise.all(config.transformers.map(async (TransformerClass) => {
         const transformerInput = Object.fromEntries(
           Object.entries(parserOutput).map(([key, value]) => {
             return [key, {
@@ -102,14 +107,14 @@ const generateForConfig = async (
         const transformerResult = transformer.transform()
 
         if (fileSystem) {
-          writeResults(
+          await writeResults(
             formatResults(transformerResult, TransformerClass, config, rootDir),
             fileSystem,
           )
         }
 
         return transformerResult
-      })
+      }))
     }),
   )
     .then(results => results.flat())
@@ -118,7 +123,7 @@ const generateForConfig = async (
 export const generate = async (
   config: KazamConfig,
   rootDir: string,
-  fileSystem?: typeof fs | undefined,
+  fileSystem: KazamFS,
 ) => {
   generateEvents.emit('pending', undefined)
 

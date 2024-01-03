@@ -1,7 +1,9 @@
 import * as path from 'node:path'
 
 import { Effect, pipe } from 'effect'
-import { camelCase, upperFirst } from 'lodash'
+import camelCase from 'just-camel-case'
+
+import { upperFirst } from '../../../utils/upperFirst'
 
 export const getComponentName = (filePath: string) =>
   pipe(

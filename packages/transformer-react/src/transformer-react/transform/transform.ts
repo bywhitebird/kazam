@@ -1,11 +1,11 @@
 import { replaceKazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { Effect, pipe } from 'effect'
-import lodash from 'lodash'
 import * as prettier from 'prettier'
 
 import { createServices } from './create-services'
 import { TransformService } from './transform-service/transform-service'
 import type { TransformerReact } from '../transformer-react'
+import { upperFirst } from '../utils/upperFirst'
 
 export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>) => Effect.provide(
   Effect.gen(function* (_) {
@@ -38,7 +38,7 @@ export const transform = ({ input }: Pick<TransformerReact, 'input' | 'options'>
               return stateName
             },
             setState(_match, stateName, setter) {
-              return `set${lodash.upperFirst(stateName)}((${stateName}) => { ${setter}; return ${stateName} })`
+              return `set${upperFirst(stateName)}((${stateName}) => { ${setter}; return ${stateName} })`
             },
             getProp(_match, propName) {
               return propName

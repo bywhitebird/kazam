@@ -1,15 +1,8 @@
-CREATE MIGRATION m16aaj63lzt6n4sfmqerswsti74xr6jftgiimfafmen55o35sn5b4q
-    ONTO m1t4s2ey54eij2tqiule2cgysjta4qdtok6mv2g6lfjqhutubdls6q
+CREATE MIGRATION m16cwt2x3aeyjwnuxkxduf6vi6jluxhtqn3zsopdjz3dlzymblnxxa
+    ONTO m1phwgee7mrqcajsra7xi3qcw63w2lndfnh6vo77xzwofdtig52nma
 {
-  CREATE TYPE default::Project {
-      CREATE REQUIRED PROPERTY name: std::str;
-  };
-  ALTER TYPE default::Organization {
-      CREATE MULTI LINK projects: default::Project {
-          CREATE CONSTRAINT std::exclusive;
-      };
-  };
-  ALTER TYPE default::Project {
-      CREATE SINGLE LINK organization := (.<projects[IS default::Organization]);
+  CREATE GLOBAL users::currentUser -> std::uuid;
+  ALTER TYPE projects::GitHubRepository {
+      CREATE ANNOTATION std::title := 'GitHub';
   };
 };

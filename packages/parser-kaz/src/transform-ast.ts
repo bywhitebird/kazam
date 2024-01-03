@@ -1,10 +1,13 @@
 import { parse as parseTypescript } from '@babel/parser'
-import traverseTypescriptAst, { type NodePath } from '@babel/traverse'
+import _traverseTypescriptAst, { type NodePath } from '@babel/traverse'
 import type { Identifier } from '@babel/types'
 import { type KazAst, traverse as traverseKazAst } from '@whitebird/kaz-ast'
 import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
 import { TransformerTypescript } from '@whitebird/kazam-transformer-typescript'
 import StringManipulator from 'magic-string'
+
+// @ts-expect-error Using `default` is a hack to make it work with both ESM and CJS
+const traverseTypescriptAst: typeof _traverseTypescriptAst = _traverseTypescriptAst.default ?? _traverseTypescriptAst
 
 type PathType = 'stateSetter' | 'computedGetter' | 'stateGetter' | 'propGetter'
 

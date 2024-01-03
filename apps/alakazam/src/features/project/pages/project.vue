@@ -11,7 +11,7 @@ definePageMeta({
 
 const route = useRoute('project-page')
 
-const { project, saveProject: _saveProject } = useProject({
+const { project, saveProject: _saveProject, downloadComponents } = useProject({
   id: route.params.projectId,
 })
 
@@ -19,12 +19,16 @@ const { repositories } = useGitHubRepositories()
 
 const editProject = {
   repositoryUrl: ref<string>(),
+  rootDir: ref<string>(),
   projectName: ref<string>(),
 }
 
 const saveProject = () => _saveProject({
   name: editProject.projectName.value,
-  repositoryUrl: editProject.repositoryUrl.value,
+  repository: editProject.repositoryUrl.value ? {
+    url: editProject.repositoryUrl.value,
+    rootDir: editProject.rootDir.value,
+  } : undefined,
 })
 </script>
 
@@ -57,16 +61,38 @@ const saveProject = () => _saveProject({
         :values="repositories?.map(repository => ({
           value: repository.url,
           label: repository.full_name ?? repository.name,
-          selected: repository.url === project?.sources.at(-1)?.githubRepository?.url,
+          selected: repository.url === project?.sources.at(-1)?.url,
         })) ?? []"
         placeholder="Select a repository"
         @change="(value: string) => editProject.repositoryUrl.value = value"
+      />
+
+      <label :class="css({ textStyle: 'label' })">
+        Root directory
+      </label>
+      <TextInput
+        placeholder="Root directory"
+        :value="project?.sources.at(-1)?.githubRepository?.rootDir"
+        @change="(value: string) => editProject.rootDir.value = value"
       />
 
       <Button
         variant="secondary"
         text="Save"
         @click="saveProject()"
+      />
+    </section>
+
+    <section>
+      <h3 :class="css({ textStyle: 'heading3' })">
+        Components
+      </h3>
+
+      <Button
+        variant="secondary"
+        text="Download components"
+        icon-name="download"
+        @click="downloadComponents()"
       />
     </section>
   </div>

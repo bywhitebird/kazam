@@ -1,3 +1,4 @@
+import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import { kazamMagicStrings } from '@whitebird/kazam-transform-utils'
@@ -17,6 +18,7 @@ describe('parser-kaz', () => {
     ],
     output: 'dist',
     rootDir: __dirname,
+    fs,
   }
 
   const parser = new ParserKaz()

@@ -35,7 +35,7 @@ export default defineNuxtConfig({
       },
       {
         from: '~/shared/utils/database',
-        imports: ['database'],
+        imports: ['database', { name: 'database', as: 'db' }],
       },
     ],
   },
@@ -45,7 +45,7 @@ export default defineNuxtConfig({
       presets: [
         {
           from: '~/shared/utils/database',
-          imports: ['database'],
+          imports: ['database', { name: 'database', as: 'db' }],
         },
       ]
     },
@@ -58,15 +58,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     oauth: {
       github: {
-        clientId: process.env.NUXT_OAUTH_GITHUB_CLIENT_ID,
-        clientSecret: process.env.NUXT_OAUTH_GITHUB_CLIENT_SECRET,
+        clientId: process.env.GITHUB_APP_CLIENT_ID,
+        clientSecret: process.env.GITHUB_APP_CLIENT_SECRET,
       },
-    },
-    github: {
-      webhookSecret: process.env.NUXT_GITHUB_WEBHOOK_SECRET,
-      webhookUrl: process.env.NODE_ENV === 'development'
-        ? undefined
-        : process.env.NUXT_GITHUB_WEBHOOK_URL,
     },
   },
 })

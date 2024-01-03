@@ -1,4 +1,4 @@
-import * as fs from 'node:fs/promises'
+import * as fs from 'node:fs'
 import * as path from 'node:path'
 
 import { ParserKaz } from '@whitebird/kazam-parser-kaz'
@@ -28,7 +28,7 @@ export const createTestWebTransformerFixture = async (fixture: TestWebTransforme
             unsafeCleanup: true,
             tmpdir: fixture.fixtureDirectory,
           })
-          await fs.writeFile(path.join(directoryPath, `${key}.kaz`), value)
+          await fs.promises.writeFile(path.join(directoryPath, `${key}.kaz`), value)
 
           const parser = new ParserKaz()
           const parseResult = await parser.loadAndParse({
@@ -36,7 +36,8 @@ export const createTestWebTransformerFixture = async (fixture: TestWebTransforme
               directoryPath,
             ],
             output: 'dist',
-            configPath: path.join(directoryPath, 'kazam.config.ts'),
+            rootDir: directoryPath,
+            fs,
           })
 
           await cleanupDirectory()
