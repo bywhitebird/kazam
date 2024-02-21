@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from "@whitebird/ui/vue/button"
+import Button from "@whitebird/ui/vue/Button.vue"
 
 const { loggedIn, user, session, login, logout } = useAuth()
 </script>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Select from '@whitebird/ui/vue/Select'
-import Button from '@whitebird/ui/vue/Button'
-import TextInput from '@whitebird/ui/vue/TextInput'
+import Select from '@whitebird/ui/vue/Select.vue'
+import Button from '@whitebird/ui/vue/Button.vue'
+import TextInput from '@whitebird/ui/vue/TextInput.vue'
 
 import { flex } from '~/styled-system/patterns'
 

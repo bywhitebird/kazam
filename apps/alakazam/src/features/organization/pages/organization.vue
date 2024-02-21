@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import TextInput from '@whitebird/ui/vue/TextInput'
-import Button from '@whitebird/ui/vue/Button'
+import TextInput from '@whitebird/ui/vue/TextInput.vue'
+import Button from '@whitebird/ui/vue/Button.vue'
 
 import { flex, grid } from '~/styled-system/patterns';
 
