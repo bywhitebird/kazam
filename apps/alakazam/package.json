@@ -9,7 +9,7 @@
     "postinstall": "pnpm prepare",
     "prepare:nuxt": "nuxt prepare",
     "prepare:panda": "panda codegen",
-    "prepare:edgedb": "pnpm init-db && edgedb-generate edgeql-js",
+    "prepare:edgedb": "if [ -z \"$CI\" ]; then pnpm init-db && edgedb-generate edgeql-js; fi",
     "prepare": "npm-run-all prepare:*",
     "init-db": "edgedb project info || edgedb project init --non-interactive",
     "migrate-db": "edgedb migration create && edgedb migrate && pnpm prepare:edgedb"
