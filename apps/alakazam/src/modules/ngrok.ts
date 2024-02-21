@@ -18,7 +18,12 @@ export default defineNuxtModule({
       addr: nuxt.options.devServer.port,
       ...resolvedOptions,
     }
-    const url = await ngrok.connect(ngrokOptions)
+    const url = await ngrok.connect(ngrokOptions).catch((error: Error) => error)
+
+    if (url instanceof Error) {
+      console.error('ngrok error:', url)
+      return
+    }
 
     nuxt.options.runtimeConfig[CONFIG_KEY] = {
       url,
