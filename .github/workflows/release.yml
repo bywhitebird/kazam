@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Install EdgeDB
+        uses: edgedb/setup-edgedb@v1
+
       - name: Install Node.js
         uses: actions/setup-node@v3
 
@@ -25,9 +28,6 @@ jobs:
         id: pnpm-install
         with:
           run_install: true
-
-      - name: Install EdgeDB
-        uses: edgedb/setup-edgedb@v1
 
       - name: Create Release Pull Request or Publish
         id: changesets
