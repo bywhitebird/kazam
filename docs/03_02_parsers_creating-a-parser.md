@@ -1,18 +1,17 @@
 ---
 draft: true
-slug: parsers
+title: Creating a parser
+slug: parsers/creating-a-parser
 ---
 
-# Parsers
+# Creating a parser
 
-## Creating a parser
+> [!NOTE]
+> If you are planning to release a parser to npm, we recommend that you name it with the `kazam-parser-` prefix and add the `kazam-parser` and `kazam` keywords to the `package.json` file. That will allow other developers to easily discovered it.
 
-> **Note:**
-> If you are planning to release a parser to npm, we recommend that you name it with the `kazam-parser-` prefix so that it can be easily discovered by other developers.
+Implementing a custom parser is straightforward. You simply need to create a class that extends the `ParserBase` class from the `@whitebird/kazam-parser-base` package and implement the necessary methods (this is the hard job).
 
-Creating a custom parser is straightforward with Kazam. You simply need to create a class that extends the `ParserBase` class from the `@whitebird/kazam-parser-base` package and implement the necessary methods.
-
-> **Note:**
+> [!NOTE]
 > We recommend that you use name your parser class with the `Parser` prefix, such as `ParserCustom`.
 
 ```ts
@@ -25,8 +24,8 @@ export class ParserCustom extends ParserBase {
 
 The `ParserBase` class has two abstract methods that you need to implement:
 
-- `load` - This method should load the input sources and return the result. The result will be passed to the `parse` method.
-- `parse` - This method should parse the result of the `load` method and return an object that will be passed to the transformers.
+- `load` — This method should load the input sources and return the result. The result will be passed to the `parse` method.
+- `parse` — This method should parse the result of the `load` method and return an object that will be passed to the transformers.
 
 Here is the full definition of the `ParserBase` class:
 
@@ -48,9 +47,3 @@ export type ITransformerInput = zod.infer<typeof TransformerInput>
 ```
 
 As you can see, the `parse` method returns an object that conforms to the `ITransformerInput` type. `ITransformerInput` is a record of strings and Kaz AST nodes. The keys of the record are the names of the components, and the values are the Kaz AST nodes that represent the components. You can find the schema for the Kaz AST nodes [in the `kaz-ast` package](https://github.com/bywhitebird/kazam/blob/18c7d0e969e9804faf54eda0c2afd3bb93df6c8b/packages/kaz-ast/src/types/KazAst.ts#L175).
-
-## Existing parsers
-
-### Official parsers
-
-- [`@whitebird/kazam-parser-kaz`](https://npmjs.com/package/@whitebird/kazam-parser-kaz) - Parses Kaz Language files.

@@ -1,5 +1,6 @@
 ---
 draft: true
+title: Contributing
 slug: contributing
 ---
 

@@ -1,5 +1,6 @@
 {
-  "name": "whitebird",
+  "name": "kazam",
+  "description": "Create reusable components for multiple frameworks and libraries using a single codebase.",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
